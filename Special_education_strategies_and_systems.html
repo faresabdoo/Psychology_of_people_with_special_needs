@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>استراتيجيات التربية الخاصة - الدورة المتقدمة</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+/* ==========================================================================
+   CSS System & Variables - "Emerald Luxury" Theme (Inherited from test4)
+   ========================================================================== */
+:root {
+  --c-primary: #059669; 
+  --c-primary-light: #d1fae5; 
+  --c-primary-dark: #047857; 
+  --c-accent: #f59e0b; 
+  --c-accent-light: #fef3c7; 
+  --c-bg: #f8fafc; 
+  --c-surface: #ffffff;
+  --c-text-main: #1e293b; 
+  --c-text-muted: #64748b; 
+  --c-danger: #ef4444;
+  --c-danger-light: #fee2e2;
+  --c-success: #10b981;
+  --c-border: #e2e8f0;
+  --font-main: 'Cairo', sans-serif;
+  --font-story: 'Tajawal', sans-serif;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 15px rgba(5, 150, 105, 0.3);
+  --r-sm: 8px; --r-md: 12px; --r-lg: 20px; --r-full: 9999px;
+  --t-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --t-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-main);
+  background-color: var(--c-bg);
+  color: var(--c-text-main);
+  line-height: 1.8;
+  overflow-x: hidden;
+  background-image: radial-gradient(var(--c-primary-light) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* Typography */
+h1 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 900; color: var(--c-primary-dark); margin-bottom: 20px; }
+h2 { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; color: var(--c-primary); margin-bottom: 15px; }
+p { font-size: clamp(1rem, 2.5vw, 1.15rem); color: var(--c-text-main); margin-bottom: 15px; }
+strong { color: var(--c-primary-dark); font-weight: 800; }
+
+/* Layout */
+#progress-container { position: fixed; top: 0; left: 0; right: 0; height: 6px; background: var(--c-border); z-index: 1001; }
+#progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--c-accent), var(--c-primary)); transition: width var(--t-base); box-shadow: var(--shadow-glow); }
+
+header {
+  position: fixed; top: 6px; left: 0; right: 0; height: 65px;
+  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(10px, 3vw, 30px); border-bottom: 1px solid var(--c-border); z-index: 1000;
+  box-shadow: var(--shadow-sm);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--c-primary-dark); font-size: clamp(1rem, 3vw, 1.2rem); }
+.stats { display: flex; align-items: center; gap: 10px; }
+.badge { background: var(--c-bg); border: 1px solid var(--c-border); padding: 5px 12px; border-radius: var(--r-full); font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; box-shadow: var(--shadow-sm); }
+.badge i { color: var(--c-accent); }
+
+main { padding: 90px 15px 120px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+.slide { display: none; width: 100%; max-width: 900px; animation: fadeUp var(--t-base) forwards; }
+.slide.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+footer {
+  position: fixed; bottom: 0; left: 0; right: 0; padding: 15px clamp(10px, 3vw, 30px);
+  background: rgba(255, 255, 255, 0.98); border-top: 1px solid var(--c-border);
+  display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+}
+
+/* UI Components */
+.card { background: var(--c-surface); border-radius: var(--r-lg); padding: clamp(20px, 4vw, 35px); box-shadow: var(--shadow-md); border: 1px solid rgba(5, 150, 105, 0.1); margin-bottom: 25px; }
+.tag { display: inline-block; padding: 5px 15px; background: var(--c-primary-light); color: var(--c-primary-dark); border-radius: var(--r-full); font-size: 0.8rem; font-weight: 800; margin-bottom: 15px; }
+.story-box { background: linear-gradient(to left, var(--c-bg), var(--c-surface)); border-right: 4px solid var(--c-accent); padding: 20px; border-radius: var(--r-md); margin-bottom: 20px; display: flex; gap: 15px; align-items: flex-start; }
+.story-box i { font-size: 2rem; color: var(--c-accent); margin-top: 5px; }
+.story-box p { font-family: var(--font-story); font-size: 1.1rem; color: var(--c-text-main); margin: 0; font-style: italic; }
+.visual-box { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: var(--r-md); padding: 25px; margin: 20px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; }
+.v-icon { font-size: clamp(3rem, 6vw, 4rem); color: var(--c-primary); }
+.v-caption { font-size: 0.95rem; font-weight: 700; color: var(--c-text-muted); text-align: center; }
+.v-flex { display: flex; align-items: center; justify-content: center; gap: clamp(10px, 4vw, 30px); flex-wrap: wrap; width: 100%; }
+.v-item { display: flex; flex-direction: column; align-items: center; text-align: center; background: white; padding: 15px; border-radius: var(--r-sm); box-shadow: var(--shadow-sm); flex: 1; min-width: 120px; }
+
+/* Activities */
+.activity-box { background: linear-gradient(135deg, var(--c-surface), #fefce8); border: 1px solid var(--c-accent); border-radius: var(--r-lg); padding: 25px; position: relative; overflow: hidden; }
+.act-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: #b45309; font-weight: 900; font-size: 1.1rem; }
+.act-options { display: grid; gap: 12px; margin-top: 15px; }
+.act-btn { background: var(--c-surface); border: 2px solid var(--c-border); padding: 15px; border-radius: var(--r-md); cursor: pointer; font-family: var(--font-main); font-size: 1rem; font-weight: 600; text-align: right; transition: all var(--t-base); color: var(--c-text-main); display: flex; justify-content: space-between; align-items: center; }
+.act-btn:hover:not(:disabled) { border-color: var(--c-primary); transform: translateX(-5px); background: var(--c-primary-light); }
+.act-btn.correct { background: var(--c-success-light); border-color: var(--c-success); color: #065f46; }
+.act-btn.correct::after { content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900; }
+.act-btn.wrong { background: var(--c-danger-light); border-color: var(--c-danger); color: #991b1b; }
+.act-btn.wrong::after { content: '\f057'; font-family: 'Font Awesome 6 Free'; font-weight: 900; }
+.feedback-msg { margin-top: 15px; padding: 15px; border-radius: var(--r-sm); font-weight: 700; display: none; animation: fadeUp 0.3s; }
+
+/* Buttons & Overlays */
+.btn { padding: 12px clamp(15px, 4vw, 30px); border-radius: var(--r-full); border: none; font-weight: 800; cursor: pointer; font-family: var(--font-main); transition: all var(--t-base); font-size: clamp(0.9rem, 2.5vw, 1rem); display: flex; align-items: center; gap: 8px; }
+.btn-primary { background: var(--c-primary); color: white; box-shadow: var(--shadow-md); }
+.btn-outline { background: var(--c-surface); color: var(--c-text-muted); border: 1px solid var(--c-border); }
+.toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(50px); background: var(--c-text-main); color: white; padding: 12px 25px; border-radius: var(--r-full); display: flex; align-items: center; gap: 10px; font-weight: 700; box-shadow: var(--shadow-lg); z-index: 1000; opacity: 0; transition: all var(--t-bounce); white-space: nowrap; }
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.pulse-anim { animation: customPulse 1.5s infinite; }
+@keyframes customPulse { 0% { box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.5); } 70% { box-shadow: 0 0 0 10px rgba(5, 150, 105, 0); } 100% { box-shadow: 0 0 0 0 rgba(5, 150, 105, 0); } }
+
+@media (max-width: 600px) { .act-btn { flex-direction: column; align-items: flex-start; } .v-flex { flex-direction: column; } }
+</style>
+</head>
+<body>
+
+<div id="progress-container"><div id="progress-bar"></div></div>
+
+<header>
+  <div class="brand"><i class="fa-solid fa-sitemap"></i> استراتيجيات التربية الخاصة</div>
+  <div class="stats">
+    <div class="badge"><i class="fa-solid fa-star"></i> <span id="scoreDisplay">0</span></div>
+    <div class="badge" style="color: var(--c-primary); border-color: var(--c-primary);"><i class="fa-solid fa-medal"></i> <span id="levelDisplay">مبتدئ</span></div>
+  </div>
+</header>
+
+<div class="toast" id="toast"><i class="fa-solid fa-check-circle" style="color: var(--c-success);"></i> <span id="toastMsg"></span></div>
+
+<main id="main-container"></main>
+
+<footer>
+  <button class="btn btn-outline" id="btn-prev" onclick="move(-1)"><i class="fa-solid fa-arrow-right"></i> السابق</button>
+  <div style="font-weight: 800; color: var(--c-primary); font-size: 0.9rem;" id="counter">1 / --</div>
+  <button class="btn btn-primary" id="btn-next" onclick="move(1)">التالي <i class="fa-solid fa-arrow-left"></i></button>
+</footer>
+
+<script>
+/* ==========================================================================
+   DATA GENERATOR: SPECIAL EDUCATION STRATEGIES (EMERALD LUXURY VERSION)
+   ========================================================================== */
+const SLIDE_DATA = [
+  {
+    tag: "البداية", title: "مقدمة الاستراتيجيات",
+    story: "تخيل أنك في مفترق طرق؛ طريق يؤدي لمدرسة متخصصة تماماً، وطريق آخر يفتح أبواب المدرسة العادية للجميع. أيهما تختار؟",
+    content: "تعتمد التربية الخاصة على استراتيجيتين أساسيتين هما: **نظام العزل**، و**نظام الدمج**. لكل منهما فلسفة، تاريخ، ونتائج تؤثر على مستقبل الطفل.",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-fort-awesome"></i>نظام العزل</div><div style="font-size:2rem;color:#cbd5e1"><i class="fa-solid fa-arrows-left-right"></i></div><div class="v-item" style="border:2px solid var(--c-primary)"><i class="fa-solid fa-school-flag"></i>نظام الدمج</div></div>`,
+    quiz: { q: "ما هما الاستراتيجيتان الأساسيتان في التربية الخاصة؟", opts: ["نظام العزل ونظام الدمج", "نظام العقاب ونظام المكافأة"], ans: 0, fb: "رائع! هذان هما القطبان اللذان يحركان هذا العلم." }
+  },
+  {
+    tag: "نظام العزل", title: "تعريف نظام العزل",
+    story: "في الماضي، كان يُنظر للمدرسة الخاصة كحصن يحمي الطفل من صعوبات العالم الخارجي، لكن الحصون أحياناً تصبح سجناً اجتماعياً.",
+    content: "نظام العزل هو عزل الأفراد ذوي الاحتياجات الخاصة في مؤسسات أو مدارس خاصة بعيداً عن الطلاب العاديين، سواء كانت هذه المؤسسات تابعة لمدارس خاصة أو عامة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="v-caption">بيئة تعليمية مستقلة ومنفصلة تماماً</div>`,
+    quiz: { q: "نظام العزل يعني وضع الطالب في:", opts: ["فصول عادية مع أقرانه", "مؤسسات خاصة بعيداً عن العاديين"], ans: 1, fb: "بالضبط، هو فصل مكاني وبرامجي تام." }
+  },
+  {
+    tag: "لمحة تاريخية", title: "النظرة القديمة: العبء الثقيل",
+    story: "قديماً، لم تكن هناك 'تربية خاصة'.. كان هناك فقط محاولات للتخلص من 'المشكلة'.",
+    content: "اعتمدت النظرة القديمة لذوي الاحتياجات الخاصة على أساس أنهم **عبء ثقيل** على المجتمع. لم يُنظر إليهم كأفراد لهم حقوق، بل كمشكلة يجب إقصاؤها.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-weight-hanging"></i></div><div class="v-caption">مرحلة الإقصاء والعبء الاجتماعي</div>`,
+    quiz: { q: "كيف كان المجتمع القديم ينظر لذوي الاحتياجات؟", opts: ["كأفراد منتجين ومرحب بهم", "كعبء ثقيل على كاهل المجتمع"], ans: 1, fb: "تفكير سليم، للأسف كانت نظرة سلبية للغاية." }
+  },
+  {
+    tag: "الفكر الفلسفي", title: "أفلاطون وأرسطو: الإقصاء والنبذ",
+    story: "حتى العقول العظيمة في اليونان القديمة كان لها مواقف قاسية تجاه الإعاقة.",
+    content: "دعا 'أفلاطون' إلى نبذ ذوي الاحتياجات الخاصة خارج البلاد. بينما اعتقد 'أرسطو' أن الصم غير قادرين على التعلم لعدم قدرتهم على الكلام وفهم ما يدور حولهم.",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-ban"></i>أفلاطون (نبذ ونفي)</div><div class="v-item"><i class="fa-solid fa-ear-slash"></i>أرسطو (عجز عن التعلم)</div></div>`,
+    quiz: { q: "ماذا كان يعتقد أرسطو بشأن الصم؟", opts: ["أنهم قادرون على التعلم لغوياً", "أنهم غير قادرين على التعلم لعدم الكلام"], ans: 1, fb: "أحسنت، كان يعتقد أن الكلام هو مفتاح العقل الوحيد." }
+  },
+  {
+    tag: "التحول التاريخي", title: "بزوغ أفكار المصلحين",
+    story: "الرياح تغيرت في القرن الثامن عشر.. بدأت الإنسانية تتغلب على الإقصاء.",
+    content: "بدأت إرهاصات الاهتمام بتعليمهم في مؤسسات خاصة في أوروبا وأمريكا أواخر القرن الـ18، مع ظهور أفكار المصلحين المنادين بحقوقهم في الحياة والرعاية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-sun"></i></div><div class="v-caption">فجر جديد للحقوق الإنسانية (أواخر القرن 18)</div>`,
+    quiz: { q: "متى بدأ الاهتمام المنظم بتعليم الفئات الخاصة في مؤسسات؟", opts: ["أواخر القرن الثامن عشر", "في العصور الوسطى"], ans: 0, fb: "رائع! هي بداية عصر المؤسسات." }
+  },
+  {
+    tag: "رواد الصم", title: "ديليبيه: لغة الإشارة",
+    story: "في باريس، قرر رجل واحد أن اليدين يمكنها أن تتكلم تماماً كما اللسان.",
+    content: "أنشأ 'ديليبيه' مؤسسة تعليمية للصم في باريس عام 1791، واعتمد فيها على **لغة الإشارة** كوسيلة أساسية للتعليم والتواصل.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-hands-asl-interpreting"></i></div><div class="v-caption">استخدام الإشارة كبديل للكلام</div>`,
+    quiz: { q: "ما هي الطريقة التي اعتمدها ديليبيه في تعليم الصم؟", opts: ["لغة الإشارة", "قراءة الشفاه فقط"], ans: 0, fb: "صحيح! هو الأب الروحي للغة الإشارة التعليمية." }
+  },
+  {
+    tag: "رواد الصم", title: "قراءة الشفاه: برايد وودز",
+    story: "بينما كانت فرنسا تشير، كانت بريطانيا تراقب الشفاه بدقة.",
+    content: "في بريطانيا، أنشأ 'توماس برايد وودز' أول مؤسسة عام 1760 مستخدماً طريقة **قراءة الشفاه** لدمج الصم في عالم الناطقين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-comment-dots"></i></div><div class="v-caption">التركيز على حركة الفم والشفاه</div>`,
+    quiz: { q: "طريقة توماس برايد وودز اعتمدت على:", opts: ["الكتابة البارزة", "قراءة الشفاه"], ans: 1, fb: "أحسنت! هذا التنوع خلق مدارس تعليمية مختلفة." }
+  },
+  {
+    tag: "رواد المكفوفين", title: "لويس برايل: ثورة النقاط",
+    story: "تخيل أن تقرأ بأطراف أصابعك.. نقاط صغيرة فتحت للمكفوفين أبواب المكتبات العالمية.",
+    content: "اخترع 'لويس برايل' طريقته الشهيرة عام 1834، مستوحياً فكرتها من الضابط الفرنسي 'باربيير' الذي كان يستخدم الحروف البارزة للقراءة في الظلام.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-braille"></i></div><div class="v-caption">نظام النقاط البارزة للقراءة باللمس</div>`,
+    quiz: { q: "استوحى لويس برايل فكرته من محاولة الضابط الفرنسي:", opts: ["ديليبيه", "باربيير"], ans: 1, fb: "دقيق جداً! باربيير وضع الأساس وبرايل طور النظام." }
+  },
+  {
+    tag: "التخلف العقلي", title: "إيتارد والطفل المتوحش",
+    story: "طفل عاش في الغابة وحيداً.. هل يمكن للتربية أن تعيده للبشرية؟ هذا ما حاول إيتارد إثباته.",
+    content: "قام الطبيب الفرنسي 'إيتارد' بوضع برنامج لتعليم طفل متخلف عقلياً أطلق عليه 'فيكتور' (الطفل المتوحش) وُجد في غابة أفيرون، ممهداً الطريق لتعليم هذه الفئة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-child-reaching"></i></div><div class="v-caption">أول محاولة علمية لتربية وتأهيل الإعاقة العقلية</div>`,
+    quiz: { q: "ما هو اسم الطفل الذي حاول إيتارد تعليمه ودمجه؟", opts: ["فيكتور", "سيجان"], ans: 0, fb: "ممتاز! قصة فيكتور هي أيقونة في تاريخ التربية الخاصة." }
+  },
+  {
+    tag: "مزايا العزل", title: "متى يكون العزل حتمياً؟",
+    story: "أحياناً، يحتاج المريض لغرفة عناية مركزة وليس فقط سريراً عادياً.. كذلك هي الإعاقات الشديدة.",
+    content: "قد يكون العزل حتمياً لذوي **الإعاقات الشديدة والمتعددة** الذين يحتاجون رعاية طبية وتربوية فائقة التخصص يصعب توفيرها في المدارس العادية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-house-medical-circle-check"></i></div><div class="v-caption">رعاية مكثفة للحالات الصعبة والمتعددة</div>`,
+    quiz: { q: "يكون العزل محتماً وضرورياً في حالة:", opts: ["الإعاقات البسيطة", "الإعاقات الشديدة والمتعددة"], ans: 1, fb: "إجابة دقيقة، التخصص هنا هو مفتاح الحماية." }
+  },
+  {
+    tag: "عيوب العزل", title: "مشكلة الوصمة والآثار النفسية",
+    story: "عندما تضع بطاقة 'معاق' على صدر الطفل وتعزله، فإنه يبدأ بصدق هذه البطاقة وينسى قدراته.",
+    content: "يقوم العزل على وصم الأطفال بعجزهم وتجاهل طاقاتهم، مما يولد لديهم شعوراً بعدم القيمة الذاتية والدونية ويمنع نمو مفهوم إيجابي عن الذات.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-tags" style="color:var(--c-danger)"></i></div><div class="v-caption">أثر الوصم الاجتماعي (Labeling) السلبي</div>`,
+    quiz: { q: "يؤدي العزل غالباً إلى شعور الطفل بـ:", opts: ["الثقة العالية بالنفس", "عدم القيمة الذاتية والدونية"], ans: 1, fb: "للأسف نعم، وهذا أكبر عائق نفسي للنمو." }
+  },
+  {
+    tag: "نظام الدمج", title: "تعريف الدمج (Inclusion)",
+    story: "بدلاً من أن نأخذ الطفل إلى المدرسة الخاصة، نأتي بالدعم الخاص إلى مدرسة الطفل العادية.",
+    content: "نظام الدمج يهدف لتقديم الرعاية في البيئة التعليمية العادية قدر الإمكان، مع اتخاذ الترتيبات والمساعدات التربوية الإضافية (مثل غرفة المصادر).",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-users"></i>أطفال عاديين</div><div style="font-size:1.5rem">+</div><div class="v-item"><i class="fa-solid fa-user-plus"></i>طفل مدمج</div></div>`,
+    quiz: { q: "نظام الدمج يهدف إلى تعليم ذوي الاحتياجات في:", opts: ["نطاق البيئة التعليمية العادية", "مستعمرات بعيدة"], ans: 0, fb: "صحيح! البيئة الطبيعية هي الأفضل للتعلم." }
+  },
+  {
+    tag: "أنواع الدمج", title: "الدمج الكلي والجزئي",
+    story: "الدمج ليس مقاساً واحداً؛ البعض يحتاج يوماً كاملاً، والبعض يحتاج لساعات دعم محددة.",
+    content: "**الدمج الكلي:** وجود الطالب في فصل العاديين طوال الوقت. **الدمج الجزئي:** قضاء وقت مع العاديين، ثم وقت في 'غرفة المصادر' مع معلم متخصص.",
+    visual: `<div class="v-flex"><div class="v-item">دمج كلي (طوال اليوم)</div><div class="v-item">دمج جزئي (غرفة المصادر)</div></div>`,
+    quiz: { q: "في الدمج الجزئي، يتلقى الطالب المساعدة المتخصصة في:", opts: ["غرفة المصادر لبعض الوقت", "المنزل فقط"], ans: 0, fb: "أحسنت! غرفة المصادر هي الرئة التي يتنفس بها الدمج." }
+  },
+  {
+    tag: "مزايا الدمج", title: "التعلم بالمحاكاة والقدوة",
+    story: "نحن نتعلم السباحة وسط السباحين.. والطفل يتعلم السلوك الاجتماعي وسط أقرانه الأسوياء.",
+    content: "يتيح الدمج للطالب ذو الاحتياج ملاحظة سلوك أقرانه العاديين ومحاكاتهم والتعلم منهم، مما يساعده على تكوين مفاهيم واقعية عن نفسه وعن العالم.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-people-group"></i></div><div class="v-caption">التعلم من خلال مراقبة وتقليد الأقران</div>`,
+    quiz: { q: "الدمج يتيح للطالب ذو الاحتياج فرصة:", opts: ["محاكاة وتقليد سلوك أقرانه العاديين", "البقاء وحيداً"], ans: 0, fb: "تفكير رائع! القدوة الاجتماعية هي أقوى معلم." }
+  },
+  {
+    tag: "محددات التخطيط", title: "تفريد التعليم والجماعية",
+    story: "الخطة الناجحة هي خياطة (تفصيل) المنهج على مقاس الطفل، مع إبقائه ضمن نسيج الجماعة.",
+    content: "يجب مراعاة محددين ذهبيين: **تفريد التعليم** (خطة لكل حالة خاصة)، و**المشاركة الجماعية** (لضمان نمو الطفل كعضو اجتماعي فعال).",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-user-gear"></i>تفريد (خطة فردية)</div><div class="v-item"><i class="fa-solid fa-users-viewfinder"></i>جماعية (تفاعل)</div></div>`,
+    quiz: { q: "المحدد الذي يركز على خصائص كل طفل بمفرده هو:", opts: ["تفريد التعليم", "المشاركة الجماعية"], ans: 0, fb: "بالضبط! كل طفل هو حالة خاصة فريدة." }
+  },
+  {
+    tag: "الخاتمة", title: "نهاية رحلة الاستراتيجيات",
+    story: "لقد تعلمت الآن أن الاختيار بين العزل والدمج ليس مجرد قرار إداري، بل هو فلسفة لبناء إنسان.",
+    content: "لقد أتممت بنجاح التعرف على استراتيجيات التربية الخاصة، الرواد التاريخيين، ومزايا وعيوب كل نظام تعليمي. أنت الآن مستعد للمرحلة القادمة.",
+    visual: `<div style="text-align:center; font-size:4rem; margin:20px 0; color:var(--c-accent)"><i class="fa-solid fa-trophy"></i></div><div class="v-caption" style="font-size:1.2rem; color:var(--c-primary-dark)">نقاطك النهائية: <span id="finalScoreText" style="font-size:1.8rem; font-weight:900">0</span> نقطة</div>`,
+    quiz: null
+  }
+];
+
+// --- Application Logic (Copy of test4 system) ---
+let currentSlide = 0;
+let userScore = 0;
+const totalSlides = SLIDE_DATA.length;
+const mainContainer = document.getElementById('main-container');
+const prevBtn = document.getElementById('btn-prev');
+const nextBtn = document.getElementById('btn-next');
+const counter = document.getElementById('counter');
+const progBar = document.getElementById('progress-bar');
+const scoreDisplay = document.getElementById('scoreDisplay');
+const toastEl = document.getElementById('toast');
+const toastMsg = document.getElementById('toastMsg');
+
+function initApp() {
+  SLIDE_DATA.forEach((slide, index) => {
+    const slideDiv = document.createElement('div');
+    slideDiv.className = 'slide card' + (index === 0 ? ' active' : '');
+    slideDiv.id = 'slide-' + index;
+
+    let html = `<div class="tag">${slide.tag}</div>`;
+    html += `<h2>${slide.title}</h2>`;
+    if(slide.story) html += `<div class="story-box"><i class="fa-solid fa-quote-right"></i><p>${slide.story}</p></div>`;
+    if(slide.content) html += `<p style="font-weight: 600; text-align: justify; line-height: 1.9;">${slide.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>`;
+    if(slide.visual) html += `<div class="visual-box">${slide.visual}</div>`;
+
+    if(slide.quiz) {
+      html += `
+        <div class="activity-box" id="actBox-${index}" data-answered="false">
+          <div class="act-header"><i class="fa-solid fa-bolt"></i> تحدي الاستيعاب:</div>
+          <p style="font-weight: 700; color: var(--c-secondary); font-size: 1.1rem; margin-bottom:10px;">${slide.quiz.q}</p>
+          <div class="act-options">
+            <button class="act-btn" onclick="handleAct(${index}, this, 0, ${slide.quiz.ans}, '${slide.quiz.fb}')"><span>${slide.quiz.opts[0]}</span></button>
+            <button class="act-btn" onclick="handleAct(${index}, this, 1, ${slide.quiz.ans}, '${slide.quiz.fb}')"><span>${slide.quiz.opts[1]}</span></button>
+          </div>
+          <div class="feedback-msg" id="fb-${index}"></div>
+        </div>
+      `;
+    }
+
+    if(index === totalSlides - 1) {
+       html += `<div style="text-align:center; margin-top:30px;"><button class="btn btn-primary" style="display:inline-flex; font-size:1.2rem;" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i> إعادة الرحلة</button></div>`;
+    }
+
+    slideDiv.innerHTML = html;
+    mainContainer.appendChild(slideDiv);
+  });
+  updateUI();
+}
+
+function handleAct(slideIndex, btn, chosenIdx, correctIdx, fbText) {
+  const box = document.getElementById(`actBox-${slideIndex}`);
+  if (box.getAttribute('data-answered') === "true") return;
+  box.setAttribute('data-answered', "true");
+
+  const buttons = box.querySelectorAll('.act-btn');
+  const fbDiv = document.getElementById(`fb-${slideIndex}`);
+  buttons.forEach(b => b.disabled = true);
+
+  if (chosenIdx === correctIdx) {
+    btn.classList.add('correct');
+    fbDiv.innerHTML = `<i class="fa-solid fa-check"></i> ${fbText}`;
+    fbDiv.style.color = "#065f46";
+    fbDiv.style.backgroundColor = "var(--c-success-light)";
+    userScore += 50;
+    scoreDisplay.innerText = userScore;
+    updateLevel();
+    showToast("إنجاز! +50 نقطة");
+    fireConfetti(btn);
+  } else {
+    btn.classList.add('wrong');
+    fbDiv.innerHTML = `<i class="fa-solid fa-xmark"></i> ${fbText}`;
+    fbDiv.style.color = "#991b1b";
+    fbDiv.style.backgroundColor = "var(--c-danger-light)";
+    buttons[correctIdx].classList.add('correct');
+  }
+  fbDiv.style.display = "block";
+  document.getElementById('btn-next').classList.add('pulse-anim');
+  setTimeout(() => document.getElementById('btn-next').classList.remove('pulse-anim'), 2000);
+}
+
+function move(dir) {
+  const slides = document.querySelectorAll('.slide');
+  if (currentSlide + dir < 0 || currentSlide + dir >= totalSlides) return;
+  slides[currentSlide].classList.remove('active');
+  currentSlide += dir;
+  slides[currentSlide].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateUI();
+  if (currentSlide === totalSlides - 1) {
+    const finalDisplay = document.getElementById('finalScoreText');
+    if(finalDisplay) finalDisplay.innerText = userScore;
+    fireHugeConfetti();
+  }
+}
+
+function updateUI() {
+  counter.innerText = `${currentSlide + 1} / ${totalSlides}`;
+  progBar.style.width = (((currentSlide + 1) / totalSlides) * 100) + '%';
+  prevBtn.disabled = currentSlide === 0;
+  nextBtn.style.display = currentSlide === totalSlides - 1 ? "none" : "inline-flex";
+}
+
+function updateLevel() {
+  const lvEl = document.getElementById('levelDisplay');
+  let level = "مبتدئ";
+  if (userScore >= 300) level = "محلل استراتيجيات";
+  if (userScore >= 600) level = "خبير نظم تربوية";
+  lvEl.innerText = level;
+}
+
+function showToast(msg) {
+  toastMsg.innerText = msg;
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 3000);
+}
+
+function fireConfetti(el) {
+  const rect = el.getBoundingClientRect();
+  const x = (rect.left + rect.width / 2) / window.innerWidth;
+  const y = (rect.top + rect.height / 2) / window.innerHeight;
+  confetti({ particleCount: 40, spread: 50, origin: { x, y }, colors: ['#059669', '#f59e0b', '#ffffff'] });
+}
+
+function fireHugeConfetti() {
+  var duration = 4 * 1000;
+  var end = Date.now() + duration;
+  (function frame() {
+    confetti({ particleCount: 7, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#059669', '#f59e0b'] });
+    confetti({ particleCount: 7, angle: 120, spread: 60, origin: { x: 1 }, colors: ['#059669', '#f59e0b'] });
+    if (Date.now() < end) requestAnimationFrame(frame);
+  }());
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>

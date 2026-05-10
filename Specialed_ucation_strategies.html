@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>التربية الخاصة - الدورة الكاملة المتقدمة</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+/* ==========================================================================
+   CSS System & Variables - "Emerald Luxury" Theme
+   ========================================================================== */
+:root {
+  --c-primary: #059669; /* Emerald 600 */
+  --c-primary-light: #d1fae5; /* Emerald 100 */
+  --c-primary-dark: #047857; /* Emerald 700 */
+  
+  --c-accent: #f59e0b; /* Amber 500 */
+  --c-accent-light: #fef3c7; /* Amber 100 */
+  
+  --c-bg: #f8fafc; /* Slate 50 */
+  --c-surface: #ffffff;
+  
+  --c-text-main: #1e293b; /* Slate 800 */
+  --c-text-muted: #64748b; /* Slate 500 */
+  
+  --c-danger: #ef4444;
+  --c-danger-light: #fee2e2;
+  --c-success: #10b981;
+  --c-border: #e2e8f0;
+
+  --font-main: 'Cairo', sans-serif;
+  --font-story: 'Tajawal', sans-serif;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 15px rgba(5, 150, 105, 0.3);
+
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-full: 9999px;
+
+  /* Transitions */
+  --t-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --t-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--c-bg);
+  color: var(--c-text-main);
+  line-height: 1.8;
+  overflow-x: hidden;
+  /* Premium subtle pattern */
+  background-image: radial-gradient(var(--c-primary-light) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+h1 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 900; color: var(--c-primary-dark); margin-bottom: 20px; }
+h2 { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; color: var(--c-primary); margin-bottom: 15px; }
+p { font-size: clamp(1rem, 2.5vw, 1.15rem); color: var(--c-text-main); margin-bottom: 15px; }
+strong { color: var(--c-primary-dark); font-weight: 800; }
+
+/* ==========================================================================
+   Layout & Navigation
+   ========================================================================== */
+#progress-container {
+  position: fixed; top: 0; left: 0; right: 0; height: 6px; background: var(--c-border); z-index: 1001;
+}
+#progress-bar {
+  height: 100%; width: 0%; background: linear-gradient(90deg, var(--c-accent), var(--c-primary)); transition: width var(--t-base); box-shadow: var(--shadow-glow);
+}
+
+header {
+  position: fixed; top: 6px; left: 0; right: 0; height: 65px;
+  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(10px, 3vw, 30px); border-bottom: 1px solid var(--c-border); z-index: 1000;
+  box-shadow: var(--shadow-sm);
+}
+
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--c-primary-dark); font-size: clamp(1rem, 3vw, 1.2rem); }
+.stats { display: flex; align-items: center; gap: 10px; }
+.badge { background: var(--c-bg); border: 1px solid var(--c-border); padding: 5px 12px; border-radius: var(--r-full); font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; box-shadow: var(--shadow-sm); }
+.badge i { color: var(--c-accent); }
+
+main { padding: 90px 15px 120px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+
+.slide { display: none; width: 100%; max-width: 900px; animation: fadeUp var(--t-base) forwards; }
+.slide.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+footer {
+  position: fixed; bottom: 0; left: 0; right: 0; padding: 15px clamp(10px, 3vw, 30px);
+  background: rgba(255, 255, 255, 0.98); border-top: 1px solid var(--c-border);
+  display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
+}
+
+/* ==========================================================================
+   UI Components (Cards, Visuals, Activities)
+   ========================================================================== */
+.card {
+  background: var(--c-surface); border-radius: var(--r-lg); padding: clamp(20px, 4vw, 35px);
+  box-shadow: var(--shadow-md); border: 1px solid rgba(5, 150, 105, 0.1); margin-bottom: 25px;
+}
+
+.tag {
+  display: inline-block; padding: 5px 15px; background: var(--c-primary-light);
+  color: var(--c-primary-dark); border-radius: var(--r-full); font-size: 0.8rem;
+  font-weight: 800; margin-bottom: 15px;
+}
+
+/* Story Box */
+.story-box {
+  background: linear-gradient(to left, var(--c-bg), var(--c-surface)); border-right: 4px solid var(--c-accent);
+  padding: 20px; border-radius: var(--r-md); margin-bottom: 20px; display: flex; gap: 15px; align-items: flex-start;
+}
+.story-box i { font-size: 2rem; color: var(--c-accent); margin-top: 5px; }
+.story-box p { font-family: var(--font-story); font-size: 1.1rem; color: var(--c-text-main); margin: 0; font-style: italic; }
+
+/* Visual Box */
+.visual-box {
+  background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: var(--r-md);
+  padding: 25px; margin: 20px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px;
+}
+.v-icon { font-size: clamp(3rem, 6vw, 4rem); color: var(--c-primary); }
+.v-caption { font-size: 0.95rem; font-weight: 700; color: var(--c-text-muted); text-align: center; }
+.v-flex { display: flex; align-items: center; justify-content: center; gap: clamp(10px, 4vw, 30px); flex-wrap: wrap; width: 100%;}
+.v-item { display: flex; flex-direction: column; align-items: center; text-align: center; background: white; padding: 15px; border-radius: var(--r-sm); box-shadow: var(--shadow-sm); flex: 1; min-width: 100px;}
+.v-item i { font-size: 2rem; margin-bottom: 10px; color: var(--c-primary-dark); }
+
+/* Activity Box */
+.activity-box {
+  background: linear-gradient(135deg, var(--c-surface), #fefce8); border: 1px solid var(--c-accent);
+  border-radius: var(--r-lg); padding: 25px; position: relative; overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(245, 158, 11, 0.05);
+}
+.act-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: #b45309; font-weight: 900; font-size: 1.1rem; }
+.act-options { display: grid; gap: 12px; margin-top: 15px; }
+.act-btn {
+  background: var(--c-surface); border: 2px solid var(--c-border); padding: 15px;
+  border-radius: var(--r-md); cursor: pointer; font-family: var(--font-main); font-size: 1rem;
+  font-weight: 600; text-align: right; transition: all var(--t-base); color: var(--c-text-main);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.act-btn:hover:not(:disabled) { border-color: var(--c-primary); transform: translateX(-5px); background: var(--c-primary-light); }
+.act-btn.correct { background: var(--c-success-light); border-color: var(--c-success); color: #065f46; }
+.act-btn.correct::after { content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900; }
+.act-btn.wrong { background: var(--c-danger-light); border-color: var(--c-danger); color: #991b1b; }
+.act-btn.wrong::after { content: '\f057'; font-family: 'Font Awesome 6 Free'; font-weight: 900; }
+.act-btn:disabled { cursor: default; }
+
+.feedback-msg { margin-top: 15px; padding: 15px; border-radius: var(--r-sm); font-weight: 700; display: none; animation: fadeUp 0.3s; }
+
+/* Buttons */
+.btn {
+  padding: 12px clamp(15px, 4vw, 30px); border-radius: var(--r-full); border: none; font-weight: 800;
+  cursor: pointer; font-family: var(--font-main); transition: all var(--t-base); font-size: clamp(0.9rem, 2.5vw, 1rem);
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-primary { background: var(--c-primary); color: white; box-shadow: var(--shadow-md); }
+.btn-primary:hover:not(:disabled) { background: var(--c-primary-dark); transform: translateY(-2px); }
+.btn-outline { background: var(--c-surface); color: var(--c-text-muted); border: 1px solid var(--c-border); }
+.btn-outline:hover:not(:disabled) { background: var(--c-bg); color: var(--c-text-main); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* Overlays */
+.toast {
+  position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(50px);
+  background: var(--c-text-main); color: white; padding: 12px 25px; border-radius: var(--r-full);
+  display: flex; align-items: center; gap: 10px; font-weight: 700; box-shadow: var(--shadow-lg);
+  z-index: 1000; opacity: 0; transition: all var(--t-bounce); white-space: nowrap; font-size: 0.9rem;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+.pulse-anim { animation: customPulse 1.5s infinite; }
+@keyframes customPulse { 0% { box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.5); } 70% { box-shadow: 0 0 0 10px rgba(5, 150, 105, 0); } 100% { box-shadow: 0 0 0 0 rgba(5, 150, 105, 0); } }
+
+/* Mobile Optimizations */
+@media (max-width: 600px) {
+  .act-btn { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .v-flex { flex-direction: column; }
+  .story-box { flex-direction: column; align-items: center; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress-container"><div id="progress-bar"></div></div>
+
+<header>
+  <div class="brand"><i class="fa-solid fa-graduation-cap"></i> أكاديمية التربية الخاصة</div>
+  <div class="stats">
+    <div class="badge"><i class="fa-solid fa-star"></i> <span id="scoreDisplay">0</span></div>
+    <div class="badge" style="color: var(--c-primary); border-color: var(--c-primary);"><i class="fa-solid fa-award"></i> <span id="levelDisplay">مبتدئ</span></div>
+  </div>
+</header>
+
+<div class="toast" id="toast"><i class="fa-solid fa-check-circle" style="color: var(--c-success);"></i> <span id="toastMsg"></span></div>
+
+<main id="main-container">
+  <!-- Slides will be injected here by JS -->
+</main>
+
+<footer>
+  <button class="btn btn-outline" id="btn-prev" onclick="move(-1)"><i class="fa-solid fa-arrow-right"></i> السابق</button>
+  <div style="font-weight: 800; color: var(--c-primary); font-size: 0.9rem;" id="counter">1 / 51</div>
+  <button class="btn btn-primary" id="btn-next" onclick="move(1)">التالي <i class="fa-solid fa-arrow-left"></i></button>
+</footer>
+
+<script>
+/* ==========================================================================
+   DATA GENERATOR: EXACTLY 51 SLIDES (100% NO ABBREVIATION)
+   ========================================================================== */
+const SLIDE_DATA = [
+  // 1. Hook / Intro
+  {
+    tag: "الافتتاحية", title: "مرحباً بك في عالم التربية الخاصة",
+    story: "تخيل أنك ترتدي نظارة طبية لا تناسب مقاس نظرك أبداً، وكل من حولك يطلب منك قراءة لوحة صغيرة بعيدة. كيف سيكون شعورك؟ الإحباط؟ العجز؟... هكذا يشعر الطفل ذو الاحتياجات الخاصة في نظام تعليمي لا يراعي قدراته. هنا يبدأ دورنا.",
+    content: "تُعرف التربية الخاصة بأنها مجموعة من النشاطات والبرامج التربوية التي تختص بتقديم الرعاية والعناية الخاصة لفئة معينة من الأشخاص غير الطبيعيين.",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-users"></i>التعليم العادي (قالب واحد)</div><div style="font-size:2rem;color:#cbd5e1"><i class="fa-solid fa-arrow-left"></i></div><div class="v-item" style="border:2px solid var(--c-primary)"><i class="fa-solid fa-user-shield" style="color:var(--c-primary)"></i>التربية الخاصة (رعاية مصممة)</div></div>`,
+    quiz: { q: "التربية الخاصة تقتصر فقط على الجانب الأكاديمي والتدريس في الفصول.", opts: ["نعم، هي مناهج تعليمية فقط", "لا، تشمل الرعاية والعناية الشاملة والنشاطات التربوية"], ans: 1, fb: "ممتاز! هي منظومة رعاية متكاملة وليست تدريساً فقط." }
+  },
+  // 2. Goals
+  {
+    tag: "الأهداف", title: "تحفيز القدرات الكامنة",
+    story: "البذرة لا تنمو في تربة جافة. نحن لا نغير البذرة، بل نهيئ لها التربة والماء لتزهر.",
+    content: "الهدف من هذه البرامج هو تحفيز القدرات العقلية والجسدية التي يمتلكونها لأكبر حد ممكن، ومساعدتهم على تحقيق ذاتهم وتكيفهم على أكمل وجه مع البيئة المحيطة بهم.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-seedling"></i></div><div class="v-caption">توفير البيئة لتفجير أقصى طاقات الفرد</div>`,
+    quiz: { q: "التركيز في التربية الخاصة يكون على:", opts: ["تحفيز القدرات المتاحة وتنميتها", "علاج العجز وتجاهل المهارات الأخرى"], ans: 0, fb: "صحيح! نحن نركز على ما يستطيع فعله لنحفزه." }
+  },
+  // 3. Condition
+  {
+    tag: "شروط الالتحاق", title: "من يحتاج التربية الخاصة؟",
+    story: "الطريق السريع مصمم للسيارات، لكنه خطر على الدراجات. الدراجة تحتاج لمسار خاص ليس لضعفها، بل لاختلاف طبيعتها.",
+    content: "تُعنى برامج التربية الخاصة بذوي الاحتياجات الخاصة اهتماماً خاصاً، إذ تبدأ بتعليمهم ضمن برامج التعليم الخاصة المراعية لظروف الإعاقة، ويخضع لهذه البرامج الأفراد غير القادرين على الانخراط في برامج التعليم العادية.",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-ban" style="color:var(--c-danger)"></i>صعوبة الانخراط في التعليم العادي</div><div class="v-item"><i class="fa-solid fa-check-circle" style="color:var(--c-success)"></i>الالتحاق ببرامج تراعي ظروف الإعاقة</div></div>`,
+    quiz: { q: "التربية الخاصة تقدم لمن:", opts: ["يرغبون في دراسة إضافية للترفيه", "غير القادرين على الانخراط في التعليم العادي"], ans: 1, fb: "دقيق جداً! هي صممت لمن تعيقهم ظروفهم عن النظام العام." }
+  },
+  // 4. Organization
+  {
+    tag: "التعريف الشامل", title: "تنظيم حياة الفرد",
+    story: "تخيل أن تعيش في غابة عشوائية، التربية الخاصة تقوم بتمهيد الطرق وترتيب الأشجار لتستطيع المشي بأمان.",
+    content: "يمكن تعريف التربية الخاصة بأنها الخدمات التي تسعى إلى تنظيم حياة الأفراد غير العاديين ومحاولة أقلمتها مع الظروف المناسبة حتى يكون إنساناً ينمو نمواً سليماً.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-sitemap"></i></div><div class="v-caption">هندسة وتنظيم بيئة الطفل للنمو السليم</div>`,
+    quiz: { q: "كلمة 'تنظيم حياة الأفراد' تعني:", opts: ["الترتيب المكاني لغرفته فقط", "أقلمة حياته مع ظروف مناسبة لنموه السليم"], ans: 1, fb: "أحسنت! التنظيم هنا يعني إعادة هيكلة البيئة والتكيف." }
+  },
+  // 5. Elements
+  {
+    tag: "المكونات", title: "المثلث الذهبي للتربية الخاصة",
+    story: "لصنع كعكة ممتازة، تحتاج: وصفة دقيقة (منهج)، خباز ماهر (تدريس)، ومطبخ مجهز (ظروف تعليمية).",
+    content: "وتشمل التربية الخاصة الجمع ما بين (المنهج) و (التدريس) و (الظروف التعليمية) الضرورية من أجل تلبية احتياجات الفرد التربوية الخاصة بطريقة مناسبة وفعالة.",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-book-open"></i>المنهج</div><div class="v-item"><i class="fa-solid fa-chalkboard-user"></i>التدريس</div><div class="v-item"><i class="fa-solid fa-school"></i>الظروف التعليمية</div></div>`,
+    quiz: { q: "أي عنصر يمثل 'المكان والتجهيزات' في هذا المثلث؟", opts: ["الظروف التعليمية", "المنهج"], ans: 0, fb: "ممتاز! الظروف البيئية والمكانية هي الضلع الثالث." }
+  },
+  // 6. Flexibility
+  {
+    tag: "المرونة", title: "مدى وعمق الاحتياجات",
+    story: "بعض المرضى يحتاجون لدواء واحد، وبعضهم لعملية جراحية وإقامة بالمستشفى. الدعم يقاس بحجم الاحتياج.",
+    content: "وقد تشكل هذه الاحتياجات المنهج كله أو جزءاً منه، كما قد يتم إشباعها بطريقة فردية أو بربطها مع أشياء أخرى، وقد تشكل كل الحياة الدراسية للفرد أو جزءاً منها.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-sliders"></i></div><div class="v-caption">المرونة التامة (دعم جزئي أو كلي، فردي أو مدمج)</div>`,
+    quiz: { q: "هل التربية الخاصة تتدخل في كل حياة الفرد الدراسية دائماً؟", opts: ["نعم، بشكل إجباري ومطلق", "لا، قد تشكل كل حياته أو جزءاً منها حسب حاجته"], ans: 1, fb: "رائع! المرونة هي جوهر التربية الخاصة." }
+  },
+  // 7. Principle 1
+  {
+    tag: "مبادئ التربية الخاصة (1/11)", title: "البيئة القريبة من العادية",
+    story: "لا تضع طائراً في قفص ذهبي وتقول له طر. ضعه في حديقة آمنة تشبه الغابة.",
+    content: "وجوب توفير بيئة تعليمية للأفراد من ذوي الاحتياجات الخاصة قريبةً من البيئة العادية.",
+    visual: `<div class="v-flex"><div class="v-item" style="opacity:0.5"><i class="fa-solid fa-box"></i>عزل تام</div><div style="font-size:2rem;color:var(--c-success)"><i class="fa-solid fa-times"></i></div><div class="v-item" style="border:2px solid var(--c-primary)"><i class="fa-solid fa-people-arrows"></i>بيئة قريبة للعادية</div></div>`,
+    quiz: { q: "الهدف من البيئة القريبة للعادية هو:", opts: ["منع العزلة الاجتماعية وتسهيل الدمج", "توفير النفقات المادية"], ans: 0, fb: "صحيح! البيئة الطبيعية تدعم النمو الاجتماعي." }
+  },
+  // 8. Principle 2
+  {
+    tag: "مبادئ التربية الخاصة (2/11)", title: "البرامج التربوية الفردية",
+    story: "الطبيب لا يصرف نفس روشتة الدواء لكل المرضى في العيادة. وكذلك المعلم في التربية الخاصة.",
+    content: "وجوب تضمّن البيئة التربوية التعليمية عدداً من البرامج التربوية الفردية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-file-signature"></i></div><div class="v-caption">خطة مفصلة خصيصاً لكل طفل بناءً على قدراته (IEP)</div>`,
+    quiz: { q: "البرنامج التربوي الفردي يعني:", opts: ["تدريس الطفل في غرفة وحده تماماً", "تصميم خطة تعليمية تناسب احتياجات الفرد تحديداً"], ans: 1, fb: "بالضبط! الفردية تعني تخصيص الهدف والمنهج وليس العزل المكاني." }
+  },
+  // 9. Principle 3
+  {
+    tag: "مبادئ التربية الخاصة (3/11)", title: "الكشف عن المستوى الحالي",
+    story: "لا يمكنك رسم مسار رحلة على الخريطة (GPS) إذا لم تحدد نقطة انطلاقك الحالية (Current Location)!",
+    content: "الكشف عن المستوى الحالي للطفل من حيث الأداء.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-location-crosshairs"></i></div><div class="v-caption">تحديد نقطة البداية (Baseline) قبل بناء أي خطة</div>`,
+    quiz: { q: "متى يتم تحديد المستوى الحالي للطفل؟", opts: ["في نهاية السنة الدراسية", "قبل بناء وتطبيق أي خطة تعليمية"], ans: 1, fb: "نعم! هي الخطوة الاستباقية لتحديد نقطة الصفر." }
+  },
+  // 10. Principle 4
+  {
+    tag: "مبادئ التربية الخاصة (4/11)", title: "الأهداف طويلة الأمد",
+    story: "الهدف طويل الأمد كقمة الجبل التي تريد الوصول إليها بنهاية العام.",
+    content: "رسم أهداف ذات أمد طويل العمل على تحقيقها.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-mountain-sun"></i></div><div class="v-caption">الرؤية المستقبلية الكبرى لتطور الفرد</div>`,
+    quiz: { q: "الأهداف طويلة الأمد تعبر عن:", opts: ["المهام اليومية", "الغايات الكبرى التي نسعى لتحقيقها على المدى البعيد"], ans: 1, fb: "ممتاز! هي البوصلة التي توجه جهودنا." }
+  },
+  // 11. Principle 5
+  {
+    tag: "مبادئ التربية الخاصة (5/11)", title: "الأهداف قصيرة المدى",
+    story: "لا يمكنك القفز لقمة الجبل بخطوة واحدة، تحتاج إلى درجات سُلم صغيرة ومحسوبة. هذه هي الأهداف القصيرة.",
+    content: "التركيز على الأهداف ذات المدى القصير.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-stairs"></i></div><div class="v-caption">تجزئة الهدف الكبير إلى خطوات صغيرة قابلة للتحقيق والقياس</div>`,
+    quiz: { q: "ما العلاقة بين الأهداف القصيرة والطويلة؟", opts: ["لا علاقة بينهما", "الأهداف القصيرة هي الخطوات التي تؤدي لتحقيق الهدف الطويل"], ans: 1, fb: "تفكير سليم! الأهداف القصيرة تضمن تدرج النجاح." }
+  },
+  // 12. Principle 6
+  {
+    tag: "مبادئ التربية الخاصة (6/11)", title: "معايير الأداء الناجح",
+    story: "كيف يعرف العداء أنه أنهى السباق؟ بوجود خط نهاية واضح مقاس بالثواني.",
+    content: "وضع معايير للأداء الناجح.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-bullseye"></i></div><div class="v-caption">مقاييس واضحة لنحكم بأن الطفل أتقن المهارة</div>`,
+    quiz: { q: "وضع المعايير يساعد المعلم على:", opts: ["إنهاء الحصة مبكراً", "التقييم الدقيق والحكم بنجاح الخطة من عدمه"], ans: 1, fb: "بالضبط! المعيار هو المسطرة التي نقيس بها النجاح." }
+  },
+  // 13. Principle 7
+  {
+    tag: "مبادئ التربية الخاصة (7/11)", title: "الخُطط والمواد المستخدمة",
+    story: "النجار لا يستطيع بناء طاولة بمجرد الأهداف، يحتاج إلى خشب ومسامير وأدوات واضحة قبل البدء.",
+    content: "وضع خُطط لما سيتمّ استخدامه من مواد وأدوات لازمة للبرامج.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-toolbox"></i></div><div class="v-caption">تحديد وتحضير الوسائل التعليمية المساعدة سلفاً</div>`,
+    quiz: { q: "أهمية تحديد المواد والأدوات سلفاً هي:", opts: ["ضمان توفرها لدعم وتسهيل عملية التعلم", "تزيين الفصل فقط"], ans: 0, fb: "صحيح! الوسائل هي عصب التعليم في التربية الخاصة." }
+  },
+  // 14. Principle 8
+  {
+    tag: "مبادئ التربية الخاصة (8/11)", title: "التقييد الزمني",
+    story: "المهام التي ليس لها موعد نهائي، لا تُنجز أبداً (قانون باركنسون).",
+    content: "تقييد البرنامج بتاريخ بداية ونهاية.",
+    visual: `<div class="v-icon"><i class="fa-regular fa-calendar-check"></i></div><div class="v-caption">إطار زمني محدد لضمان الالتزام وإعادة التقييم</div>`,
+    quiz: { q: "تحديد تاريخ نهاية للبرنامج يفيد في:", opts: ["طرد الطالب بعد هذا التاريخ", "إيقاف البرنامج لتقييم النتائج وتحديث الأهداف"], ans: 1, fb: "أحسنت! الإطار الزمني يجبرنا على التقييم الدوري." }
+  },
+  // 15. Principle 9
+  {
+    tag: "مبادئ التربية الخاصة (9/11)", title: "الفريق المتخصص",
+    story: "اليد الواحدة لا تصفق، بناء إنسان متكامل يحتاج لطبيب، ومعلم، وأخصائي نفسي، كفريق أوركسترا متناغم.",
+    content: "إيجاد فريق متخصص وكفء لتقديم الخدمات المخصصة للأطفال من ذوي الاحتياجات الخاصة.",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-user-doctor"></i>طبيب</div><div class="v-item"><i class="fa-solid fa-brain"></i>نفسي</div><div class="v-item"><i class="fa-solid fa-chalkboard-user"></i>معلم</div></div>`,
+    quiz: { q: "تقديم الخدمات في التربية الخاصة هو جهد:", opts: ["فردي يقوم به معلم التربية الخاصة فقط", "جماعي تشاركي من فريق متخصص متعدد التخصصات"], ans: 1, fb: "إجابة رائعة! التكامل بين التخصصات حتمي." }
+  },
+  // 16. Principle 10
+  {
+    tag: "مبادئ التربية الخاصة (10/11)", title: "دور الأسرة المحوري",
+    story: "إذا بنى المعلم قصراً في الصباح، وتجاهلته الأسرة في المساء، سينهار القصر. الأسرة هي الشريك الأساسي.",
+    content: "توعية الأسرة بدورها تجاه طفلها نظراً لدورها المهم في بناء شخصيته.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-house-chimney-user"></i></div><div class="v-caption">الشراكة المنزلية تضمن استمرارية التعليم والتعديل السلوكي</div>`,
+    quiz: { q: "دور الأسرة في التربية الخاصة هو دور:", opts: ["ثانوي ولا داعي لتدخلهم", "محوري وأساسي في بناء شخصية الطفل وتكامل الخطة"], ans: 1, fb: "بالتأكيد! الأسرة هي بيئة التعميم والتطبيق." }
+  },
+  // 17. Principle 11
+  {
+    tag: "مبادئ التربية الخاصة (11/11)", title: "التدخل المبكر",
+    story: "إطفاء شرارة نار أسهل ألف مرة من إطفاء حريق غابة. كلما بكرنا، كان العلاج أسهل وأنجع.",
+    content: "الدعوة لتربية الطفل غير العادي تربيةً خاصّةً حتى يكون لها أثراً إيجابياً عليه بشكل أكبر، فكلما كان العمر مبكراً كان ذلك أفضل.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-seedling"></i></div><div class="v-caption">التدخل المبكر يضاعف فرص التحسن والاندماج</div>`,
+    quiz: { q: "قاعدة التدخل في التربية الخاصة:", opts: ["الانتظار حتى يكبر الطفل وتتضح المشكلة كلياً", "كلما كان العمر مبكراً كان الأثر الإيجابي أكبر"], ans: 1, fb: "قاعدة ذهبية! التدخل المبكر يصنع المعجزات." }
+  },
+  // 18. Term 1
+  {
+    tag: "مصطلحات (1/4)", title: "مفهوم: الضعف (Impairment)",
+    story: "تخيل أن عدسة كاميرتك مخدوشة. الكاميرا تعمل، واللوحة الإلكترونية سليمة، لكن 'العضو' المستقبل للضوء فيه خدش. هذا هو الضعف.",
+    content: "الضعف: وهو مصطلح يشير إلى محدودية الوظيفة وبخاصة الحالات التي تعزى للعجز الحسي كالضعف السمعي أو الضعف البصري.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-eye-low-vision"></i></div><div class="v-caption">قصور في عضو الحاسة أو محدودية وظيفته</div>`,
+    quiz: { q: "الضعف السمعي يندرج علمياً تحت مصطلح:", opts: ["الضعف (Impairment)", "الإعاقة (Handicap)"], ans: 0, fb: "صحيح! لأنه محدودية في وظيفة حسية." }
+  },
+  // 19. Term 2
+  {
+    tag: "مصطلحات (2/4)", title: "مفهوم: العجز (Disability)",
+    story: "الآن، لأن عدسة الكاميرا مخدوشة (ضعف)، أنت غير قادر على التقاط صورة واضحة (عجز). العجز هو النتيجة المباشرة للضعف.",
+    content: "العجز: وهو مصطلح يشير إلى تشوه جسدي أو مشكلة خطيرة في التعلم أو التكيف الاجتماعي نتيجة وجود الضعف، وغالباً ما يستخدم هذا المصطلح للإشارة إلى الصعوبات الجسمية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-wheelchair"></i></div><div class="v-caption">فقدان القدرة على أداء نشاط معين (حركي غالباً) كنتيجة للضعف</div>`,
+    quiz: { q: "العجز يمثل النتيجة المترتبة على:", opts: ["وجود الضعف (القصور العضوي)", "البيئة المدرسية"], ans: 0, fb: "دقيق جداً! العجز هو الأثر الفسيولوجي/الحركي للضعف." }
+  },
+  // 20. Term 3
+  {
+    tag: "مصطلحات (3/4)", title: "مفهوم: الإعاقة (Handicap)",
+    story: "بسبب أنك لا تستطيع التقاط صورة واضحة (عجز)، رسبت في مسابقة التصوير وتأثر دورك كطالب (إعاقة). الإعاقة هي التفاعل مع المجتمع والبيئة.",
+    content: "الإعاقة: ولذلك يستخدم هذا المصطلح عادة للإشارة إلى المشكلات في التعلم أو السلوك الاجتماعي. فنقول: اضطراب لغوي أو اضطراب تعلمي.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-person-circle-exclamation"></i></div><div class="v-caption">أثر العجز على أداء الفرد لدوره الاجتماعي والتعليمي المعتاد</div>`,
+    quiz: { q: "عندما يؤثر الخلل على دور الفرد في 'التعلم' أو 'السلوك الاجتماعي'، يسمى:", opts: ["الضعف الحسي", "الإعاقة (Handicap)"], ans: 1, fb: "رائع! الإعاقة هي الأثر الاجتماعي والتعليمي الأشمل." }
+  },
+  // 21. Term 4
+  {
+    tag: "مصطلحات (4/4)", title: "مفهوم: الحالات الخاصة (Exceptionalities)",
+    story: "المصعد مصمم للأوزان المتوسطة. من وزنه قليل جداً يحتاج رعاية، ومن وزنه ثقيل جداً يحتاج رعاية. كلاهما 'حالة خاصة' انحرفت عن المتوسط.",
+    content: "الحالات الخاصة: وهذا المصطلح أوسع من المصطلحات السابقة، حيث إنه لا يقتصر على الذين ينخفض أداؤهم، وإنما يشتمل على الذين يكون أداؤهم أحسن من أداء الآخرين (أي الموهوبين والمتفوقين).",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-arrow-down" style="color:var(--c-danger)"></i>منخفضي الأداء</div><div class="v-item"><i class="fa-solid fa-arrow-up" style="color:var(--c-primary)"></i>الموهوبين (مرتفعي الأداء)</div></div>`,
+    quiz: { q: "هل يشمل مصطلح 'الحالات الخاصة' فئة الموهوبين والمتفوقين عقلياً؟", opts: ["لا، يقتصر على ذوي الإعاقة فقط", "نعم، يشمل كل من ينحرف عن المتوسط صعوداً أو نزولاً"], ans: 1, fb: "أحسنت! هذا ما يجعل التربية الخاصة شاملة." }
+  },
+  // 22. Comparison 1
+  {
+    tag: "مقارنات (1/5)", title: "التربية العامة vs التربية الخاصة: الفئة المستهدفة",
+    story: "التربية العامة كالطبيب الممارس العام يعالج الزكام للجميع. التربية الخاصة كالطبيب الجراح المتخصص في حالة نادرة ومحددة.",
+    content: "تهتم التربية العامة بالأفراد العاديين، في حين تهتم التربية الخاصة بفئات الأفراد غير العاديين.",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-users"></i>التربية العامة (العاديين)</div><div class="v-item" style="border-color:var(--c-accent)"><i class="fa-solid fa-user-astronaut" style="color:var(--c-accent)"></i>التربية الخاصة (غير العاديين)</div></div>`,
+    quiz: { q: "الفئة المستهدفة في التربية الخاصة هي:", opts: ["جميع طلاب المدرسة لتطويرهم", "فئات الأفراد غير العاديين ذوي الاحتياجات"], ans: 1, fb: "بالضبط! الاستهداف هو أول فروق التخصص." }
+  },
+  // 23. Comparison 2
+  {
+    tag: "مقارنات (2/5)", title: "المنهاج المدرسي",
+    story: "التربية العامة كالمطعم الذي يقدم 'وجبة اليوم' الموحدة للجميع. التربية الخاصة كالمطعم الذي يطبخ وجبة مخصصة حسب حساسية كل زبون (A la carte).",
+    content: "تتبنى التربية العامة منهاجاً موحداً في كل فئة عمرية أو صف دراسي، في حين لا تتبنى التربية الخاصة منهاجاً موحداً، وإنما يُشتق من الأهداف التربوية الفردية فيما بعد لكل فئة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-book-open-reader"></i></div><div class="v-caption">منهاج موحد (عامة) مقابل منهاج مشتق من أهداف الفرد (خاصة)</div>`,
+    quiz: { q: "المنهاج في التربية الخاصة يتميز بأنه:", opts: ["منهاج موحد من الوزارة يطبق حرفياً", "يشتق من الأهداف التربوية الفردية لكل طفل أو فئة"], ans: 1, fb: "ممتاز! المرونة في المنهاج سر النجاح." }
+  },
+  // 24. Comparison 3
+  {
+    tag: "مقارنات (3/5)", title: "طرائق التدريس",
+    story: "التربية العامة كخطبة الجمعة للمئات. التربية الخاصة كجلسة الإرشاد الفردية وجهاً لوجه.",
+    content: "تتبنى التربية العامة طرائق تدريسية جمعية في تدريس الأطفال العاديين في المراحل التعليمية، في حين تتبنى التربية الخاصة طريقة التعليم الفردي في تدريس الأطفال الغير عاديين في الغالب.",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-chalkboard-user"></i>تعليم جمعي (عامة)</div><div class="v-item"><i class="fa-solid fa-person-chalkboard"></i>تعليم فردي (خاصة)</div></div>`,
+    quiz: { q: "تعتمد التربية الخاصة 'في الغالب' على طريقة التدريس:", opts: ["الجمعية والجماعية", "التعليم الفردي"], ans: 1, fb: "صحيح! الفروق الفردية تفرض التعليم الفردي." }
+  },
+  // 25. Comparison 4
+  {
+    tag: "مقارنات (4/5)", title: "الوسائل التعليمية",
+    story: "التربية العامة تستخدم 'سبورة وقلم' تناسب المبصرين. التربية الخاصة تستخدم 'طابعة برايل' لتناسب المكفوفين.",
+    content: "تتبنى التربية العامة وسائل تعليمية عامة في المواد المختلفة، في حين تتبنى التربية الخاصة وسائل تعليمية خاصة بفئات الأفراد غير العاديين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-cubes"></i></div><div class="v-caption">وسائل مخصصة للقصور الحسي أو الحركي أو العقلي</div>`,
+    quiz: { q: "نظام برايل للمكفوفين ولغة الإشارة للصم هي أمثلة على:", opts: ["الوسائل التعليمية الخاصة", "المنهج الموحد للتربية العامة"], ans: 0, fb: "نعم! هي أدوات مخصصة لتخطي الإعاقة." }
+  },
+  // 26. Comparison 5
+  {
+    tag: "مقارنات (5/5)", title: "الهدف المشترك الوحيد",
+    story: "رغم اختلاف الطرق والوسائل والمناهج، كلاهما قبطان سفينة هدفه إيصال راكبه لبر الأمان والتطور.",
+    content: "مهما يكن من فروق، فإن كلاً منهما يهتم بالفرد، وتشترك التربية العامة والخاصة في هدف مساعدة الفرد (أياً كان) على تنمية قدراته واستعداداته إلى أقصى حد ممكن والعمل على تحقيق أهدافه، وذلك من خلال توفير الظروف المناسبة لتحقيقها.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-handshake"></i></div><div class="v-caption">الغاية واحدة: تنمية الإنسان لأقصى طاقاته</div>`,
+    quiz: { q: "بماذا تشترك التربية العامة والخاصة رغم فروقهما الكثيرة؟", opts: ["بتوحيد المناهج والكتب", "بهدف تنمية قدرات الفرد لمساعدته على تحقيق ذاته"], ans: 1, fb: "إجابة ملهمة! الإنسان هو الغاية دائماً." }
+  },
+  // 27. Concept: Disability Definition
+  {
+    tag: "الإعاقة والمجتمع", title: "مفهوم الإعاقة الشامل",
+    story: "الإعاقة ليست مجرد قطع في سلك، بل هي تأثير هذا القطع على إضاءة الغرفة بالكامل ونشاط من بداخلها.",
+    content: "تُعرف الإعاقة في أنها إصابة عضوية أو عقلية تحد أو تقلل في شكل كبير وملحوظ من مهارته الحياتية وأنشطة الفرد. وهذا الفرد يكون في حاجة إلى أجهزة تساعده على التنقل أو اعتماد الفرد على أشخاص آخرين من أجل القيام في نشاطاته الفردية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-crutch"></i></div><div class="v-caption">إصابة تؤدي لاعتمادية أو قصور في الأنشطة الحياتية المعتادة</div>`,
+    quiz: { q: "من مؤشرات الإعاقة وفقاً للتعريف:", opts: ["أنها مجرد ألم مؤقت يزول بالراحة", "أنها تحد بشكل ملحوظ من أنشطة الفرد وتزيد اعتماديته"], ans: 1, fb: "دقيق جداً! الأثر على نشاطات الحياة هو المحك." }
+  },
+  // 28. Concept: Prevalence
+  {
+    tag: "الإعاقة والمجتمع", title: "تفاوت نسبة الانتشار",
+    story: "تخيل دولتين: إحداهما توفر لقاحات وتغذية ممتازة للأمهات، والأخرى تعاني حروباً وسوء تغذية. هل ستتساوى نسب الإعاقة؟ قطعا لا.",
+    content: "وتختلف نسب انتشار الإعاقة من مجتمع إلى آخر، وكذلك وفق ظروف ذلك المجتمع وأوضاعه الاقتصادية والاجتماعية والصحية. على سبيل المثال، يمكن أن تكون نسبة الإعاقة في إحدى المجتمعات تساوي 20% وفي مجتمع آخر 4%.",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-chart-pie"></i>مجتمع صحي (4%)</div><div class="v-item" style="border-color:var(--c-danger)"><i class="fa-solid fa-chart-bar" style="color:var(--c-danger)"></i>مجتمع ذو أزمات (20%)</div></div>`,
+    quiz: { q: "تفاوت نسبة الإعاقة بين المجتمعات يعود أساساً إلى:", opts: ["الظروف والوعي الصحي والاجتماعي والاقتصادي", "اختلاف طرق الإحصاء والعد فقط"], ans: 0, fb: "صحيح! البيئة تصنع الفارق الكبير." }
+  },
+  // 29. Adaptation: Intro
+  {
+    tag: "علم النفس السلوكي", title: "التكيف مع الإعاقة (مقدمة)",
+    story: "الصدمة كالعاصفة القوية. الشجرة الصلبة جداً (الاستسلام) تنكسر، والشجرة التي تختبئ وراء جدار وهمي (إنكار) تظل هشة، بينما التي تنحني مع الريح وتنمو مجدداً (تعايش) هي التي تنجو.",
+    content: "يواجه الشخص ذوي الاحتياجات الخاصة عدد هائل من الضغوط والتي تتطلب من ذلك الشخص القيام في استجابات التكيف مع حالة الإعاقة والتي يعاني منها والعيش في سلام في المجتمع. وهنا يمكن التمييز بين ثلاثة أنماط من الاستجابات إلى حالة الإعاقة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-wind"></i></div><div class="v-caption">الضغوط الهائلة تتطلب أنماط استجابة مختلفة للتكيف</div>`,
+    quiz: { q: "التكيف مع الإعاقة يتطلب:", opts: ["الهروب من المجتمع والانعزال", "القيام باستجابات وتفاعلات للعيش بسلام في المجتمع"], ans: 1, fb: "أحسنت! هو عملية ديناميكية للمواجهة." }
+  },
+  // 30. Adaptation: Surrender
+  {
+    tag: "أنماط الاستجابة (1/3)", title: "النمط الأول: الاستسلام",
+    story: "المريض الذي يُقال له أنك مصاب بالسكري، فيجلس في سريره يرفض الدواء والحركة، معلناً نهاية حياته. هذا هو الاستسلام.",
+    content: "النمط الأول: الاستسلام والخضوع للإعاقة والفشل في التكيف مع الإعاقة.",
+    visual: `<div class="v-icon"><i class="fa-regular fa-flag"></i></div><div class="v-caption">رفع الراية البيضاء وفقدان الدافعية للتحسن</div>`,
+    quiz: { q: "الخضوع للإعاقة وعدم المحاولة يعتبر نوعاً من أنواع:", opts: ["التكيف السلبي (الفشل في التكيف)", "التعايش الواقعي"], ans: 0, fb: "للأسف هو نمط مدمر يجب تغييره." }
+  },
+  // 31. Adaptation: Defense
+  {
+    tag: "أنماط الاستجابة (2/3)", title: "النمط الثاني: وسائل الدفاع الأولية",
+    story: "الأم التي ترفض تصديق أن ابنها أصم، وتصر على أنه 'عنيد ولا يريد الرد عليها'. هذا إنكار يحميها نفسياً مؤقتاً لكنه يؤخر العلاج.",
+    content: "النمط الثاني: استخدام وسائل الدفاع الأولية (مثل الإنكار، الإسقاط، التبرير).",
+    visual: `<div class="v-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="v-caption">آليات دفاع نفسي لا شعورية لحماية الذات من صدمة الواقع</div>`,
+    quiz: { q: "وسائل الدفاع الأولية تعتبر:", opts: ["آليات وحيلاً نفسية مؤقتة لمواجهة الصدمة", "النمط المثالي للشفاء التام"], ans: 0, fb: "صحيح! هي مسكن ألم مؤقت وليست حلاً جذرياً." }
+  },
+  // 32. Adaptation: Coping
+  {
+    tag: "أنماط الاستجابة (3/3)", title: "النمط الثالث: التعايش والتعامل",
+    story: "البطل الأولمبي الذي فقد ساقه، فقام بتركيب طرف صناعي وتدرب ليعود للسباق. لقد اعترف بواقعه وتعامل معه بشجاعة.",
+    content: "النمط الثالث: استجابات التعامل أو التعايش مع الإعاقة (وهو النمط السوي والمطلوب الذي يستدعي قبول الواقع والعمل على تحسينه).",
+    visual: `<div class="v-icon"><i class="fa-solid fa-hand-holding-heart"></i></div><div class="v-caption">القبول الإيجابي والمواجهة الفعالة (الهدف المنشود)</div>`,
+    quiz: { q: "النمط السوي والمطلوب في مواجهة الإعاقة هو:", opts: ["الاستسلام للقدر وإيقاف المحاولات", "استجابات التعامل والتعايش الإيجابي مع الحالة"], ans: 1, fb: "إجابة مثالية! هذا هو هدفنا الأسمى في التربية الخاصة." }
+  },
+  // 33. Goal: Preventive
+  {
+    tag: "أهداف التربية الخاصة (1/6)", title: "1. الهدف الوقائي",
+    story: "تنظيف الأرضية من بقعة زيت قبل أن ينزلق شخص وتكسر قدمه. الوقاية دائماً أرخص وأرحم من العلاج.",
+    content: "الهدف الوقائي: يشمل نشر الوعي في كافة أشكاله المختلفة، من أجل الحد من أسباب الإعاقة، وهي تلك الإجراءات المنظمة والمقصودة والتي تهدف إلى عدم حدوث، أو التقليل من حدوث الخلل، أو التقصير المؤدي إلى العجز في الوظائف الفسيولوجية أو السلوكية عند الفرد.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-umbrella"></i></div><div class="v-caption">نشر الوعي والإجراءات الاستباقية لمنع الإعاقة أصلاً</div>`,
+    quiz: { q: "تطعيم الأمهات الحوامل وحملات التوعية تندرج تحت الهدف:", opts: ["العلاجي لإصلاح التلف", "الوقائي لمنع حدوث الخلل"], ans: 1, fb: "ممتاز! الإجراء الاستباقي هو قمة الحكمة." }
+  },
+  // 34. Goal: Remedial
+  {
+    tag: "أهداف التربية الخاصة (2/6)", title: "2. الهدف العلاجي",
+    story: "حدث الحادث وانكسر الزجاج. الآن دورنا هو تجميع القطع ولصقها لتعود النافذة لصد الهواء قدر الإمكان.",
+    content: "الهدف العلاجي: هذا الهدف يكون بعد وقوع الإعاقة، ويكون من أجل التخفيف أو التقليل من الآثار التي سببتها الإعاقة. وهنا يتم تأهيل الفرد ذوي الاحتياجات الخاصة واستغلال إمكانياته وقدراته إلى أقصى قدر ممكن، حيث تهدف الجهود العلاجية إلى التدريب لإزالة القصور أو العجز في المجالات الوظيفية، أو خفضه والتخفيف من حدته.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-kit-medical"></i></div><div class="v-caption">التدخل بعد وقوع الإعاقة للحد من أضرارها وتحسين الأداء</div>`,
+    quiz: { q: "الجهود العلاجية تهدف إلى:", opts: ["الوقاية من حدوث الإعاقة قبل ولادة الطفل", "استغلال الإمكانيات والتدريب لخفض أثر العجز الواقع فعلاً"], ans: 1, fb: "بالتأكيد! العلاج يبدأ بعد وقوع المشكلة." }
+  },
+  // 35. Goal: Compensation
+  {
+    tag: "أهداف التربية الخاصة (تابع)", title: "التعويض كجزء من العلاج",
+    story: "انقطع وتر الكمان، فاستخدم العازف وتراً مختلفاً ليكمل المقطوعة. التعويض هو خلق طريق بديل حين يُغلق الطريق الأساسي.",
+    content: "أو التعويض عنه ببناء بديل لهذا القصور أو ذلك العجز حالما يتعذر إزالته أو تصحيحه كاستخدام نظام 'لويس برايل' في الكتابة والقراءة بالنسبة لذوى الاحتياجات الخاصة البصرية، ولغة الإشارة مع الصم.",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-braille"></i>للمكفوفين (لمس بديل للنظر)</div><div class="v-item"><i class="fa-solid fa-hands-asl-interpreting"></i>للصم (إشارة بديلة للسمع)</div></div>`,
+    quiz: { q: "استخدام لغة الإشارة للصم يمثل إجراءً:", opts: ["وقائياً لمنع الصمم", "تعويضياً (بناء بديل) ضمن الهدف العلاجي"], ans: 1, fb: "صحيح! نحن نعوض الحاسة المفقودة بوسيلة بديلة." }
+  },
+  // 36. Goal: Vocational
+  {
+    tag: "أهداف التربية الخاصة (3/6)", title: "3. تحقيق الكفاءة المهنية",
+    story: "لا تعطِني سمكة، بل علمني كيف أصطاد، واصنع لي صنارة تناسب يدي المصابة. الكرامة تبدأ من العمل.",
+    content: "يشمل مساعدة الطفل ذوي الاحتياجات الخاصة على التكيف النفسي والاجتماعي. ويقوم الإرشاد النفسي والتربوي هنا في دور فاعل في تأهيل ذوي الاحتياجات. وتتعلق الكفاءة بإكسابهم بعضاً من المهارات اليدوية والخبرات المهنية، والتي تمكنهم من ممارسة الحرف التي تتلاءم مع إعاقاتهم وميولهم.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-user-tie"></i></div><div class="v-caption">اكتساب مهارات الاستقلال المادي وممارسة حرفة تتواءم مع القدرات</div>`,
+    quiz: { q: "الغاية من تحقيق الكفاءة المهنية هي:", opts: ["شغل أوقات فراغ المعاقين فقط", "تمكينهم من ممارسة حرفة تتناسب معهم لتحقيق الاستقلال المادي والاجتماعي"], ans: 1, fb: "إجابة ملهمة! العمل هو قمة التكيف والكرامة." }
+  },
+  // 37. Vocational Reqs (A)
+  {
+    tag: "متطلبات التأهيل المهني", title: "أ) توفير قاعدة البيانات",
+    story: "التاجر الناجح يدرس احتياجات السوق أولاً قبل صناعة بضاعته. كذلك نحن، لا ندربهم على مهن غير مطلوبة.",
+    content: "وتتطلب عملية الإعداد والتأهيل المهني عدة أمور من أهمها: (أ) توفير قاعدة من البيانات عن المهن والأعمال وفرص التشغيل المتاحة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-database"></i></div><div class="v-caption">معرفة احتياجات سوق العمل وفرص التوظيف المفتوحة</div>`,
+    quiz: { q: "الخطوة الأولى المنطقية في التأهيل المهني هي:", opts: ["تدريب المعاق عشوائياً على أي مهنة", "معرفة المهن وفرص التشغيل المتاحة في السوق"], ans: 1, fb: "بالضبط! ربط التدريب بواقع السوق يضمن التوظيف." }
+  },
+  // 38. Vocational Reqs (B)
+  {
+    tag: "متطلبات التأهيل المهني", title: "ب) اختبارات وتحليل الفرد",
+    story: "اختيار تخصص جامعي دون معرفة ميولك يشبه شراء حذاء دون معرفة مقاس قدمك.",
+    content: "(ب) توفير مقاييس مقننة في تحليل الفرد مهنياً للكشف عن استعداداته المهنية (الجسمية، الحركية كالتآزر، والمهارات العقلية). وتستخدم مقاييس القوة، المرونة، الميول المهنية، وسمات الشخصية اللازمة للتكيف المهني.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-clipboard-user"></i></div><div class="v-caption">تقييم دقيق لقدرات الفرد (عقلياً، حركياً، وميولاً)</div>`,
+    quiz: { q: "اختبارات الميول والتآزر البصري الحركي تستخدم لـ:", opts: ["تحليل الفرد ومعرفة استعداداته المهنية", "تحديد راتب الفرد في المستقبل"], ans: 0, fb: "أحسنت! التقييم الدقيق يمنع التوجيه الخاطئ." }
+  },
+  // 39. Vocational Reqs (C)
+  {
+    tag: "متطلبات التأهيل المهني", title: "ج) تحليل المهن والأعمال",
+    story: "ماذا يتطلب عمل النجار حقاً؟ قوة ذراع؟ دقة نظر؟ تحليل المهنة هو تشريحها إلى متطلباتها الدقيقة.",
+    content: "(ج) تحليل المهن والأعمال وما يتطلبه كل منها من العامل من مهارات وظيفية، استعدادات مهنية، ومجالات، علاوة على الظروف البيئية للعمل وصعوباته. ثم مقابلة النتائج التي يسفر عنها تحليل العمل بنتائج تحليل الفرد.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div><div class="v-caption">تشريح المهنة ومطابقتها مع مقاسات وقدرات الفرد المعاق</div>`,
+    quiz: { q: "عملية 'تحليل المهنة' تعني:", opts: ["معرفة المهارات والاستعدادات والظروف التي تتطلبها هذه المهنة بالتحديد", "حساب أرباح الشركات والمصانع"], ans: 0, fb: "نعم! تفكيك المهنة لنرى إن كانت تناسب حالة الفرد." }
+  },
+  // 40. Vocational Reqs (D)
+  {
+    tag: "متطلبات التأهيل المهني", title: "د) المواءمة (تكييف بيئة العمل)",
+    story: "تطويع الجبل ليناسب المتسلق، بدلاً من إجبار المتسلق الضعيف على كسر الصخور بيده. المواءمة هي الإبداع في دمج المعاق.",
+    content: "(د) تحقيق المواءمة اللازمة بين متطلبات العمل من ناحية، واستعدادات الفرد من ناحية أخرى. وغالباً ما تستلزم هذه المواءمة تكييف العمل أو الأجهزة، كاالاستعانة بأدوات مساعدة تعوض القدرات الناقصة (الأجهزة التعويضية).",
+    visual: `<div class="v-icon"><i class="fa-solid fa-puzzle-piece"></i></div><div class="v-caption">تعديل الآلات وطبيعة المهنة لتتطابق مع قدرات الفرد</div>`,
+    quiz: { q: "توفير فأرة حاسوب خاصة (معدلة) لشخص معاق حركياً يعتبر:", opts: ["تكييفاً وتحقيقاً للمواءمة المهنية", "هدراً ماليّاً لا يفيد"], ans: 0, fb: "أنت رائع! هذا هو جوهر المواءمة والتكييف (Accommodation)." }
+  },
+  // 41. Vocational Reqs (Extras)
+  {
+    tag: "متطلبات التأهيل المهني", title: "بيئة ميسرة وإرشاد مستمر",
+    story: "المصعد والمنحدر الخرساني ليسا رفاهية، هما شريان الحياة لموظف يستخدم كرسياً متحركاً.",
+    content: "إدخال تجهيزات في مكان العمل لتسهيل التحرك (كالأبواب الواسعة، المصاعد، أرضيات مانعة للانزلاق). (هـ) برامج للتوجيه والإرشاد المهني. (و) عناصر بشرية مؤهلة وتجهيزات لعمليات التدريب.",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-wheelchair"></i>تيسير مكاني</div><div class="v-item"><i class="fa-solid fa-headset"></i>إرشاد وتوجيه</div></div>`,
+    quiz: { q: "الأرضيات المانعة للانزلاق والأبواب الواسعة تندرج تحت:", opts: ["برامج الإرشاد النفسي", "إدخال تعديلات مكانية وبيئية ميسرة للعمل"], ans: 1, fb: "صحيح! البيئة المادية (Physical Environment) المعيقة يجب تعديلها." }
+  },
+  // 42. Vocational Reqs (Final steps)
+  {
+    tag: "متطلبات التأهيل المهني", title: "التقييم والمتابعة بعد التشغيل",
+    story: "لا نترك الطائر الصغير فور تعليمه الطيران، بل نراقبه من بعيد حتى نطمئن لنجاحه في السماء.",
+    content: "(ز) أساليب تقييم لبرامج التدريب للوقوف على مدى فاعليتها في إكساب المهارات. (ط) آليات للمتابعة المستمرة بعد تشغيله لتذليل العقبات التي قد تعترض توافقه المهني، وإعادة تأهيله عند اللزوم.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-binoculars"></i></div><div class="v-caption">المتابعة بعد التوظيف تحل مشكلات بيئة العمل الطارئة وتضمن الاستقرار</div>`,
+    quiz: { q: "دورنا في التأهيل المهني ينتهي بمجرد حصول المعاق على وظيفة.", opts: ["خطأ، المتابعة المستمرة وتذليل العقبات جزء أساسي من العملية", "صح، التوظيف هو الخطوة النهائية وتنتهي مسؤوليتنا عندها"], ans: 0, fb: "ممتاز! المتابعة البعدية (Follow-up) تثبت النجاح." }
+  },
+  // 43. Goal: Personal Competence
+  {
+    tag: "أهداف التربية الخاصة (4/6)", title: "4. تحقيق الكفاءة الشخصية",
+    story: "تخيل أن تضطر لطلب مساعدة لترتدي حذائك أو تأكل طعامك كل يوم.. قمة الإنجاز هي 'أن تملك زمام أمورك الشخصية الأساسية'.",
+    content: "يتمثل في مساعدة الفرد ذي الاحتياج الخاص على الحياة الاستقلالية والاكتفاء والتوجيه الذاتي، وتمكينه من تصريف شؤونه الشخصية والعناية الذاتية بدرجة تتناسب مع ظروفه بحيث لا يكون عالة على الآخرين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-person-rays"></i></div><div class="v-caption">الاستقلال في وظائف الحياة اليومية (مأكل، مشرب، نظافة)</div>`,
+    quiz: { q: "الاعتماد على النفس في المأكل والملبس يندرج تحت الكفاءة:", opts: ["المهنية والاقتصادية", "الشخصية (الاستقلالية والعناية الذاتية)"], ans: 1, fb: "دقيق جداً! هذا هو جوهر العناية بالذات." }
+  },
+  // 44. Personal Comp Details
+  {
+    tag: "الكفاءة الشخصية", title: "كيف تختلف باختلاف الإعاقة؟",
+    story: "تدريب الأعمى على تناول الطعام يختلف تماماً عن تدريب ذي الإعاقة الفكرية. الهدف واحد، لكن الطريقة والمحور يختلفان بشدة.",
+    content: "وقد تختلف مواطن التأكيد باختلاف نوع الانحراف. (للمتخلفين عقلياً): العناية بالنفس والنظافة الشخصية. (للمكفوفين): إتقان مهارات الحركة والتوجه والتنقل ليصبح أكثر استقلالاً. (للصم): التواصل غير اللفظي وتصويب عيوب النطق واستثمار بقايا السمع.",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-brain"></i>العقلي (عناية بالنفس)</div><div class="v-item"><i class="fa-solid fa-blind"></i>البصري (توجه وحركة)</div><div class="v-item"><i class="fa-solid fa-ear-deaf"></i>السمعي (تواصل ونطق)</div></div>`,
+    quiz: { q: "تدريب الطالب على مهارات 'التوجه والتنقل بعصا' يعتبر كفاءة شخصية صممت لـ:", opts: ["ذوي الإعاقة السمعية", "ذوي الإعاقة البصرية (المكفوفين)"], ans: 1, fb: "أحسنت! التوجه والتنقل (O&M) مهارة مصيرية للمكفوفين." }
+  },
+  // 45. Goal: Social Competence
+  {
+    tag: "أهداف التربية الخاصة (5/6)", title: "5. تحقيق الكفاءة الاجتماعية",
+    story: "الإنسان كائن اجتماعي يذبل في العزلة. لا يكفي أن يأكل ويعمل وحده، يجب أن يبتسم في وجه جاره، ويحترمه جاره.",
+    content: "وتعني غرس وتنمية الخصائص والأنماط السلوكية اللازمة للتفاعل وبناء العلاقات الاجتماعية المثمرة مع الآخرين، وتحقيق التوافق الاجتماعي، وإكسابهم المهارات التي تمكنهم من الحركة النشطة والاختلاط في المجتمع. مما يقلل من شعورهم بالقصور والعجز والدونية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-handshake-angle"></i></div><div class="v-caption">الاندماج، التفاعل الإيجابي، والقبول المتبادل مع المجتمع</div>`,
+    quiz: { q: "تحقيق الكفاءة الاجتماعية يؤدي إلى:", opts: ["تقليل شعورهم بالقصور والعجز واكتسابهم الاحترام والتقدير", "زيادة عزلتهم في المدارس الخاصة لراحتهم"], ans: 0, fb: "صحيح! المجتمع المتفهم يمحو أثر الإعاقة النفسي." }
+  },
+  // 46. Goal: Educational
+  {
+    tag: "أهداف التربية الخاصة (6/6)", title: "6. الهدف التعليمي",
+    story: "التربية الخاصة هي تعليم في المقام الأول، تعليم مصمم خصيصاً (Tailor-made) لاختراق الحواجز.",
+    content: "الهدف التعليمي يتمثل في إعداد البرامج التعليمية الخاصة إلى كل فئة من فئات التربية الخاصة، وذلك من خلال الاعتماد على خطة تربوية فردية، واختيار طرق التدريس المناسبة، وتطوير الوسائل التعليمية التكنولوجية المساندة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-laptop-code"></i></div><div class="v-caption">مناهج مسندة بتقنيات وطرق تدريس تناسب فردية كل طالب</div>`,
+    quiz: { q: "الاعتماد على 'خطة تربوية فردية' وتطوير التكنولوجيا يعتبر ضمن الهدف:", opts: ["التعليمي", "الوقائي (الطبي)"], ans: 0, fb: "بالتأكيد! الخطة الفردية هي قلب الهدف التعليمي." }
+  },
+  // 47. Summary of Goals
+  {
+    tag: "خلاصة الأهداف", title: "ترابط الأهداف وتكاملها",
+    story: "تخيل بناء عمارة: لا يمكنك وضع النوافذ (اجتماعي) قبل وضع الأساس (وقائي/علاجي) والجدران (شخصي/تعليمي).",
+    content: "الوقاية تمنع، والعلاج يرمم، والتعليم يزود بالمعرفة، والتأهيل المهني يعطي الاستقلالية المادية، والكفاءة الشخصية تضمن الاستقلال الذاتي، والاجتماعية تضمن الاندماج. إنها شبكة أهداف متكاملة لا غنى عن أي منها للوصول بالإنسان ذي الإعاقة لأقصى إمكاناته.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-cubes-stacked"></i></div><div class="v-caption">منظومة أهداف متراكبة ترفع جودة حياة الفرد المعاق</div>`,
+    quiz: { q: "أهداف التربية الخاصة تعمل بشكل:", opts: ["منعزل، كل هدف لا علاقة له بالآخر", "متكامل ومترابط كشبكة تدعم نمو الفرد من كافة الجوانب"], ans: 1, fb: "رائع! النظرة الشمولية (Holistic) هي أساس التربية." }
+  },
+  // 48. Special Education Team 1
+  {
+    tag: "آلية العمل", title: "فريق العمل المتكامل (الجزء الطبي/النفسي)",
+    story: "المعلم وحده لا يستطيع تقييم السمع، والطبيب وحده لا يستطيع تدريس الحروف. التناغم بين التخصصات حتمي.",
+    content: "يشارك في عملية التربية الخاصة فريق متكامل من الإخصائيين ذوي الاهتمامات المهنية المختلفة لتخطيط الخدمات ومتابعتها. ويشمل هذا الفريق: أطباء (للتشخيص والعلاج الطبي)، أخصائيون نفسيون واجتماعيون (لدراسة الحالة النفسية وتعديل السلوك وتوعية الأسرة).",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-stethoscope"></i>الجانب الطبي</div><div class="v-item"><i class="fa-solid fa-user-group"></i>الجانب النفسي/الاجتماعي</div></div>`,
+    quiz: { q: "دراسة الحالة النفسية وتوعية أسرة الطفل المعاق هي مهمة أساسية لـ:", opts: ["مهندس المدرسة", "الأخصائي النفسي والاجتماعي"], ans: 1, fb: "ممتاز! هم حلقة الوصل لفهم نفسية وبيئة الطفل." }
+  },
+  // 49. Special Education Team 2
+  {
+    tag: "آلية العمل", title: "فريق العمل المتكامل (الجزء التربوي/التأهيلي)",
+    story: "كما يحتاج الرياضي إلى مدرب لياقة ومعالج طبيعي ومدرب تكتيك، يحتاج الطفل المتأخر لمعلم نطق ومعلم أكاديمي وأخصائي تأهيل.",
+    content: "ويستكمل الفريق أعضاءه بـ: أخصائيون في التربية الخاصة (معلمون وفنيون لتصميم الخطط التعليمية)، أخصائيون علاجيون لعيوب النطق والكلام، أخصائيون سمعيون وبصريون (للقياسات وتجهيز المعينات)، وأخصائيون في التأهيل المهني (للدمج الوظيفي).",
+    visual: `<div class="v-flex"><div class="v-item"><i class="fa-solid fa-ear-listen"></i>أخصائي قياس حسي</div><div class="v-item"><i class="fa-solid fa-comment-medical"></i>علاج النطق</div><div class="v-item"><i class="fa-solid fa-briefcase"></i>تأهيل مهني</div></div>`,
+    quiz: { q: "من يضع الخطة الأكاديمية ويدرس المنهج المعدل للطفل؟", opts: ["معلم وأخصائي التربية الخاصة", "الطبيب الباطني"], ans: 0, fb: "نعم! المعلم هو الخبير الأكاديمي داخل الفصل." }
+  },
+  // 50. Final Concept: Early Intervention (Recap)
+  {
+    tag: "المحطة الأخيرة قبل النهاية", title: "تذكر: الوقت هو الدماغ",
+    story: "نبتة معوجة صغيرة يسهل تقويمها بعصا خفيفة. شجرة ضخمة معوجة تحتاج لجهد جبار وربما لا تستقيم أبداً.",
+    content: "يجب ألا ننسى أن التدخل المبكر (Early Intervention) هو الحاضنة الأساسية التي تضمن فعالية كل هذه البرامج والأهداف والفريق. استكشاف قدرات الفرد وميوله في خطة متدرجة منذ (الطفولة المبكرة) هو مفتاح النجاح الذي يقلل تكلفة الجهد والمال في المستقبل.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-child-reaching"></i></div><div class="v-caption">التدخل المبكر: الاستثمار الأذكى في التربية الخاصة</div>`,
+    quiz: { q: "التدخل المبكر يسهم في:", opts: ["زيادة التكلفة والجهد دون فائدة تذكر", "تقويم المسار مبكراً وتقليل الجهد التراكمي وتسهيل تحقيق الأهداف"], ans: 1, fb: "إجابة مثالية! أنت الآن تستوعب فلسفة التربية الخاصة بعمق." }
+  },
+  // 51. GRAND FINALE
+  {
+    tag: "الخاتمة الاحتفالية", title: "مبروك! لقد أتممت الدورة بامتياز",
+    story: "لقد بدأت معنا بتخيل صعوبات الإعاقة، ومررت بجميع المبادئ، وفهمت المصطلحات الشائكة، واستكشفت أساليب التكيف المهني والنفسي. أنت الآن خبير متمكن في أسس ومفاهيم التربية الخاصة.",
+    content: "لقد أتممت بنجاح رحلتك عبر جميع محتويات الفصل الأول للتربية الخاصة (المفهوم، المبادئ، المصطلحات، المقارنات، الأهداف العلاجية والمهنية، والتأهيل).",
+    visual: `<div style="text-align:center; font-size:4rem; margin:20px 0; color:var(--c-accent)"><i class="fa-solid fa-trophy"></i></div><div class="v-caption" style="font-size:1.2rem; color:var(--c-primary-dark)">نقاطك النهائية: <span id="finalScoreText" style="font-size:1.8rem; font-weight:900">0</span> نقطة</div>`,
+    quiz: null // No quiz on the final slide
+  }
+];
+
+// --- Variables & Elements ---
+let currentSlide = 0;
+let userScore = 0;
+const totalSlides = SLIDE_DATA.length;
+const mainContainer = document.getElementById('main-container');
+const prevBtn = document.getElementById('btn-prev');
+const nextBtn = document.getElementById('btn-next');
+const counter = document.getElementById('counter');
+const progBar = document.getElementById('progress-bar');
+const scoreDisplay = document.getElementById('scoreDisplay');
+const toastEl = document.getElementById('toast');
+const toastMsg = document.getElementById('toastMsg');
+
+// --- Init App ---
+function initApp() {
+  SLIDE_DATA.forEach((slide, index) => {
+    const slideDiv = document.createElement('div');
+    slideDiv.className = 'slide card' + (index === 0 ? ' active' : '');
+    slideDiv.id = 'slide-' + index;
+
+    let html = `<div class="tag">${slide.tag}</div>`;
+    html += `<h2>${slide.title}</h2>`;
+    
+    if(slide.story) {
+      html += `<div class="story-box"><i class="fa-solid fa-quote-right"></i><p>${slide.story}</p></div>`;
+    }
+    
+    if(slide.content) {
+      html += `<p style="font-weight: 600; text-align: justify; line-height: 1.9;">${slide.content}</p>`;
+    }
+    
+    if(slide.visual) {
+      html += `<div class="visual-box">${slide.visual}</div>`;
+    }
+
+    if(slide.quiz) {
+      html += `
+        <div class="activity-box" id="actBox-${index}" data-answered="false">
+          <div class="act-header"><i class="fa-solid fa-bolt"></i> تحدي التفكير السريع:</div>
+          <p style="font-weight: 700; color: var(--c-secondary); font-size: 1.1rem; margin-bottom:10px;">${slide.quiz.q}</p>
+          <div class="act-options">
+            <button class="act-btn" onclick="handleAct(${index}, this, 0, ${slide.quiz.ans}, '${slide.quiz.fb}')"><span>${slide.quiz.opts[0]}</span></button>
+            <button class="act-btn" onclick="handleAct(${index}, this, 1, ${slide.quiz.ans}, '${slide.quiz.fb}')"><span>${slide.quiz.opts[1]}</span></button>
+          </div>
+          <div class="feedback-msg" id="fb-${index}"></div>
+        </div>
+      `;
+    }
+
+    // Extra button for final slide to restart
+    if(index === totalSlides - 1) {
+       html += `<div style="text-align:center; margin-top:30px;"><button class="btn btn-primary" style="display:inline-flex; font-size:1.2rem;" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i> إعادة التجربة</button></div>`;
+    }
+
+    slideDiv.innerHTML = html;
+    mainContainer.appendChild(slideDiv);
+  });
+  updateUI();
+}
+
+// --- Interaction Logic ---
+function handleAct(slideIndex, btn, chosenIdx, correctIdx, fbText) {
+  const box = document.getElementById(`actBox-${slideIndex}`);
+  if (box.getAttribute('data-answered') === "true") return;
+  box.setAttribute('data-answered', "true");
+
+  const buttons = box.querySelectorAll('.act-btn');
+  const fbDiv = document.getElementById(`fb-${slideIndex}`);
+
+  // Disable buttons
+  buttons.forEach(b => b.disabled = true);
+
+  if (chosenIdx === correctIdx) {
+    btn.classList.add('correct');
+    fbDiv.innerHTML = `<i class="fa-solid fa-check"></i> ${fbText}`;
+    fbDiv.style.color = "#065f46";
+    fbDiv.style.backgroundColor = "var(--c-success-light)";
+    
+    // Gamification
+    userScore += 50;
+    scoreDisplay.innerText = userScore;
+    updateLevel();
+    showToast("إجابة رائعة! +50 نقطة");
+    fireConfetti(btn);
+  } else {
+    btn.classList.add('wrong');
+    fbDiv.innerHTML = `<i class="fa-solid fa-xmark"></i> ${fbText}`;
+    fbDiv.style.color = "#991b1b";
+    fbDiv.style.backgroundColor = "var(--c-danger-light)";
+    buttons[correctIdx].classList.add('correct'); // Show correct answer
+  }
+
+  fbDiv.style.display = "block";
+
+  // Pulse next button to encourage moving
+  document.getElementById('btn-next').classList.add('pulse-anim');
+  setTimeout(() => document.getElementById('btn-next').classList.remove('pulse-anim'), 2000);
+}
+
+// --- Navigation Logic ---
+function move(dir) {
+  const slides = document.querySelectorAll('.slide');
+  if (currentSlide + dir < 0 || currentSlide + dir >= totalSlides) return;
+
+  slides[currentSlide].classList.remove('active');
+  currentSlide += dir;
+  slides[currentSlide].classList.add('active');
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateUI();
+
+  // If final slide, update final score text & huge confetti
+  if (currentSlide === totalSlides - 1) {
+    const finalDisplay = document.getElementById('finalScoreText');
+    if(finalDisplay) finalDisplay.innerText = userScore;
+    fireHugeConfetti();
+  }
+}
+
+function updateUI() {
+  counter.innerText = `${currentSlide + 1} / ${totalSlides}`;
+  progBar.style.width = (((currentSlide + 1) / totalSlides) * 100) + '%';
+  
+  prevBtn.disabled = currentSlide === 0;
+  
+  if (currentSlide === totalSlides - 1) {
+    nextBtn.style.display = "none";
+  } else {
+    nextBtn.style.display = "inline-flex";
+  }
+}
+
+// --- Gamification System ---
+function updateLevel() {
+  const lvEl = document.getElementById('levelDisplay');
+  let level = "مبتدئ";
+  if (userScore >= 500) level = "متدرب";
+  if (userScore >= 1000) level = "باحث تربوي";
+  if (userScore >= 1500) level = "أخصائي";
+  if (userScore >= 2000) level = "خبير شامل";
+  
+  if(lvEl.innerText !== level) {
+      lvEl.innerText = level;
+      lvEl.parentElement.style.animation = "customPulse 1s";
+      setTimeout(()=> lvEl.parentElement.style.animation = "none", 1000);
+      showToast(`ترقية جديدة: ${level} 🌟`);
+  }
+}
+
+function showToast(msg) {
+  toastMsg.innerText = msg;
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 3000);
+}
+
+function fireConfetti(el) {
+  const rect = el.getBoundingClientRect();
+  const x = (rect.left + rect.width / 2) / window.innerWidth;
+  const y = (rect.top + rect.height / 2) / window.innerHeight;
+  confetti({ particleCount: 40, spread: 50, origin: { x, y }, colors: ['#059669', '#f59e0b', '#ffffff'] });
+}
+
+function fireHugeConfetti() {
+  var duration = 4 * 1000;
+  var end = Date.now() + duration;
+  (function frame() {
+    confetti({ particleCount: 7, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#059669', '#f59e0b', '#1e293b'] });
+    confetti({ particleCount: 7, angle: 120, spread: 60, origin: { x: 1 }, colors: ['#059669', '#f59e0b', '#1e293b'] });
+    if (Date.now() < end) requestAnimationFrame(frame);
+  }());
+}
+
+// Start
+window.onload = initApp;
+</script>
+</body>
+</html>

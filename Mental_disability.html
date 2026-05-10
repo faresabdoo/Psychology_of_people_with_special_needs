@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>الإعاقة العقلية - الدورة الكاملة المتقدمة</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+/* ==========================================================================
+   CSS System - Emerald Luxury Theme
+   ========================================================================== */
+:root {
+  --c-primary: #059669; 
+  --c-primary-light: #d1fae5; 
+  --c-primary-dark: #047857; 
+  --c-accent: #f59e0b; 
+  --c-bg: #f8fafc; 
+  --c-surface: #ffffff;
+  --c-text-main: #1e293b; 
+  --c-text-muted: #64748b; 
+  --c-danger: #ef4444;
+  --c-success: #10b981;
+  --c-border: #e2e8f0;
+  --font-main: 'Cairo', sans-serif;
+  --font-story: 'Tajawal', sans-serif;
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --r-lg: 20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--c-bg);
+  color: var(--c-text-main);
+  line-height: 1.8;
+  background-image: radial-gradient(var(--c-primary-light) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+#progress-container { position: fixed; top: 0; left: 0; right: 0; height: 6px; background: var(--c-border); z-index: 1001; }
+#progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--c-accent), var(--c-primary)); transition: 0.3s; }
+
+header {
+  position: fixed; top: 6px; left: 0; right: 0; height: 65px;
+  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; border-bottom: 1px solid var(--c-border); z-index: 1000;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--c-primary-dark); }
+.stats { display: flex; align-items: center; gap: 10px; }
+.badge { background: var(--c-bg); border: 1px solid var(--c-border); padding: 5px 12px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; }
+
+main { padding: 90px 15px 120px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+.slide { display: none; width: 100%; max-width: 900px; animation: fadeUp 0.4s forwards; }
+.slide.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.card { background: var(--c-surface); border-radius: var(--r-lg); padding: clamp(20px, 4vw, 35px); box-shadow: var(--shadow-md); border: 1px solid rgba(5, 150, 105, 0.1); margin-bottom: 25px; }
+.tag { display: inline-block; padding: 5px 15px; background: var(--c-primary-light); color: var(--c-primary-dark); border-radius: 50px; font-size: 0.8rem; font-weight: 800; margin-bottom: 15px; }
+
+.story-box { background: linear-gradient(to left, var(--c-bg), var(--c-surface)); border-right: 4px solid var(--c-accent); padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 15px; }
+.story-box i { font-size: 1.8rem; color: var(--c-accent); }
+.story-box p { font-family: var(--font-story); font-style: italic; margin: 0; }
+
+.visual-box { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 15px; padding: 25px; margin: 20px 0; text-align: center; }
+.v-icon { font-size: 3.5rem; color: var(--c-primary); margin-bottom: 10px; }
+
+.activity-box { background: linear-gradient(135deg, var(--c-surface), #fefce8); border: 1px solid var(--c-accent); border-radius: var(--r-lg); padding: 25px; }
+.act-btn {
+  width: 100%; background: var(--c-surface); border: 2px solid var(--c-border); padding: 15px;
+  border-radius: 12px; cursor: pointer; font-family: var(--font-main); font-size: 1rem;
+  font-weight: 600; text-align: right; margin-bottom: 10px; transition: all 0.2s;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.act-btn:hover:not(:disabled) { border-color: var(--c-primary); transform: translateX(-5px); }
+.act-btn.correct { background: #d1fae5; border-color: var(--c-success); color: #065f46; }
+.act-btn.wrong { background: #fee2e2; border-color: var(--c-danger); color: #991b1b; }
+
+footer {
+  position: fixed; bottom: 0; left: 0; right: 0; padding: 15px 30px;
+  background: white; border-top: 1px solid var(--c-border);
+  display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+}
+.btn { padding: 12px 25px; border-radius: 50px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; }
+.btn-primary { background: var(--c-primary); color: white; }
+.btn-outline { background: white; color: var(--c-text-muted); border: 1px solid var(--c-border); }
+
+.toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 20px; border-radius: 50px; z-index: 2000; display: none; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div id="progress-container"><div id="progress-bar"></div></div>
+
+<header>
+  <div class="brand"><i class="fa-solid fa-brain"></i> أكاديمية النمو الذهني</div>
+  <div class="stats">
+    <div class="badge"><i class="fa-solid fa-star"></i> <span id="scoreDisplay">0</span></div>
+    <div class="badge" style="color:var(--c-primary);"><i class="fa-solid fa-award"></i> <span id="levelDisplay">مبتدئ</span></div>
+  </div>
+</header>
+
+<div class="toast" id="toast"></div>
+
+<main id="main-container"></main>
+
+<footer>
+  <button class="btn btn-outline" id="btn-prev" onclick="move(-1)">السابق</button>
+  <div id="counter" style="font-weight:900; color:var(--c-primary);">1 / --</div>
+  <button class="btn btn-primary" id="btn-next" onclick="move(1)">التالي</button>
+</footer>
+
+<script>
+const SLIDE_DATA = [
+  {
+    tag: "مقدمة",
+    title: "رحلة في فهم العقل البشري",
+    story: "تخيل العقل كخريطة معقدة للطرق؛ في بعض الأحيان تكون بعض المسارات أقصر أو تحتاج لوقت أطول للعبور، لكن الرحلة لا تتوقف، بل تحتاج فقط لبوصلة مختلفة.",
+    content: "سنتعرف في هذه الوحدة على مفهوم التخلف الذهني، تصنيفاته حسب الشدة، معايير الكشف عنه، والخصائص السلوكية والنفسية للمصابين به من منظور تربوي ونفسي شامل.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-brain"></i></div><div style="font-weight:700">فهم الاضطرابات من منظور شمولي</div>`,
+    quiz: { q: "هل الإعاقة العقلية تقتصر فقط على انخفاض مستوى الذكاء (IQ)؟", opts: ["نعم، هي مجرد رقم في اختبار الذكاء", "لا، تشمل أيضاً قيوداً في التكيف الاجتماعي والعملي"], ans: 1, fb: "أحسنت! الإعاقة العقلية هي مزيج من انخفاض القدرة الذهنية وصعوبة التكيف مع متطلبات الحياة." }
+  },
+  {
+    tag: "التعريف",
+    title: "مفهوم التخلف الذهني",
+    story: "تخيل شخصاً يحاول العيش في مدينة غريبة دون معرفة لغتها أو خرائطها.. هذا النقص في 'الأدوات' هو ما يجعل التكيف مع البيئة تحدياً يومياً للأصم ذهنياً.",
+    content: "هو عبارة عن نقص في نسبة ذكاء الطفل مما يؤدي إلى عدم قدرته على التكيف مع نفسه والبيئة المحيطة به، وعدم قدرته على العناية بنفسه أو إنشاء علاقات اجتماعية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-chart-line-down"></i></div><div style="font-weight:700">انخفاض الذكاء = تحدي التكيف الاجتماعي</div>`,
+    quiz: { q: "ما هو السبب الرئيسي لصعوبة إنشاء علاقات اجتماعية لدى المتخلف ذهنياً؟", opts: ["النقص في نسبة الذكاء ومهارات التكيف", "الرغبة الإرادية في الابتعاد عن الناس"], ans: 0, fb: "صحيح، فالعقل يحتاج لمهارات معينة لفهم وقراءة الإشارات الاجتماعية." }
+  },
+  {
+    tag: "التعريف",
+    title: "التأخر الذهني الوظيفي",
+    story: "العمر الزمني يتقدم، لكن 'الساعة الوظيفية' تعمل بوتيرة مختلفة. كأن يكون الجسد في سن الثامنة عشر، بينما المهارات التكيفية لا تزال في مرحلة الطفولة.",
+    content: "هو العجز الموصوف بالقيود في سيرورة الوظيفة الذهنية والسلوك التكيفي، كما يعبر عنه في القدرات المفاهيمية والاجتماعية قبل سن 18 عاماً.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-scale-unbalanced"></i></div><div style="font-weight:700">أربعة أبعاد للحكم على التأخر الذهني</div>`,
+    quiz: { q: "لكي يُصنف العجز كـ 'تأخر ذهني'، يجب أن تظهر أعراضه قبل سن:", opts: ["سن الـ 25", "سن الـ 18"], ans: 1, fb: "ممتاز! لأن هذه الفترة هي فترة النمو الذهني الأساسية." }
+  },
+  {
+    tag: "التصنيف",
+    title: "موازين القياس: بينيه ووكسلر",
+    story: "المسطرة لا تقيس الوزن، والميزان لا يقيس الطول. لذا اخترنا 'بينيه ووكسلر' كأدق الأدوات لقياس المسافات داخل العقل البشري.",
+    content: "يتم تصنيف الإعاقة العقلية حسب درجة الصعوبة بناءً على اختبارات الذكاء الأكثر شيوعاً (بينيه ووكسلر) لتحديد مستوى الدعم المطلوب لكل حالة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-clipboard-check"></i></div><div style="font-weight:700">أدوات علمية لتحديد مستوى الشدة</div>`,
+    quiz: { q: "ما هي أشهر الاختبارات العالمية المستخدمة لتصنيف التخلف الذهني؟", opts: ["اختبارات بينيه ووكسلر", "اختبارات القوة البدنية"], ans: 0, fb: "أحسنت! هذه الاختبارات تقيس جوانب متعددة من الذكاء." }
+  },
+  {
+    tag: "التصنيف",
+    title: "1. التخلف البسيط (المستوى الأخف)",
+    story: "تخيل تلميذاً يحتاج فقط لوقت إضافي ومعلم صبور ليفهم الدرس. هو قريب جداً من الطبيعي، لكنه يحتاج لجسور تعليمية خاصة.",
+    content: "هو المستوى الأول والأكثر انتشاراً، وتتراوح فيه نسبة الذكاء ما بين 55 إلى 69 درجة. يمكن لهؤلاء الأفراد تعلم مهارات أكاديمية بسيطة.",
+    visual: `<div class="v-icon" style="color: #2ecc71;"><i class="fa-solid fa-circle-check"></i></div><div style="font-weight:700">IQ: 55 - 69 درجة</div>`,
+    quiz: { q: "نسبة ذكاء الفرد في فئة التخلف البسيط تقع بين:", opts: ["55 إلى 69 درجة", "20 إلى 34 درجة"], ans: 0, fb: "صحيح! هي الفئة الأقرب للحدود الطبيعية (70 درجة)." }
+  },
+  {
+    tag: "التصنيف",
+    title: "2. التخلف المتوسط",
+    story: "هنا تصبح المسافة أبعد قليلاً. الطفل يحتاج لتدريب مكثف على المهارات الحياتية، كأننا نعلمه المشي في طريق مليء بالمنعطفات.",
+    content: "يأتي في المرتبة الثانية من حيث الشدة، وتتراوح فيه نسبة الذكاء ما بين 35 إلى 54 درجة، ويتطلب دعماً تربوياً ومهنياً متخصصاً.",
+    visual: `<div class="v-icon" style="color: #f1c40f;"><i class="fa-solid fa-circle-exclamation"></i></div><div style="font-weight:700">IQ: 35 - 54 درجة</div>`,
+    quiz: { q: "ما هو مدى نسبة الذكاء في فئة التخلف المتوسط؟", opts: ["70 - 85 درجة", "35 - 54 درجة"], ans: 1, fb: "دقيق جداً! هذه الفئة تحتاج لبرامج تدريبية تركز على الاستقلال الذاتي." }
+  },
+  {
+    tag: "التصنيف",
+    title: "3. التخلف الشديد",
+    story: "تخيل أنك في بحر واسع وتحتاج دائماً لمن يمسك بيدك ليوجه القارب. القيود هنا واضحة جداً وتتطلب رعاية مستمرة وشاملة.",
+    content: "يتميز بقيود كبيرة جداً في الوظائف الذهنية والسلوك التكيفي، وتتراوح فيه نسبة الذكاء ما بين 20 إلى 34 درجة.",
+    visual: `<div class="v-icon" style="color: #e67e22;"><i class="fa-solid fa-triangle-exclamation"></i></div><div style="font-weight:700">IQ: 20 - 34 درجة</div>`,
+    quiz: { q: "إذا كانت نسبة ذكاء الطفل 25، فإنه يُصنف ضمن فئة التخلف:", opts: ["الشديد", "البسيط"], ans: 0, fb: "أحسنت! 25 تقع في النطاق ما بين 20 و34." }
+  },
+  {
+    tag: "التصنيف",
+    title: "4. التخلف الحاد (الأقصى)",
+    story: "هنا نصل إلى أدنى نقطة في سلم القدرات المقاسة. الطفل هنا كالشمعة التي تحتاج لحماية دائمة من الهواء لكي تظل مضاءة.",
+    content: "هو أقصى درجات الإعاقة العقلية، وتتراوح فيه نسبة الذكاء من 19 درجة فأقل. يعتمد الفرد هنا بشكل كامل تقريباً على الآخرين.",
+    visual: `<div class="v-icon" style="color: #c0392b;"><i class="fa-solid fa-circle-stop"></i></div><div style="font-weight:700">IQ: 19 فأقل</div>`,
+    quiz: { q: "ماذا نطلق على الفئة التي تقل نسبة ذكائها عن 20 درجة؟", opts: ["التخلف المتوسط", "التخلف الحاد"], ans: 1, fb: "صحيح، وهي الفئة التي تتطلب رعاية طبية وتربوية فائقة الكثافة." }
+  },
+  {
+    tag: "المعايير",
+    title: "معيار القدرات المعرفية",
+    story: "حل المشكلات كفك شفرة لغز؛ بالنسبة للمتأخر ذهنياً، الشفرة تبدو غير واضحة، والخطوات المنطقية تبدو كأنها مفقودة.",
+    content: "أول معيار للكشف هو نقص القدرات المعرفية العامة: الاستدلال، حل المشكلات، التخطيط، التفكير المجرد، والتعلم الأكاديمي وبالخبرة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-puzzle-piece"></i></div><div style="font-weight:700">تضرر العمليات العقلية العليا</div>`,
+    quiz: { q: "أي من هؤلاء يعتبر 'قدرة معرفية' تتأثر بالتأخر الذهني؟", opts: ["الاستدلال وحل المشكلات", "نمو الأظافر وسرعة المشي"], ans: 0, fb: "رائع! العمليات العقلية هي جوهر الإعاقة العقلية." }
+  },
+  {
+    tag: "المعايير",
+    title: "معيار الوظيفة التكيفية",
+    story: "المجتمع لديه 'قواعد غير مكتوبة'. المتأخر ذهنياً يجد صعوبة في قراءة هذه القواعد وتطبيقها لكي يعيش مستقلاً.",
+    content: "المعيار الثاني هو نقص في قدرة الفرد على الاستجابة لمتطلبات الاستقلالية والمسؤولية الاجتماعية حسب سنه وجماعته الثقافية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-people-arrows"></i></div><div style="font-weight:700">الاستجابة لتوقعات المجتمع والعمر</div>`,
+    quiz: { q: "الوظيفة التكيفية تركز بشكل أساسي على قدرة الفرد على:", opts: ["الاستقلالية والمسؤولية الاجتماعية", "حفظ القصائد الطويلة فقط"], ans: 0, fb: "أحسنت! هي القدرة على 'تدبير الأمور' في الحياة اليومية." }
+  },
+  {
+    tag: "القدرات",
+    title: "القدرات المفاهيمية (الأكاديمية)",
+    story: "تخيل الكلمات والنقود كرموز سحرية تفتح أبواب الحياة. بالنسبة لهم، هذه الرموز تبدو غامضة ويصعب استخدامها لفتح الأبواب.",
+    content: "تشمل مهارات اللغة، الكتابة، القراءة، مفهوم النقود، والاستقلالية الوظيفية في التعامل مع الرموز والمفاهيم خلال الفترة النمائية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-money-bill-transfer"></i></div><div style="font-weight:700">المهارات الرمزية اللازمة للاستقلال</div>`,
+    quiz: { q: "فهم 'قيمة المال' والقدرة على القراءة يندرج تحت أي قدرات؟", opts: ["القدرات المفاهيمية", "القدرات العضلية"], ans: 0, fb: "صحيح! لأنها تعتمد على تجريد المفاهيم وفهم معانيها." }
+  },
+  {
+    tag: "القدرات",
+    title: "القدرات الاجتماعية",
+    story: "أن تعرف متى تتحدث ومتى تصمت، وكيف تحمي نفسك من استغلال الآخرين.. هذه مهارات اجتماعية يفتقدها المتأخر ذهنياً.",
+    content: "تشمل نقصاً في العلاقات البينشخصية، تحمل المسؤولية، تقدير الذات، السذاجة (سهولة الاستغلال)، وتتبع التعليمات والقوانين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-user-shield"></i></div><div style="font-weight:700">تحديات حماية الذات وفهم الآخرين</div>`,
+    quiz: { q: "لماذا يُعتبر 'تقدير الذات' جزءاً من القدرات الاجتماعية؟", opts: ["لأنه ينمو من خلال التفاعل وتقييم الآخرين لنا", "لأنه لا يهم أحداً"], ans: 0, fb: "بالضبط! صورة الإنسان عن نفسه تتأثر بكيفية تعامل المجتمع معه." }
+  },
+  {
+    tag: "القدرات",
+    title: "القدرات العملية (الأساسية)",
+    story: "الأكل، النظافة، وارتداء الملابس.. مهارات نقوم بها تلقائياً، لكنها بالنسبة لهم تتطلب تدريباً شاقاً وصبراً طويلاً.",
+    content: "تشمل النقص في نشاطات العناية بالذات الأساسية مثل: الأكل، التنقل، النظافة الشخصية، والملبس.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-shirt"></i></div><div style="font-weight:700">الاستقلال في الاحتياجات الشخصية</div>`,
+    quiz: { q: "القدرة على تناول الطعام بمفردك دون مساعدة تعتبر مهارة:", opts: ["عملية (أساسية)", "مفاهيمية (أكاديمية)"], ans: 0, fb: "أحسنت! المهارات العملية هي عصب الحياة اليومية المستقلة." }
+  },
+  {
+    tag: "الخصائص",
+    title: "فخ الحماية الزائدة",
+    story: "الأم التي تحمل طفلها دائماً خوفاً عليه من السقوط، تحرمه من تعلم المشي. هكذا تفعل الحماية الزائدة بذكاء هؤلاء الأطفال.",
+    content: "لوحظ أن الحماية الزائدة من قبل الأولياء والمحيطين تعيق استقلال الطفل وتنمي لديه تبعية مطلقة للآخرين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-umbrella"></i></div><div style="font-weight:700">الحماية الزائدة = عائق للاستقلال</div>`,
+    quiz: { q: "ما هو الأثر السلبي للحماية الزائدة على الطفل المتأخر ذهنياً؟", opts: ["تشجيع التبعية وعدم الثقة بالنفس", "تسريع نمو ذكائه"], ans: 0, fb: "صحيح! الطفل يحتاج لأن يخطئ لكي يتعلم." }
+  },
+  {
+    tag: "الخصائص",
+    title: "التمركز حول الذات",
+    story: "تخيل أنك تنظر في مرآة ولا ترى إلا نفسك، فلا تدرك وجود الآخرين أو مشاعرهم. هذا هو التمركز حول 'الأنا' في عالمهم.",
+    content: "يواجهون صعوبة في التصور والتعبير عن أفكارهم، ويتمركزون حول أنفسهم مما يصعب عليهم فهم وجهات نظر الآخرين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-user-lock"></i></div><div style="font-weight:700">صعوبة فهم منظور الآخر</div>`,
+    quiz: { q: "يؤدي التمركز حول الذات لدى المتأخر ذهنياً إلى:", opts: ["صعوبة في بناء وتطوير العلاقات الاجتماعية", "تحسن قدرته على القيادة"], ans: 0, fb: "دقيق جداً! التواصل يتطلب تبادلاً للأدوار والمشاعر." }
+  },
+  {
+    tag: "الخصائص",
+    title: "التواصل البصري والدقة",
+    story: "العين هي مرآة الروح وبوابة التواصل. غياب هذا الاتصال يجعل 'الرسالة' بين الشخصين منقوصة وغير مكتملة.",
+    content: "يكونون أقل اتصالاً بالعين، مع وجود عدم تناسق نمائي ونقص في الاندماج بين سرعة الأداء ودقته في المهام المطلوبة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-eye-slash"></i></div><div style="font-weight:700">نقص الاندماج بين السرعة والدقة</div>`,
+    quiz: { q: "بماذا يتميز أداء المهام عند الأطفال المتأخرين ذهنياً؟", opts: ["بعدم التنسيق بين السرعة والدقة", "بالدقة المتناهية والسرعة الفائقة"], ans: 0, fb: "أحسنت! قد يتحركون بسرعة لكن بأخطاء كثيرة، أو العكس." }
+  },
+  {
+    tag: "الخصائص",
+    title: "قصور الوظائف العليا",
+    story: "تخيل عقلاً يعمل بنظام تشغيل قديم جداً؛ يمكنه القيام بالمهام البسيطة، لكنه ينهار أمام 'البرمجيات المعقدة' كالتخيل والحل الإبداعي.",
+    content: "هيمنة الوظائف التنفيذية الأولية على الوظائف العليا والرمزية، مع خلل واضح في التمييز الإدراكي والحفظ والتخيل وحل المشكلات.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-gears"></i></div><div style="font-weight:700">صعوبة في التجريد والترميز</div>`,
+    quiz: { q: "أي من العمليات التالية يظهر فيها خلل عند المتأخر ذهنياً؟", opts: ["التخيل والتمييز الإدراكي", "التنفس ونبض القلب"], ans: 0, fb: "رائع! العمليات العقلية المعقدة هي التي تتأثر بالإعاقة." }
+  },
+  {
+    tag: "الخصائص",
+    title: "التبعية والانسحاب الاجتماعي",
+    story: "عندما يفشل الطفل في الاندماج، قد يختار 'الهروب' إلى الداخل أو 'الالتصاق' بشخص يحميه. كلاهما وجهان لعملة واحدة: الخوف من العالم.",
+    content: "يشجع السلوك اللا اجتماعي على التبعية الزائدة، وقد تظهر مشكلات سلوكية كإيذاء الذات أو الانسحاب التام من الأنشطة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-link-slash"></i></div><div style="font-weight:700">سلوكيات إيذاء الذات والانسحاب</div>`,
+    quiz: { q: "تؤدي التبعية الزائدة للآخرين إلى نتيجة حتمية وهي:", opts: ["عدم تطوير شبكة اجتماعية مستقلة للفرد", "تحوله لشخصية قيادية"], ans: 0, fb: "بالضبط! الاعتماد الدائم على الغير يمنع نضج الشخصية." }
+  },
+  {
+    tag: "الخصائص",
+    title: "صورة الذات في سن الرشد",
+    story: "المراهق ينظر في المرآة ويبحث عن هويته. إذا كانت الإجابة دائماً هي 'الفشل'، فإن صورة الذات تتحطم وتصبح سلبية.",
+    content: "يواجه المراهقون والشباب صعوبات هائلة في نمو هويتهم، ويكونون عرضة لتنمية إدراك ذات سلبي بسبب المقارنة المستمرة مع الأقران.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-user-minus"></i></div><div style="font-weight:700">إدراك ذات سلبي وهشاشة الهوية</div>`,
+    quiz: { q: "كيف يكون إدراك الذات غالباً لدى المتأخرين عقلياً في سن الرشد؟", opts: ["إدراك ذات سلبي", "ثقة مفرطة بالنفس"], ans: 0, fb: "أحسنت! لذا يحتاجون للدعم النفسي لبناء صورة إيجابية عن قدراتهم." }
+  },
+  {
+    tag: "المسببات",
+    title: "الجذور الوراثية (الجينية)",
+    story: "أحياناً تكون 'الشيفرة الوراثية' التي نتوارثها من الأجداد تحتوي على خطأ مطبعي في عدد الكروموسومات، مما يغير مسار النمو الذهني.",
+    content: "تشمل العوامل الوراثية تشوهات صبغية (كروموسومات) في العدد أو البنية، وأمراضاً ذات أصل جيني تنتقل عبر الأجيال.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-dna"></i></div><div style="font-weight:700">الخلل الجيني والصبغي</div>`,
+    quiz: { q: "تشوهات الكروموسومات تعتبر من أي نوع من المسببات؟", opts: ["عوامل وراثية", "عوامل بيئية مكتسبة"], ans: 0, fb: "صحيح! هي عوامل موجودة منذ لحظة الإخصاب." }
+  },
+  {
+    tag: "المسببات",
+    title: "الأسباب العضوية والعدوى",
+    story: "العقل كالحقل؛ إذا هاجمته الآفات (الفيروسات والالتهابات) في وقت مبكر، فقد يتضرر المحصول النهائي (الذكاء).",
+    content: "تتضمن الإصابات المعدية والأمراض العضوية (مثل التهاب السحايا) التي تصيب الجهاز العصبي المركزي وتؤدي لتلف الخلايا الدماغية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-virus-covid"></i></div><div style="font-weight:700">تأثير الأمراض العضوية على الدماغ</div>`,
+    quiz: { q: "الإصابات المعدية التي تصيب الجهاز العصبي هي سبب:", opts: ["عضوي", "نفسي صرف"], ans: 0, fb: "ممتاز! أي ضرر مادي يصيب الدماغ يعتبر سبباً عضوياً للإعاقة." }
+  },
+  {
+    tag: "تحديات سن الرشد",
+    title: "الفجوة بين الحلم والواقع",
+    story: "عندما يصل المتأخر ذهنياً لسن الرشد، يطلب منه المجتمع أن يكون 'رجلاً' أو 'امرأة' مسؤولة، بينما إمكانياته لا تزال تحتاج لمساندة طفل.",
+    content: "ترتبط الصعوبات بوضعهم الصعب في العلاقات، تبعيتهم العاطفية، وتناقضاتهم الداخلية بين الرغبة في الاستقلال والقدرة الفعلية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-person-walking-arrow-right"></i></div><div style="font-weight:700">التناقض بين الاستقلال والتبعية</div>`,
+    quiz: { q: "من أبرز تحديات سن الرشد للمتأخر ذهنياً:", opts: ["التبعية العاطفية والتناقضات الداخلية", "الاكتفاء الذاتي المطلق"], ans: 0, fb: "أحسنت! هذا التناقض يولد الكثير من القلق والضغوط النفسية." }
+  }
+];
+
+// --- Core Engine ---
+let currentSlide = 0;
+let userScore = 0;
+const total = SLIDE_DATA.length;
+
+function initApp() {
+  const container = document.getElementById('main-container');
+  SLIDE_DATA.forEach((slide, index) => {
+    const slideDiv = document.createElement('div');
+    slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+    slideDiv.id = 'slide-' + index;
+    
+    slideDiv.innerHTML = `
+      <div class="card">
+        <div class="tag">${slide.tag}</div>
+        <h2>${slide.title}</h2>
+        <div class="story-box"><i class="fa-solid fa-quote-right"></i><p>${slide.story}</p></div>
+        <p style="font-size:1.15rem; margin-bottom:20px; font-weight:600;">${slide.content}</p>
+        <div class="visual-box">${slide.visual}</div>
+        <div class="activity-box" id="actBox-${index}">
+          <p style="font-weight:900; margin-bottom:15px; color:#b45309;"><i class="fa-solid fa-bolt"></i> تحدي الاستيعاب السريع:</p>
+          <p style="margin-bottom:15px; font-weight:700;">${slide.quiz.q}</p>
+          <button class="act-btn" onclick="checkAns(${index}, 0, ${slide.quiz.ans}, this)"><span>${slide.quiz.opts[0]}</span></button>
+          <button class="act-btn" onclick="checkAns(${index}, 1, ${slide.quiz.ans}, this)"><span>${slide.quiz.opts[1]}</span></button>
+          <div class="feedback-msg" id="fb-${index}" style="display:none; padding:10px; border-radius:8px; margin-top:10px; font-weight:800;"></div>
+        </div>
+      </div>
+    `;
+    container.appendChild(slideDiv);
+  });
+  updateUI();
+}
+
+function checkAns(sIdx, chosen, correct, btn) {
+  const box = document.getElementById(`actBox-${sIdx}`);
+  if (box.dataset.answered === "true") return;
+  box.dataset.answered = "true";
+
+  const fb = document.getElementById(`fb-${sIdx}`);
+  const buttons = box.querySelectorAll('.act-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    fb.innerHTML = "✅ إجابة رائعة! لقد استوعبت المفهوم بعمق.";
+    fb.style.backgroundColor = "#d1fae5";
+    fb.style.color = "#065f46";
+    userScore += 100;
+    showToast("+100 نقطة! ممتاز");
+    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#059669', '#f59e0b'] });
+  } else {
+    btn.classList.add('wrong');
+    fb.innerHTML = "❌ محاولة جيدة.. الإجابة الصحيحة محددة بالأخضر.";
+    fb.style.backgroundColor = "#fee2e2";
+    fb.style.color = "#991b1b";
+    buttons[correct].classList.add('correct');
+  }
+  fb.style.display = "block";
+  updateStats();
+}
+
+function move(dir) {
+  const slides = document.querySelectorAll('.slide');
+  if (currentSlide + dir < 0 || currentSlide + dir >= total) return;
+  
+  slides[currentSlide].classList.remove('active');
+  currentSlide += dir;
+  slides[currentSlide].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateUI();
+}
+
+function updateUI() {
+  document.getElementById('counter').innerText = `${currentSlide + 1} / ${total}`;
+  document.getElementById('progress-bar').style.width = ((currentSlide + 1) / total * 100) + '%';
+  document.getElementById('btn-prev').disabled = currentSlide === 0;
+  document.getElementById('btn-next').disabled = currentSlide === total - 1;
+}
+
+function updateStats() {
+  document.getElementById('scoreDisplay').innerText = userScore;
+  let level = "مبتدئ";
+  if (userScore >= 200) level = "ممارس";
+  if (userScore >= 400) level = "باحث ذكي";
+  if (userScore >= 600) level = "خبير نمو";
+  document.getElementById('levelDisplay').innerText = level;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 2500);
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>

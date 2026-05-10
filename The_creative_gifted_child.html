@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>الطفل الموهوب المبدع - الدورة الاحترافية</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+/* ==========================================================================
+   CSS System - Emerald Luxury Theme (نفس نمط ملفاتك المعتمدة)
+   ========================================================================== */
+:root {
+  --c-primary: #059669; 
+  --c-primary-light: #d1fae5; 
+  --c-primary-dark: #047857; 
+  --c-accent: #f59e0b; 
+  --c-bg: #f8fafc; 
+  --c-surface: #ffffff;
+  --c-text-main: #1e293b; 
+  --c-text-muted: #64748b; 
+  --c-danger: #ef4444;
+  --c-success: #10b981;
+  --c-border: #e2e8f0;
+  --font-main: 'Cairo', sans-serif;
+  --font-story: 'Tajawal', sans-serif;
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --r-lg: 20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--c-bg);
+  color: var(--c-text-main);
+  line-height: 1.8;
+  background-image: radial-gradient(var(--c-primary-light) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+#progress-container { position: fixed; top: 0; left: 0; right: 0; height: 6px; background: var(--c-border); z-index: 1001; }
+#progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--c-accent), var(--c-primary)); transition: 0.3s; }
+
+header {
+  position: fixed; top: 6px; left: 0; right: 0; height: 65px;
+  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; border-bottom: 1px solid var(--c-border); z-index: 1000;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--c-primary-dark); }
+.stats { display: flex; align-items: center; gap: 10px; }
+.badge { background: var(--c-bg); border: 1px solid var(--c-border); padding: 5px 12px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; }
+
+main { padding: 90px 15px 120px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+.slide { display: none; width: 100%; max-width: 900px; animation: fadeUp 0.4s forwards; }
+.slide.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.card { background: var(--c-surface); border-radius: var(--r-lg); padding: clamp(20px, 4vw, 35px); box-shadow: var(--shadow-md); border: 1px solid rgba(5, 150, 105, 0.1); margin-bottom: 25px; }
+.tag { display: inline-block; padding: 5px 15px; background: var(--c-primary-light); color: var(--c-primary-dark); border-radius: 50px; font-size: 0.8rem; font-weight: 800; margin-bottom: 15px; }
+
+.story-box { background: linear-gradient(to left, var(--c-bg), var(--c-surface)); border-right: 4px solid var(--c-accent); padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 15px; }
+.story-box i { font-size: 1.8rem; color: var(--c-accent); }
+.story-box p { font-family: var(--font-story); font-style: italic; margin: 0; }
+
+.visual-box { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 15px; padding: 25px; margin: 20px 0; text-align: center; }
+.v-icon { font-size: 3.5rem; color: var(--c-primary); margin-bottom: 10px; }
+
+.activity-box { background: linear-gradient(135deg, var(--c-surface), #fefce8); border: 1px solid var(--c-accent); border-radius: var(--r-lg); padding: 25px; }
+.act-btn {
+  width: 100%; background: var(--c-surface); border: 2px solid var(--c-border); padding: 15px;
+  border-radius: 12px; cursor: pointer; font-family: var(--font-main); font-size: 1rem;
+  font-weight: 600; text-align: right; margin-bottom: 10px; transition: all 0.2s;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.act-btn:hover:not(:disabled) { border-color: var(--c-primary); transform: translateX(-5px); }
+.act-btn.correct { background: #d1fae5; border-color: var(--c-success); color: #065f46; }
+.act-btn.wrong { background: #fee2e2; border-color: var(--c-danger); color: #991b1b; }
+
+footer {
+  position: fixed; bottom: 0; left: 0; right: 0; padding: 15px 30px;
+  background: white; border-top: 1px solid var(--c-border);
+  display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+}
+.btn { padding: 12px 25px; border-radius: 50px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; }
+.btn-primary { background: var(--c-primary); color: white; }
+.btn-outline { background: white; color: var(--c-text-muted); border: 1px solid var(--c-border); }
+
+.toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 20px; border-radius: 50px; z-index: 2000; display: none; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div id="progress-container"><div id="progress-bar"></div></div>
+
+<header>
+  <div class="brand"><i class="fa-solid fa-lightbulb"></i> أكاديمية الموهبة والإبداع</div>
+  <div class="stats">
+    <div class="badge"><i class="fa-solid fa-star"></i> <span id="scoreDisplay">0</span></div>
+    <div class="badge" style="color:var(--c-primary);"><i class="fa-solid fa-award"></i> <span id="levelDisplay">مبتدئ</span></div>
+  </div>
+</header>
+
+<div class="toast" id="toast"></div>
+
+<main id="main-container"></main>
+
+<footer>
+  <button class="btn btn-outline" id="btn-prev" onclick="move(-1)">السابق</button>
+  <div id="counter" style="font-weight:900; color:var(--c-primary);">1 / --</div>
+  <button class="btn btn-primary" id="btn-next" onclick="move(1)">التالي</button>
+</footer>
+
+<script>
+/* ==========================================================================
+   DATASET: الموهبة والإبداع (كاملة ومحدثة)
+   ========================================================================== */
+const SLIDE_DATA = [
+  {
+    tag: "مقدمة تاريخية",
+    title: "رحلة من الذكاء إلى الإبداع",
+    story: "تخيل بستانياً كان يهتم فقط بطول الأشجار وقوتها، ثم أدرك فجأة أن عبق الزهور وتفرد ألوانها هو ما يعطي للبستان سحره الحقيقي.",
+    content: "شهد النصف الأول من القرن العشرين تركيزاً على قياس الذكاء التقليدي، بينما انتقل الاهتمام في النصف الأخير نحو 'الإبداع' كطاقة حيوية قادرة على التغيير والابتكار.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-hourglass-half"></i></div><div style="font-weight:700">تحول تاريخي من IQ إلى الإبداع الشامل</div>`,
+    quiz: { q: "متى بدأ الاهتمام المتزايد بمفهوم 'الإبداع' ورعاية المبدعين؟", opts: ["النصف الأول من القرن العشرين", "النصف الأخير من القرن العشرين"], ans: 1, fb: "أحسنت! النصف الأخير شهد ثورة في فهم الإبداع كقدرة مستقلة عن الذكاء التقليدي." }
+  },
+  {
+    tag: "خلفية تاريخية",
+    title: "السباق نحو النجوم",
+    story: "عندما انطلق القمر الصناعي 'سبوتنيك' نحو الفضاء، استيقظ العالم على حقيقة أن 'العقول المبدعة' هي الوقود الحقيقي لأي قوة عظمى.",
+    content: "بعد الحرب العالمية الثانية، دفع السباق العلمي (خاصة غزو الفضاء) الدول لاعتبار المبدعين 'ثروة قومية' وأعادت بناء مناهجها التعليمية لتناسبهم.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-rocket"></i></div><div style="font-weight:700">المبدعون هم 'الثروة القومية' الجديدة</div>`,
+    quiz: { q: "ما هو الحدث العالمي الذي حفز الاهتمام برعاية الموهوبين؟", opts: ["غزو الفضاء والسباق التقني", "الثورة الصناعية الأولى"], ans: 0, fb: "دقيق! التفوق العلمي أصبح مسألة أمن قومي للدول." }
+  },
+  {
+    tag: "تطور النتائج",
+    title: "فك شفرة الإبداع",
+    story: "لم يعد العقل المبدع صندوقاً أسود مغلقاً؛ العلماء الآن يمتلكون الخرائط لفهم كيف تعمل هذه العقول وكيف تتنفس الأفكار الجديدة.",
+    content: "تحققت نتائج علمية باهرة في استكشاف طبيعة العملية الإبداعية، وفهم الخصائص النفسية للمبدعين، مما مكننا من تصميم برامج متخصصة لتنمية هذه القدرات.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-microscope"></i></div><div style="font-weight:700">فهم المكونات الدينامية للشخصية المبدعة</div>`,
+    quiz: { q: "ما هي نتيجة الدراسات العلمية الحديثة حول الموهبة؟", opts: ["اعتبار الإبداع لغزاً لا يمكن حله", "استكشاف الخصائص النفسية وتصميم برامج تنموية"], ans: 1, fb: "رائع! أصبح لدينا أدوات علمية لتنمية الموهبة بدلاً من انتظار ظهورها صدفة." }
+  },
+  {
+    tag: "القياس والتشخيص",
+    title: "وراء حدود اختبارات الذكاء",
+    story: "المسطرة تقيس الطول، لكنها لا تقيس جمال اللوحة. هكذا كانت اختبارات الذكاء التقليدية تعجز عن قياس 'شرارة الإبداع'.",
+    content: "صُممت مئات الاختبارات الموضوعية للكشف عن الإبداع، متجاوزة اختبارات IQ التقليدية التي أثبتت الدراسات أنها لا تتنبأ دائماً بالنتاج الإبداعي المبتكر.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-chart-bar"></i></div><div style="font-weight:700">تطوير أدوات قياس تتجاوز الـ IQ</div>`,
+    quiz: { q: "هل اختبارات الذكاء التقليدية كافية للكشف عن الموهبة الإبداعية؟", opts: ["نعم، هي الأداة الوحيدة الكافية", "لا، لا تتنبأ دائماً بالنتاج الإبداعي"], ans: 1, fb: "صحيح! الإبداع يحتاج لمقاييس خاصة تقيس الطلاقة والمرونة والأصالة." }
+  },
+  {
+    tag: "الذكاء والإبداع",
+    title: "الوقود والمحرك",
+    story: "السيارة تحتاج للوقود (الذكاء) لتعمل، لكن السائق الماهر (الإبداع) هو من يقرر اتخاذ طرق جديدة ومختصرة للوصول للهدف.",
+    content: "رغم ضرورة وجود 'حد أدنى' من الذكاء لممارسة النشاط الإبداعي، إلا أن الذكاء العالي جداً لا يضمن بالضرورة وجود إبداع موازٍ له.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-scale-balanced"></i></div><div style="font-weight:700">الذكاء شرط لازم ولكنه غير كافٍ وحده</div>`,
+    quiz: { q: "العلاقة بين الذكاء العالي جداً ونمو الإبداع هي:", opts: ["علاقة طردية حتمية", "لا يؤدي الذكاء العالي بالضرورة لنمو الإبداع"], ans: 1, fb: "أحسنت! هناك الكثير من الأذكياء جداً لكنهم يفتقرون للقدرة على الابتكار." }
+  },
+  {
+    tag: "أنماط التفكير",
+    title: "تشعب الأفكار (جيلفورد)",
+    story: "التفكير التقليدي يسير في نفق واحد للوصول لإجابة واحدة، أما التفكير الإبداعي فهو كالألعاب النارية التي تنفجر في مئات الاتجاهات في وقت واحد.",
+    content: "يؤكد 'جيلفورد' أن التفكير الإبداعي هو تفكير 'تباعدي' (تشعيبي)، يبحث عن حلول متعددة وغير مألوفة للمشكلة الواحدة، بعكس التفكير التقاربي.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-shuffle"></i></div><div style="font-weight:700">التفكير التباعدي = الاتجاهات المتباينة</div>`,
+    quiz: { q: "وفقاً لجيلفورد، ما هو نمط التفكير الذي يميز المبدعين؟", opts: ["التفكير التباعدي (التشعيبي)", "التفكير التقاربي (الأحادي)"], ans: 0, fb: "ممتاز! المبدع لا يكتفي بإجابة واحدة بل يولد بدائل متعددة." }
+  },
+  {
+    tag: "التعريف والمفاهيم",
+    title: "من هو الطفل الموهوب؟",
+    story: "هو ذلك النجم الذي يسطع بقوة أكبر من غيره في سماء الفصل، ليس فقط في الدرجات، بل في تقديم ما ينفع المجتمع ويرتقي به.",
+    content: "الطفل الموهوب هو من يتميز بتفوق عقلي واضح عن أقرانه في مرحلته العمرية، ويمتلك قدرات خاصة تخدم في النهاية رفاهية المجتمع وتطوره.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-star"></i></div><div style="font-weight:700">تفوق عقلي لخدمة الرفاهية العامة</div>`,
+    quiz: { q: "ما هو المعيار الأساسي لتعريف الطفل الموهوب تربوياً؟", opts: ["التفوق العقلي عن أقرانه في نفس العمر", "الهدوء التام داخل الفصل"], ans: 0, fb: "أحسنت! التفوق النسبي مقارنة بالفئة العمرية هو المفتاح." }
+  },
+  {
+    tag: "التعريف والمفاهيم",
+    title: "رؤية الموسوعات النفسية",
+    story: "تخيل طفلاً في العاشرة يتحدث بلغة العلماء أو يرسم بريشة المحترفين؛ هذا الأداء هو وعد مكتوب لإنجازات عظيمة قادمة.",
+    content: "تصف الموسوعات المبدع بأنه الفرد الذي يؤدي أعماله بكفاءة عالية وبصورة أفضل ممن هم في سنه، بأسلوب يعطي مؤشرات قوية لنجاحات مستقبلية باهرة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-book-open"></i></div><div style="font-weight:700">الأداء المتفوق كمؤشر للمستقبل</div>`,
+    quiz: { q: "كيف تصف الموسوعات النفسية أداء الطفل المبدع؟", opts: ["أداء عادٍ يشبه بقية زملائه", "أداء يتسم بالكفاءة العالية ويبشر بالتميز مستقبلاً"], ans: 1, fb: "دقيق جداً! التميز الحالي هو البذرة لإنجازات الغد." }
+  },
+  {
+    tag: "التعريف والمفاهيم",
+    title: "كيمياء الأفكار (سبيرمان)",
+    story: "الإبداع عند سبيرمان كخلط لونين لإنتاج لون ثالث جديد تماماً لم يكن موجوداً من قبل؛ إنه سحر الربط بين المألوف لإنتاج غير المألوف.",
+    content: "عرف سبيرمان التفكير الإبداعي بأنه قدرة الطفل على إدراك العلاقة بين شيئين، ومن خلال هذه العلاقة يبتكر شيئاً ثالثاً يختلف تماماً في شكله ووظيفته.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-puzzle-piece"></i></div><div style="font-weight:700">1 + 1 = 3 (فكرة جديدة)</div>`,
+    quiz: { q: "ما هو جوهر تعريف 'سبيرمان' للتفكير الإبداعي؟", opts: ["إدراك العلاقة بين شيئين لإنتاج شيء ثالث جديد", "حفظ الحقائق كما هي دون تغيير"], ans: 0, fb: "رائع! هذا ما نسميه بالإنتاجية الابتكارية." }
+  },
+  {
+    tag: "التعريف والمفاهيم",
+    title: "إعادة بناء الكل (الجشتالت)",
+    story: "تخيل أنك تفكك مكعبات 'ليجو' قديمة لتبني منها قلعة أسطورية؛ أنت لم تأتِ بمكعبات جديدة، لكنك أعدت ترتيبها بشكل مدهش.",
+    content: "ترى مدرسة الجشتالت أن المبدع هو الفرد القادر على إعادة دمج وتنظيم المعارف والأفكار السابقة بشكل جديد ومختلف كلياً عن أصلها.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-arrows-spin"></i></div><div style="font-weight:700">إعادة دمج المعارف بشكل مبتكر</div>`,
+    quiz: { q: "بماذا يتميز المبدع حسب مدرسة الجشتالت؟", opts: ["بالقدرة على إعادة دمج الأفكار بشكل جديد", "بالتكرار الحرفي للمعلومات السابقة"], ans: 0, fb: "صحيح! الإبداع هو فن 'إعادة التشكيل'." }
+  },
+  {
+    tag: "التعريف والمفاهيم",
+    title: "أرقام الموهبة والذكاء",
+    story: "في كل ألف شخص، هناك عبقري واحد يمتلك مفاتيح استثنائية للعقل. الأرقام ترسم لنا حدود التميز البشري.",
+    content: "الموهوبون هم الـ 1% الأعلى ذكاءً. فئة العباقرة تتجاوز 145 درجة (1 في الألف)، بينما الأذكياء يقعون بين 130-145 درجة (2% من السكان).",
+    visual: `<div class="v-icon"><i class="fa-solid fa-arrow-up-9-1"></i></div><div style="font-weight:700">خارطة توزيع الذكاء (المنحنى الاعتدالي)</div>`,
+    quiz: { q: "ما هي نسبة ذكاء فئة 'الأذكياء' (التي تمثل 2% من السكان)؟", opts: ["80 - 100 درجة", "130 - 145 درجة"], ans: 1, fb: "أحسنت! هذه الفئة تسبق فئة العباقرة مباشرة." }
+  },
+  {
+    tag: "التعريف والمفاهيم",
+    title: "رؤية تورانس: صائد الثغرات",
+    story: "المبدع لا يرى ما هو موجود فحسب، بل يشعر بما هو 'مفقود'. إنه يرى الفجوة في الجدار ويحاول سدها بطريقة مبتكرة.",
+    content: "يعرف 'تورانس' الإبداع بأنه الإحساس بالمشكلات والثغرات والعناصر المفقودة، ثم تكوين الفروض واختبارها للوصول لنتائج وحلول فعالة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-magnifying-glass-plus"></i></div><div style="font-weight:700">الإبداع = سد الثغرات المفقودة</div>`,
+    quiz: { q: "وفقاً لتورانس، يبدأ التفكير الإبداعي بـ:", opts: ["الإحساس بالمشكلات والثغرات", "قبول الحلول التقليدية الجاهزة"], ans: 0, fb: "دقيق جداً! الشعور بوجود 'نقص' هو شرارة الانطلاق." }
+  },
+  {
+    tag: "الخصائص",
+    title: "سكان القمة",
+    story: "إذا كان العقل جبلاً، فإن الموهوبين هم أولئك الذين يعيشون في القمة؛ يرون الأفق أوسع ويتنفسون هواءً مختلفاً من التفكير.",
+    content: "يتسم الموهوبون بقدرة عقلية عالية جداً، ويحتلون قمة السلم الهرمي في اختبارات الذكاء والتفكير الابتكاري مقارنة بأقرانهم العاديين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-mountain"></i></div><div style="font-weight:700">التربع على قمة هرم القدرات</div>`,
+    quiz: { q: "أين يقع الموهوب في التوزيع الطبيعي للقدرات العقلية؟", opts: ["في منتصف التوزيع (المتوسط)", "في قمة السلم الهرمي"], ans: 1, fb: "صحيح! هم الفئة الاستثنائية التي تقود الفكر." }
+  },
+  {
+    tag: "الخصائص",
+    title: "شعلة النشاط والطاقة",
+    story: "عقل الموهوب محرك لا يهدأ، يمتلك طاقة حيوية تدفعه للعمل لساعات دون ملل، مسخراً مهاراته للسيطرة على تحديات البيئة.",
+    content: "يتميز الموهوب بكفاءة أداء عالية وطاقة حيوية هائلة، مما يجعله قادراً على إنجاز المهام الصعبة بأسلوب متميز يسبق عمره الزمني.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-bolt-lightning"></i></div><div style="font-weight:700">طاقة حيوية وكفاءة في السيطرة</div>`,
+    quiz: { q: "بماذا يتنبأ الأداء المتميز للموهوب في صغره؟", opts: ["بتحقيق إنجازات عظيمة في المستقبل", "بفقدان الموهبة عند الكبر"], ans: 0, fb: "أحسنت! الاستمرارية والدعم يحولان هذه الطاقة إلى إنجازات واقعية." }
+  },
+  {
+    tag: "الخصائص",
+    title: "الإدراك الفائق والمكتشف الصغير",
+    story: "بينما يكتفي الآخرون برؤية الشجرة، يرى الموهوب جذورها، وعلاقتها بالتربة، وكيف ستبدو بعد مائة عام. إنه يرفض الحفظ لأنه يريد 'أن يعرف'.",
+    content: "يمتلك الموهوبون قدرة عالية على إدراك العلاقات المجردة والمكانية، ويميلون للتعلم عن طريق 'الاكتشاف' رافضين أسلوب التلقين والحفظ الجاف.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-binoculars"></i></div><div style="font-weight:700">التعلم بالاكتشاف vs الحفظ التقليدي</div>`,
+    quiz: { q: "ما هو أسلوب التعلم المفضل لدى الأطفال الموهوبين؟", opts: ["الحفظ والتلقين المستمر", "الاكتشاف والاستقصاء الذاتي"], ans: 1, fb: "رائع! الفضول هو محرك التعلم لدى المبدع." }
+  },
+  {
+    tag: "الخصائص",
+    title: "المغامر الواثق",
+    story: "لماذا يكثر الموهوب من الأسئلة؟ لأنه يثق في عقله ويريد القفز فوق أسوار المعرفة التقليدية، حتى لو أزعج ذلك من حوله.",
+    content: "تمنح الثقة بالنفس الموهوب الجرأة على المخاطرة والمغامرة. كثرة أسئلته ليست فوضى، بل هي سعي حثيث لفك شفرات العالم المعقدة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-user-astronaut"></i></div><div style="font-weight:700">ثقة تدفع نحو المخاطرة المعرفية</div>`,
+    quiz: { q: "ماذا تعكس كثرة أسئلة الطفل الموهوب؟", opts: ["قلة التركيز والتشتت الذهني", "رغبة عميقة في التعلم وفضول معرفي"], ans: 1, fb: "بالضبط! السؤال هو الأداة الأولى للمبدع لاستكشاف المجهول." }
+  },
+  {
+    tag: "الخصائص",
+    title: "عين الناقد والمصلح",
+    story: "تخيل أن الجميع يرى الغرفة مرتبة، لكن الموهوب يرى اللوحة المائلة، والنقص في اللون، والتناقض في الترتيب. إنه يشعر بالخلل قبل غيره.",
+    content: "الموهوب أكثر حساسية للمشكلات (الاجتماعية والتعليمية). لديه قدرة فطرية على اكتشاف التناقضات وإظهار العناصر المفقودة في أي موقف.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div><div style="font-weight:700">الحساسية المفرطة للمشكلات والتناقضات</div>`,
+    quiz: { q: "ماذا يقصد بـ 'الحساسية للمشكلات' لدى المبدع؟", opts: ["سرعة البكاء والحزن", "القدرة على رؤية الثغرات والتناقضات"], ans: 1, fb: "أحسنت! هي مهارة عقلية تسبق عملية حل المشكلة." }
+  },
+  {
+    tag: "سمات الإبداع",
+    title: "أعمدة الإبداع الثلاثة",
+    story: "الإبداع كالشجرة: الطلاقة هي كثرة أغصانها، والمرونة هي قدرتها على الانحناء مع الريح، والأصالة هي ثمارها الفريدة التي لا تشبه غيرها.",
+    content: "تتفق اختبارات التفكير الإبداعي على قياس ثلاثة أبعاد: الطلاقة (كمية الأفكار)، المرونة (تنوع الأفكار)، والأصالة (جدة وندرة الأفكار).",
+    visual: `<div class="v-icon"><i class="fa-solid fa-trident"></i></div><div style="font-weight:700">الطلاقة + المرونة + الأصالة</div>`,
+    quiz: { q: "أي من هؤلاء يعتبر من السمات الأساسية لقياس الإبداع؟", opts: ["الأصالة والمرونة والطلاقة", "السرعة والدقة في الحفظ"], ans: 0, fb: "رائع! هذه السمات هي المكونات الجوهرية لأي عمل إبداعي." }
+  },
+  {
+    tag: "الخصائص",
+    title: "الجسم والعقل: الموهبة التعويضية",
+    story: "قد يكون الجسد مقيداً بكرسي متحرك، لكن العقل يحلق في مجرات بعيدة. الإبداع لا يعرف حدوداً جسدية.",
+    content: "غالباً ما يتمتع الموهوب بصحة جيدة، لكن قد نجد مبدعين من ذوي الاحتياجات الخاصة يمتلكون 'مواهب تعويضية' فائقة تتحدى الإعاقة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-wheelchair-move"></i></div><div style="font-weight:700">الموهبة تتجاوز القيود الجسدية</div>`,
+    quiz: { q: "ماذا نطلق على المواهب الإبداعية لدى ذوي الاحتياجات الخاصة؟", opts: ["مواهب عارضة", "مواهب تعويضية"], ans: 1, fb: "صحيح! الإبداع هو وسيلة العقل للتكيف والتفوق رغم الصعوبات." }
+  },
+  {
+    tag: "الكشف والتعرف",
+    title: "فن الملاحظة العلمية",
+    story: "المعلم والأب هما الرادارات الأولى؛ عليهما التقاط الإشارات المبكرة للموهبة قبل أن تنطفئ شعلتها تحت ركام الروتين.",
+    content: "تعد الملاحظة العلمية المنظمة لسلوك الطفل وإنجازاته في البيت والمدرسة أداة جوهرية للكشف المبكر عن بذور الموهبة والإبداع.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-eye"></i></div><div style="font-weight:700">الملاحظة المنظمة = الخطوة الأولى</div>`,
+    quiz: { q: "متى يجب أن تبدأ عملية ملاحظة الموهوبين؟", opts: ["في مرحلة ما قبل المدرسة والتعليم الأساسي", "بعد سن العشرين فقط"], ans: 0, fb: "أحسنت! كلما كان الاكتشاف مبكراً، كانت الرعاية أكثر فعالية." }
+  },
+  {
+    tag: "الكشف والتعرف",
+    title: "ترسانة المقاييس النفسية",
+    story: "نحن نستخدم أدوات دقيقة كالجراح؛ اختبار للذكاء العام، وآخر للقدرات اللفظية، ومقاييس خاصة للتفكير الذي يكسر القواعد.",
+    content: "تشمل أدوات الكشف: اختبارات الذكاء (قدرات عامة)، اختبارات القدرات الخاصة (لفظية، عددية)، واختبارات 'تورانس' الشهيرة للتفكير الابتكاري.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-vial-circle-check"></i></div><div style="font-weight:700">مقاييس مقننة للذكاء والابتكار</div>`,
+    quiz: { q: "ما هو أشهر اختبار عالمي مستخدم لقياس التفكير الابتكاري؟", opts: ["اختبار تورانس", "اختبار قياس الطول"], ans: 0, fb: "دقيق! اختبارات تورانس هي المعيار الذهبي في هذا المجال." }
+  },
+  {
+    tag: "الكشف والتعرف",
+    title: "صوت الطفل: التقدير الذاتي",
+    story: "أحياناً، أفضل طريقة لمعرفة ما بداخل الصندوق هي أن نسأل الصندوق نفسه. المقابلة الشخصية تكشف عن أحلام لا تظهر في الورقة.",
+    content: "من خلال المقابلات الشخصية، يمكن للطفل الإفصاح عن مواهبه وطموحاته وهواياته التي يمارسها بعيداً عن ضغوط المنهج المدرسي.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-comments"></i></div><div style="font-weight:700">المقابلة: نافذة على الهوايات والطموح</div>`,
+    quiz: { q: "ما هي الفائدة الرئيسية من المقابلات الشخصية مع الموهوب؟", opts: ["معرفة درجاته في مادة العلوم فقط", "التعرف على هواياته وطموحاته واهتماماته"], ans: 1, fb: "رائع! الشخصية المبدعة تظهر بوضوح في الأنشطة غير الرسمية." }
+  },
+  {
+    tag: "الكشف والتعرف",
+    title: "المسرح الحقيقي: المسابقات",
+    story: "الموهبة كالمعدن النفيس، تظهر لمعانها الحقيقي تحت ضغط المنافسة وفي معارض الابتكار حيث تتحول الفكرة إلى منتج ملموس.",
+    content: "المسابقات الفكرية، الأدبية، والفنية تمثل فرصاً ذهبية لاكتشاف القدرات الكامنة وتجعل شخصية المبدع تبرز بوضوح أمام الجميع.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-trophy"></i></div><div style="font-weight:700">المنافسة تظهر المعادن الحقيقية</div>`,
+    quiz: { q: "كيف تساهم المعارض المدرسية في رعاية الموهبة؟", opts: ["عن طريق إبراز القدرات الكامنة واكتشاف المبدعين", "عن طريق منع الطلاب من المشاركة"], ans: 0, fb: "صحيح! هي البيئة المثالية لتجربة الأفكار الإبداعية." }
+  },
+  {
+    tag: "دور المدرسة",
+    title: "المدرسة كحاضنة للمستقبل",
+    story: "المدرسة ليست مصنعاً لإنتاج قوالب متشابهة، بل هي مشتل يحتاج فيه كل نوع من الزهور لرعاية وظروف مختلفة لينمو.",
+    content: "يجب على المدرسة وضع برامج متخصصة تنمي المواهب، مع ضرورة بناء جسور تعاون وثيقة مع الأسرة لضمان بيئة متكاملة للنجاح.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-school-flag"></i></div><div style="font-weight:700">تكامل الأسرة والمدرسة = نجاح الموهوب</div>`,
+    quiz: { q: "ما هو العنصر الأساسي لنجاح رعاية الموهوب في المدرسة؟", opts: ["التنسيق والتعاون بين البيت والمدرسة", "إهمال دور الوالدين تماماً"], ans: 0, fb: "أحسنت! الموهوب يحتاج لرسائل متسقة من المنزل والمدرسة." }
+  },
+  {
+    tag: "المشكلات والمعوقات",
+    title: "فخ الإحباط وسوء التوافق",
+    story: "تخيل أنك تمتلك محرك طائرة وتريد الطيران، لكن البيئة تجبرك على السير في طريق ضيق مزدحم.. هذا هو شعور الموهوب المحبط.",
+    content: "قد يعاني الموهوب من سوء توافق نفسي واجتماعي إذا فشلت البيئة في إشباع شغفه المعرفي، مما يولد لديه مشاعر القلق والإحباط.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-triangle-exclamation"></i></div><div style="font-weight:700">البيئة غير المشبعة = سوء توافق</div>`,
+    quiz: { q: "ماذا يحدث للموهوب عندما تفشل بيئته في تلبية شغفه بالبحث؟", opts: ["يشعر بالإحباط وسوء التوافق النفسي", "تتحسن حالته النفسية تلقائياً"], ans: 0, fb: "دقيق! العقل النشط يحتاج لغذاء فكري مستمر." }
+  },
+  {
+    tag: "المشكلات والمعوقات",
+    title: "معركة المسارات المهنية",
+    story: "الأب يريد طبيباً، والابن يريد أن يكون عالم فضاء أو فناناً رقمياً. عندما تصطدم الأحلام، قد نخسر موهبة فذة.",
+    content: "اختيار الموهوب لمسارات غير تقليدية قد يصطدم برغبات الوالدين، مما يسبب تراجعاً وتقهقراً في مستواه الإبداعي بسبب الضغط الأسري.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-road-barrier"></i></div><div style="font-weight:700">صراع الرغبات الأسرية والطموح</div>`,
+    quiz: { q: "إلى ماذا يؤدي إجبار الموهوب على تخصصات لا يحبها؟", opts: ["إلى التميز في ذلك التخصص", "إلى الإحباط والتراجع والتقهقر"], ans: 1, fb: "رائع! الحرية في اختيار المسار هي وقود الإبداع." }
+  },
+  {
+    tag: "مشكلات البيئة المنزلية",
+    title: "وأد الموهبة في المهد",
+    story: "أخطر ما يواجه الطفل المبدع هو 'اللامبالاة'؛ عندما يرسم لوحة مذهلة فلا يجد من يبتسم له، أو يطرح سؤالاً فيجد نهراً.",
+    content: "تجاهل الأسرة لمواهب الطفل أو عدم توفير الإمكانات المادية والمعنوية لممارستها قد يؤدي لقتل الموهبة قبل أن تنمو وتزدهر.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-house-lock"></i></div><div style="font-weight:700">التجاهل الأسري يقتل الإبداع</div>`,
+    quiz: { q: "متى يتخلى الطفل الموهوب عن ممارسة اهتماماته؟", opts: ["عندما يجد الدعم والتشجيع المادي", "عندما يشعر بعدم الاكتراث أو التهديد من أهله"], ans: 1, fb: "أحسنت! التشجيع المعنوي أهم بكثير من الإمكانات المادية." }
+  },
+  {
+    tag: "مشكلات البيئة المنزلية",
+    title: "بين المطرقة والسندان: التربية الخاطئة",
+    story: "تخيل طفلاً يُعامل كمشاكس لأنه يسأل كثيراً، أو يُدلل لدرجة الغرور لأنه ذكي؛ في الحالتين نحن نشوه شخصية المبدع.",
+    content: "السخرية من طموحات الموهوب تحطمه، والمبالغة في تدليله والثناء عليه قد تصيبه بالغرور والاستعلاء على الآخرين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-scale-unbalanced-flip"></i></div><div style="font-weight:700">أهمية التوازن في الأسلوب التربوي</div>`,
+    quiz: { q: "ما هو أثر التدليل الزائد والمبالغة في الثناء على الموهوب؟", opts: ["قد يسبب له الغرور والتكبر", "يزيد من تواضعه وحبه للناس"], ans: 0, fb: "دقيق! التوازن هو مفتاح الشخصية السوية." }
+  },
+  {
+    tag: "مشكلات البيئة المنزلية",
+    title: "العدو الأول: القوالب الجامدة",
+    story: "تلقين الطفل أن هناك 'طريقة واحدة فقط' لحل اللغز هو بمثابة وضع قفل حديدي على عقله المبدع.",
+    content: "البيوت التي تفرض قوالب تفكير جامدة وتمنع التجربة تقتل روح الإبداع، مما يسبب إحباطاً للوظائف الذهنية العليا للطفل.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-lock"></i></div><div style="font-weight:700">التفكير النمطي يقتل الإبداع</div>`,
+    quiz: { q: "ما هي نتيجة تلقين الأطفال قوالب جامدة في التفكير؟", opts: ["تنمية قدراتهم على الابتكار", "قتل روح الإبداع وإحباط الذهن"], ans: 1, fb: "صحيح! الإبداع يحتاج لمساحة من الحرية والخطأ." }
+  },
+  {
+    tag: "مشكلات البيئة المدرسية",
+    title: "الصدام في الفصل",
+    story: "المعلم يريد إنهاء الدرس، والموهوب يريد أن يسأل 'ماذا لو؟'. هذا الصراع قد يحول الفصل إلى ساحة ضيق بدلاً من ساحة تعلم.",
+    content: "بحث الموهوبين عن فرديتهم وأسئلتهم الخارجة عن المألوف قد يثير ضيق بعض المعلمين الذين يفضلون الالتزام الحرفي بالكتاب.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-comment-slash"></i></div><div style="font-weight:700">المعلم التقليدي vs تساؤلات الموهوب</div>`,
+    quiz: { q: "لماذا يضيق بعض المعلمين ذرعاً بالطلاب الموهوبين؟", opts: ["بسبب أسئلتهم الصعبة وحلولهم غير التقليدية", "بسبب كسل الموهوبين الدائم"], ans: 0, fb: "أحسنت! المعلم يحتاج لمرونة كافية لاستيعاب هذه العقول." }
+  },
+  {
+    tag: "مشكلات البيئة المدرسية",
+    title: "مأساة التصنيف الخاطئ",
+    story: "تخيل عبقرياً يُوضع في فصل للمتأخرين لأنه 'مشاكس' أو 'لا ينتبه'؛ هذه هي أكبر جريمة تربوية قد نرتكبها.",
+    content: "بسبب سوء فهم احتياجاتهم السلوكية، قد يُشخص الموهوبون خطأً كحالات تأخر دراسي أو تخلف عقلي، مما يدمر مستقبلهم تماماً.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-user-xmark"></i></div><div style="font-weight:700">خطر التشخيص التربوي الخاطئ</div>`,
+    quiz: { q: "ما هو سبب معاملة بعض الموهوبين كمتخلفين عقلياً أحياناً؟", opts: ["بسبب ضعف قدراتهم الذهنية", "بسبب مشاكل سلوكية وسوء فهم احتياجاتهم"], ans: 1, fb: "دقيق جداً! السلوك المختلف للمبدع قد يُفسر خطأً كعجز." }
+  },
+  {
+    tag: "مشكلات البيئة المدرسية",
+    title: "السأم من التلقين",
+    story: "عقل الموهوب كالعصفور، لا يطيق قفص الحفظ والتكرار. إنه يذبل ويموت بالملل إذا لم يجد سماءً للاكتشاف.",
+    content: "الأساليب التقليدية والمناخ المدرسي الرتيب يبعثان السأم في نفوس الموهوبين الذين يميلون فطرياً للتعلم الذاتي والاستكشاف الحر.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-face-frown-open"></i></div><div style="font-weight:700">الملل من الروتين المدرسي</div>`,
+    quiz: { q: "متى يشعر الموهوب بالضيق الشديد في الفصل؟", opts: ["عندما يستخدم المعلم أسلوب التلقين والنمطية", "عندما يتاح له مجال للاكتشاف"], ans: 0, fb: "أحسنت! الروتين هو العدو اللدود للموهبة." }
+  },
+  {
+    tag: "الاتجاهات العامة",
+    title: "فلسفة الدمج الكامل",
+    story: "تخيل غابة متنوعة؛ فيها الأشجار العالية والأعشاب القصيرة. الدمج يرى أن بقاء الجميع معاً يحافظ على التوازن الطبيعي للحياة.",
+    content: "يهدف الدمج في المدرسة العادية للمحافظة على التفاعل الاجتماعي الطبيعي بين الطلاب بمختلف قدراتهم، ومنع عزل الموهوبين عن مجتمعهم.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-people-group"></i></div><div style="font-weight:700">الدمج = توازن اجتماعي طبيعي</div>`,
+    quiz: { q: "ما هو الهدف من دمج الموهوبين في الصفوف العادية؟", opts: ["المحافظة على التفاعل الاجتماعي الطبيعي", "توفير ميزانية التعليم فقط"], ans: 0, fb: "رائع! الدمج يساعد الموهوب على فهم مجتمعه والتعامل معه." }
+  },
+  {
+    tag: "الاتجاهات العامة",
+    title: "قلاع الموهبة: المدارس الخاصة",
+    story: "أحياناً نحتاج لمعامل خاصة لصناعة الماس؛ المدارس الخاصة هي البيئة المكثفة التي تصنع قادة الفكر وعمالقة المستقبل بسرعة فائقة.",
+    content: "تهدف المدارس الخاصة للموهوبين لإعداد كفاءات وقيادات فكرية، وتوفير بيئة تعليمية تتناسب مع سرعتهم الهائلة في التعلم والابتكار.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-building-columns"></i></div><div style="font-weight:700">حاضنات للقيادات الفكرية</div>`,
+    quiz: { q: "ما هي الميزة الرئيسية للمدارس الخاصة بالموهوبين؟", opts: ["إعداد كفاءات متخصصة وقيادات فكرية", "تسهيل المناهج وجعلها أقل صعوبة"], ans: 0, fb: "ممتاز! هي توفر تحدياً ذهنياً حقيقياً يناسب قدراتهم الاستثنائية." }
+  }
+];
+// --- Core Engine ---
+let currentSlide = 0;
+let userScore = 0;
+const total = SLIDE_DATA.length;
+
+function initApp() {
+  const container = document.getElementById('main-container');
+  SLIDE_DATA.forEach((slide, index) => {
+    const slideDiv = document.createElement('div');
+    slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+    slideDiv.id = 'slide-' + index;
+    
+    slideDiv.innerHTML = `
+      <div class="card">
+        <div class="tag">${slide.tag}</div>
+        <h2>${slide.title}</h2>
+        ${slide.story ? `<div class="story-box"><i class="fa-solid fa-quote-right"></i><p>${slide.story}</p></div>` : ''}
+        <p style="font-size:1.15rem; margin-bottom:20px; font-weight:600; text-align:justify;">${slide.content}</p>
+        <div class="visual-box">${slide.visual}</div>
+        <div class="activity-box" id="actBox-${index}">
+          <p style="font-weight:900; margin-bottom:15px; color:#b45309;"><i class="fa-solid fa-bolt"></i> نشاط تعزيز المعرفة:</p>
+          <p style="margin-bottom:15px; font-weight:700;">${slide.quiz.q}</p>
+          <button class="act-btn" onclick="checkAns(${index}, 0, ${slide.quiz.ans}, this)"><span>${slide.quiz.opts[0]}</span></button>
+          <button class="act-btn" onclick="checkAns(${index}, 1, ${slide.quiz.ans}, this)"><span>${slide.quiz.opts[1]}</span></button>
+          <div class="feedback-msg" id="fb-${index}" style="display:none; padding:10px; border-radius:8px; margin-top:10px; font-weight:800;"></div>
+        </div>
+      </div>
+    `;
+    container.appendChild(slideDiv);
+  });
+  updateUI();
+}
+
+function checkAns(sIdx, chosen, correct, btn) {
+  const box = document.getElementById(`actBox-${sIdx}`);
+  if (box.dataset.answered === "true") return;
+  box.dataset.answered = "true";
+
+  const fb = document.getElementById(`fb-${sIdx}`);
+  const buttons = box.querySelectorAll('.act-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    fb.innerHTML = "✅ إنجاز مبهر! أنت تملك وعياً عميقاً بخصائص الموهبة.";
+    fb.style.backgroundColor = "#d1fae5";
+    fb.style.color = "#065f46";
+    userScore += 100;
+    showToast("+100 نقطة! استمر في الإبداع");
+    confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 }, colors: ['#059669', '#f59e0b'] });
+  } else {
+    btn.classList.add('wrong');
+    fb.innerHTML = "❌ محاولة جيدة.. تذكر أن الإبداع يتطلب الخروج عن المألوف.";
+    fb.style.backgroundColor = "#fee2e2";
+    fb.style.color = "#991b1b";
+    buttons[correct].classList.add('correct');
+  }
+  fb.style.display = "block";
+  updateStats();
+}
+
+function move(dir) {
+  const slides = document.querySelectorAll('.slide');
+  if (currentSlide + dir < 0 || currentSlide + dir >= total) return;
+  
+  slides[currentSlide].classList.remove('active');
+  currentSlide += dir;
+  slides[currentSlide].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateUI();
+}
+
+function updateUI() {
+  document.getElementById('counter').innerText = `${currentSlide + 1} / ${total}`;
+  document.getElementById('progress-bar').style.width = ((currentSlide + 1) / total * 100) + '%';
+  document.getElementById('btn-prev').disabled = currentSlide === 0;
+  document.getElementById('btn-next').disabled = currentSlide === total - 1;
+}
+
+function updateStats() {
+  document.getElementById('scoreDisplay').innerText = userScore;
+  let level = "مبتدئ";
+  if (userScore >= 200) level = "باحث موهوب";
+  if (userScore >= 400) level = "أخصائي إبداع";
+  if (userScore >= 600) level = "خبير شامل";
+  document.getElementById('levelDisplay').innerText = level;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 2500);
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>

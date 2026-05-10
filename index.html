@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>أكاديمية التربية الخاصة - البوابة الرئيسية</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+/* ==========================================================================
+   CSS System - Emerald Luxury Home Page
+   ========================================================================== */
+:root {
+  --c-primary: #059669; 
+  --c-primary-light: #d1fae5; 
+  --c-primary-dark: #047857; 
+  --c-accent: #f59e0b; 
+  --c-bg: #f8fafc; 
+  --c-surface: #ffffff;
+  --c-text-main: #1e293b; 
+  --c-text-muted: #64748b; 
+  --c-border: #e2e8f0;
+  --font-main: 'Cairo', sans-serif;
+  --font-story: 'Tajawal', sans-serif;
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --r-lg: 24px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--c-bg);
+  color: var(--c-text-main);
+  line-height: 1.6;
+  background-image: radial-gradient(var(--c-primary-light) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* Header & Hero Section */
+header {
+  background: linear-gradient(135deg, var(--c-primary-dark), var(--c-primary));
+  color: white;
+  padding: 100px 20px;
+  text-align: center;
+  border-bottom: 8px solid var(--c-accent);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+header::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: url('https://www.transparenttextures.com/patterns/cubes.png');
+  opacity: 0.1;
+}
+
+header h1 { font-size: clamp(2.2rem, 6vw, 3.8rem); font-weight: 900; margin-bottom: 15px; position: relative; z-index: 1; }
+header p { font-size: 1.3rem; font-family: var(--font-story); opacity: 0.95; position: relative; z-index: 1; }
+
+main { max-width: 1200px; margin: -60px auto 60px; padding: 0 20px; position: relative; z-index: 2; }
+
+/* Chapter Styling */
+.chapter-container { margin-bottom: 50px; }
+.chapter-title {
+  display: flex; align-items: center; gap: 15px;
+  background: var(--c-surface); padding: 18px 30px;
+  border-radius: 18px; border-right: 8px solid var(--c-accent);
+  margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.chapter-title h2 { font-size: 1.6rem; color: var(--c-primary-dark); font-weight: 800; }
+.chapter-title i { font-size: 2rem; color: var(--c-accent); }
+
+/* Grid Layout */
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+}
+
+/* Card Styling */
+.card-link {
+  background: var(--c-surface); border-radius: var(--r-lg);
+  padding: 30px; border: 1px solid var(--c-border);
+  text-decoration: none; color: inherit;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex; flex-direction: column; gap: 15px;
+  position: relative; overflow: hidden;
+}
+
+.card-link::after {
+  content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px;
+  background: var(--c-primary); transform: scaleX(0); transition: 0.3s;
+}
+
+.card-link:hover {
+  transform: translateY(-12px);
+  border-color: var(--c-primary);
+  box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15);
+}
+
+.card-link:hover::after { transform: scaleX(1); }
+
+.card-link i { font-size: 2.8rem; color: var(--c-primary); transition: 0.4s; }
+.card-link:hover i { transform: rotate(10deg) scale(1.1); color: var(--c-accent); }
+
+.card-link h3 { font-size: 1.4rem; font-weight: 800; color: var(--c-text-main); }
+.card-link p { font-size: 1rem; color: var(--c-text-muted); line-height: 1.5; }
+
+.badge {
+  position: absolute; top: 15px; left: -35px;
+  background: var(--c-accent); color: white;
+  padding: 5px 40px; transform: rotate(-45deg);
+  font-size: 0.75rem; font-weight: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  header { padding: 80px 15px; }
+  .grid-cards { grid-template-columns: 1fr; }
+  .chapter-title { padding: 15px 20px; }
+}
+
+footer { text-align: center; padding: 60px; color: var(--c-text-muted); font-size: 1rem; border-top: 1px solid var(--c-border); margin-top: 50px; background: white; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>أكاديمية التربية الخاصة</h1>
+  <p>منصة تفاعلية شاملة لدراسة فئات واستراتيجيات الرعاية المتخصصة</p>
+</header>
+
+<main>
+  <div class="chapter-container">
+    <div class="chapter-title">
+      <i class="fa-solid fa-book-bookmark"></i>
+      <h2>الفصل الأول: أسس ومفاهيم التربية الخاصة</h2>
+    </div>
+    <div class="grid-cards">
+      <a href="Specialed_ucation_strategies.html" class="card-link">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <h3>المفهوم والمبادئ</h3>
+        <p>استكشاف تعريفات التربية الخاصة، المبادئ الـ 11 الأساسية، والمقارنة مع التربية العامة.</p>
+      </a>
+      <a href="Special_education_strategies_and_systems.html" class="card-link">
+        <i class="fa-solid fa-gears"></i>
+        <h3>الاستراتيجيات والنظم</h3>
+        <p>دراسة معمقة لنظم العزل والدمج، التطور التاريخي، ومحاولات الرواد الأوائل.</p>
+      </a>
+    </div>
+  </div>
+
+  <div class="chapter-container">
+    <div class="chapter-title">
+      <i class="fa-solid fa-microscope"></i>
+      <h2>الفصل الثاني: المسببات وطرق الوقاية</h2>
+    </div>
+    <div class="grid-cards">
+      <a href="Causes_of_disabilities_prevention_and_treatment_methods.html" class="card-link">
+        <i class="fa-solid fa-shield-heart"></i>
+        <h3>أسباب الإعاقة والوقاية</h3>
+        <p>التعرف على العوامل الجينية والبيئية، ومستويات الوقاية الثلاثة (الأولية، الثانوية، والعلاجية).</p>
+      </a>
+    </div>
+  </div>
+
+  <div class="chapter-container">
+    <div class="chapter-title">
+      <i class="fa-solid fa-users-rectangle"></i>
+      <h2>الفصل الثالث: دراسة الفئات الخاصة</h2>
+    </div>
+    <div class="grid-cards">
+      <a href="The_creative_gifted_child.html" class="card-link">
+        <div class="badge">متميز</div>
+        <i class="fa-solid fa-lightbulb"></i>
+        <h3>الموهبة والإبداع</h3>
+        <p>سمات الطفل المبدع، التفكير التباعدي لجيلفورد، وأعمدة الإبداع (أصالة، مرونة، طلاقة).</p>
+      </a>
+      <a href="Mental_disability.html" class="card-link">
+        <i class="fa-solid fa-brain"></i>
+        <h3>الإعاقة العقلية</h3>
+        <p>مستويات الذكاء حسب "بينيه ووكسلر"، السلوك التكيفي، والقدرات المفاهيمية والعملية.</p>
+      </a>
+      <a href="Hearing_disability.html" class="card-link">
+        <i class="fa-solid fa-ear-listen"></i>
+        <h3>الإعاقة السمعية</h3>
+        <p>قياس السمع بالديسبل، العتبة السمعية، وطرق التواصل (لغة الإشارة والاتصال الكلي).</p>
+      </a>
+      <a href="Visual_impairment.html" class="card-link">
+        <i class="fa-solid fa-eye-low-vision"></i>
+        <h3>الإعاقة البصرية</h3>
+        <p>حدة الإبصار 6/60، أخطاء الانكسار، طريقة برايل، والبدائل الحسية للمكفوفين.</p>
+      </a>
+      <a href="ADHD.html" class="card-link">
+        <i class="fa-solid fa-bolt-lightning"></i>
+        <h3>اضطراب ADHD</h3>
+        <p>نقص الانتباه وفرط النشاط، عوامل الخطر النمائية، والمثلث العلاجي الذهبي.</p>
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>جميع الحقوق محفوظة &copy; 2026 | تم التطوير بواسطة FaresWebCode
+
+</body>
+</html>

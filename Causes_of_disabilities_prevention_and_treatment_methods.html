@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>أسباب الإعاقات والوقاية - الدورة المتقدمة</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+/* ==========================================================================
+   CSS System & Variables - "Emerald Luxury" Theme
+   ========================================================================== */
+:root {
+  --c-primary: #059669; 
+  --c-primary-light: #d1fae5; 
+  --c-primary-dark: #047857; 
+  --c-accent: #f59e0b; 
+  --c-accent-light: #fef3c7; 
+  --c-bg: #f8fafc; 
+  --c-surface: #ffffff;
+  --c-text-main: #1e293b; 
+  --c-text-muted: #64748b; 
+  --c-danger: #ef4444;
+  --c-danger-light: #fee2e2;
+  --c-success: #10b981;
+  --c-border: #e2e8f0;
+  --font-main: 'Cairo', sans-serif;
+  --font-story: 'Tajawal', sans-serif;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 15px rgba(5, 150, 105, 0.3);
+  --r-sm: 8px; --r-md: 12px; --r-lg: 20px; --r-full: 9999px;
+  --t-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-main);
+  background-color: var(--c-bg);
+  color: var(--c-text-main);
+  line-height: 1.8;
+  overflow-x: hidden;
+  background-image: radial-gradient(var(--c-primary-light) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* Typography */
+h2 { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; color: var(--c-primary); margin-bottom: 15px; }
+p { font-size: clamp(1rem, 2.5vw, 1.15rem); color: var(--c-text-main); margin-bottom: 15px; }
+strong { color: var(--c-primary-dark); font-weight: 800; }
+
+/* Layout */
+#progress-container { position: fixed; top: 0; left: 0; right: 0; height: 6px; background: var(--c-border); z-index: 1001; }
+#progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--c-accent), var(--c-primary)); transition: width var(--t-base); box-shadow: var(--shadow-glow); }
+
+header {
+  position: fixed; top: 6px; left: 0; right: 0; height: 65px;
+  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(10px, 3vw, 30px); border-bottom: 1px solid var(--c-border); z-index: 1000;
+  box-shadow: var(--shadow-sm);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--c-primary-dark); }
+.stats { display: flex; align-items: center; gap: 10px; }
+.badge { background: var(--c-bg); border: 1px solid var(--c-border); padding: 5px 12px; border-radius: var(--r-full); font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; }
+
+main { padding: 90px 15px 120px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+.slide { display: none; width: 100%; max-width: 900px; animation: fadeUp var(--t-base) forwards; }
+.slide.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+footer {
+  position: fixed; bottom: 0; left: 0; right: 0; padding: 15px clamp(10px, 3vw, 30px);
+  background: rgba(255, 255, 255, 0.98); border-top: 1px solid var(--c-border);
+  display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+}
+
+/* UI Components */
+.card { background: var(--c-surface); border-radius: var(--r-lg); padding: clamp(20px, 4vw, 35px); box-shadow: var(--shadow-md); border: 1px solid rgba(5, 150, 105, 0.1); margin-bottom: 25px; }
+.tag { display: inline-block; padding: 5px 15px; background: var(--c-primary-light); color: var(--c-primary-dark); border-radius: var(--r-full); font-size: 0.8rem; font-weight: 800; margin-bottom: 15px; }
+.story-box { background: linear-gradient(to left, var(--c-bg), var(--c-surface)); border-right: 4px solid var(--c-accent); padding: 20px; border-radius: var(--r-md); margin-bottom: 20px; display: flex; gap: 15px; }
+.story-box i { font-size: 2rem; color: var(--c-accent); }
+.story-box p { font-family: var(--font-story); font-size: 1.1rem; color: var(--c-text-main); margin: 0; font-style: italic; }
+.visual-box { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: var(--r-md); padding: 25px; margin: 20px 0; text-align: center; }
+.v-icon { font-size: 4rem; color: var(--c-primary); margin-bottom: 10px; }
+
+/* Activities */
+.activity-box { background: linear-gradient(135deg, var(--c-surface), #fefce8); border: 1px solid var(--c-accent); border-radius: var(--r-lg); padding: 25px; }
+.act-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: #b45309; font-weight: 900; }
+.act-options { display: grid; gap: 12px; margin-top: 15px; }
+.act-btn { background: var(--c-surface); border: 2px solid var(--c-border); padding: 15px; border-radius: var(--r-md); cursor: pointer; font-family: var(--font-main); font-weight: 600; text-align: right; transition: all var(--t-base); display: flex; justify-content: space-between; }
+.act-btn:hover:not(:disabled) { border-color: var(--c-primary); transform: translateX(-5px); background: var(--c-primary-light); }
+.act-btn.correct { background: var(--c-success-light); border-color: var(--c-success); color: #065f46; }
+.act-btn.wrong { background: var(--c-danger-light); border-color: var(--c-danger); color: #991b1b; }
+.feedback-msg { margin-top: 15px; padding: 15px; border-radius: var(--r-sm); font-weight: 700; display: none; }
+
+/* Buttons */
+.btn { padding: 12px 30px; border-radius: var(--r-full); border: none; font-weight: 800; cursor: pointer; font-family: var(--font-main); transition: all var(--t-base); display: flex; align-items: center; gap: 8px; }
+.btn-primary { background: var(--c-primary); color: white; box-shadow: var(--shadow-md); }
+.btn-outline { background: var(--c-surface); color: var(--c-text-muted); border: 1px solid var(--c-border); }
+</style>
+</head>
+<body>
+
+<div id="progress-container"><div id="progress-bar"></div></div>
+
+<header>
+  <div class="brand"><i class="fa-solid fa-shield-virus"></i> أسباب الإعاقات والوقاية</div>
+  <div class="stats">
+    <div class="badge"><i class="fa-solid fa-star"></i> <span id="scoreDisplay">0</span></div>
+    <div class="badge" style="color: var(--c-primary); border-color: var(--c-primary);"><i class="fa-solid fa-medal"></i> <span id="levelDisplay">مبتدئ</span></div>
+  </div>
+</header>
+
+<main id="main-container"></main>
+
+<footer>
+  <button class="btn btn-outline" id="btn-prev" onclick="move(-1)"><i class="fa-solid fa-arrow-right"></i> السابق</button>
+  <div style="font-weight: 800; color: var(--c-primary);" id="counter">1 / --</div>
+  <button class="btn btn-primary" id="btn-next" onclick="move(1)">التالي <i class="fa-solid fa-arrow-left"></i></button>
+</footer>
+
+<script>
+const SLIDE_DATA = [
+  {
+    tag: "مقدمة الوحدة",
+    title: "خارطة الطريق: أسباب ووقاية",
+    story: "تخيل أننا نبني حصناً منيعاً ضد العواصف. لكي ينجح الحصن، يجب أن نفهم اتجاه الرياح (الأسباب)، ونقوي الجدران (الوقاية)، ونجهز فرق الصيانة (التأهيل).",
+    content: "سنتناول في هذه الوحدة الأسباب المختلفة للإعاقة، والعلاقة بين الوضع الأسري والاقتصادي وحدوث الإعاقة، بالإضافة إلى مستويات الوقاية وبرامج التأهيل والتدخل.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-map-location-dot"></i></div><div style="font-weight:700">منظومة متكاملة: فهم + وقاية + تأهيل</div>`,
+    quiz: { 
+      q: "ما هو الهدف الجوهري من دراسة مسببات الإعاقة؟", 
+      opts: ["حصر الحالات تاريخياً", "تحديد طرق الوقاية والتدخل المناسبة"], 
+      ans: 1, 
+      fb: "أحسنت! الفهم العميق للأسباب هو الخطوة الأولى لبناء استراتيجيات وقاية وتدخل فعالة." 
+    }
+  },
+  {
+    tag: "الإعاقة والأسرة",
+    title: "دوامة الفقر والوعي الصحي",
+    story: "تخيل وجود ثقب صغير في قارب؛ إذا لم يمتلك البحار الوعي أو الأدوات لإصلاحه فوراً، سيتحول الثقب الصغير إلى غرق كامل للقارب.",
+    content: "تدني المستوى الاقتصادي المصحوب بقلة الوعي الصحي يزيد من احتمالية حدوث الإصابة، والتي قد تتطور لاحقاً لتؤدي إلى الإعاقة ثم إلى العجز الدائم في حال إهمالها.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-arrow-trend-down"></i></div><div style="font-weight:700">فقر + نقص وعي = خطر العجز الدائم</div>`,
+    quiz: { 
+      q: "كيف يؤدي نقص الوعي الصحي لتفاقم الإعاقة؟", 
+      opts: ["عبر تحويل الإصابات البسيطة إلى عجز دائم", "عبر تحسين مناعة الجسم تلقائياً"], 
+      ans: 0, 
+      fb: "صحيح! الإهمال أو الجهل في التعامل مع الإصابات الأولية هو ما يؤدي غالباً للإعاقة الدائمة." 
+    }
+  },
+  {
+    tag: "الإعاقة والأسرة",
+    title: "تحديات الدخل وحواجز الفرص",
+    story: "تخيل شخصاً يمتلك مفتاحاً لكنه يقف أمام باب مغلق بإحكام في مجتمع لا يوفر له الطريق للوصول إلى القفل.",
+    content: "نتيجة حتمية لحدوث الإعاقة، يتوقع أن يعاني الفرد من نقص شديد في الدخل بسبب عدم توفر الفرص التأهيلية والتشغيلية في المجتمعات التي لا تتيح الحد الأدنى حتى للعاديين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div><div style="font-weight:700">حلقة مفرغة: إعاقة - فقر - نقص فرص</div>`,
+    quiz: { 
+      q: "ما هو السبب الرئيس لنقص دخل المعاق في المجتمعات النامية؟", 
+      opts: ["عدم رغبته الشخصية في العمل", "غياب برامج التأهيل والفرص التشغيلية"], 
+      ans: 1, 
+      fb: "دقيق جداً! المشكلة غالباً بيئية ومجتمعية تتعلق بغياب تكافؤ الفرص والتأهيل." 
+    }
+  },
+  {
+    tag: "الإعاقة والأسرة",
+    title: "الانتشار والجودة الصحية",
+    story: "الغيوم السوداء تزيد من فرصة هطول المطر، لكنها لا تعني بالضرورة حدوث العاصفة في كل مكان. هكذا هي الظروف الاقتصادية المتدنية.",
+    content: "تدني المستويات الاقتصادية لا يعني بالضرورة حدوث الإعاقة، لكن الدلائل تشير إلى ظهورها أكثر في الظروف الاقتصادية والاجتماعية المتدنية المصاحبة لتدني المستوى الصحي والوقائي عالمياً.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-earth-africa"></i></div><div style="font-weight:700">علاقة إحصائية مرتبطة بجودة الرعاية</div>`,
+    quiz: { 
+      q: "هل الفقر يؤدي 'حتماً' وبالضرورة للإعاقة؟", 
+      opts: ["نعم، بشكل قطعي", "لا، ولكنه يزيد احتمالية حدوثها إحصائياً"], 
+      ans: 1, 
+      fb: "رائع! الفقر عامل خطر يزيد الاحتمالية ولكنه ليس قدراً حتمياً إذا توفر الوعي والحد الأدنى من الوقاية." 
+    }
+  },
+  {
+    tag: "الإعاقة والأسرة",
+    title: "مأساة الطفل في البيئات النامية",
+    story: "مثل نبتة صغيرة تحتاج للسقي في أرض جافة، يجد الطفل المعاق نفسه يواجه الجفاف (الرفض) والعطش (نقص الرعاية) في آن واحد.",
+    content: "يعاني الطفل الذي يولد من ذوي الاحتياجات الخاصة من التحيز والرفض والحرمان. ورغم حاجته الماسة للرعاية الصحية الأساسية، فإنه غالباً ما يترك لمواجهة مصيره دون الحد الأدنى من الرعاية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-child-reaching"></i></div><div style="font-weight:700">تحدي الرفض الاجتماعي + نقص الرعاية</div>`,
+    quiz: { 
+      q: "ما هو التحدي الأكبر الذي يواجه الطفل المعاق في البيئات الفقيرة؟", 
+      opts: ["الرعاية الفائقة", "الحرمان من الرعاية الصحية والتحيز ضده"], 
+      ans: 1, 
+      fb: "أحسنت! المعاناة مزدوجة: نفسية (بالرفض) وجسدية (بنقص الرعاية)." 
+    }
+  },
+  {
+    tag: "الأسباب الوراثية",
+    title: "مخطط الحياة: الجينات الوراثية",
+    story: "الجينات هي 'الشيفرة' التي يُبنى عليها الكائن. إذا حدث خلل في كتابة الشيفرة منذ البداية، سيظهر أثرها في البناء النهائي.",
+    content: "تشتمل الأسباب الوراثية على مجموعة من العوامل الجينية التي تؤثر في الجنين لحظة الإخصاب. ويستدل عليها من دراسة التاريخ الجيني والأسري للزوجين وأثره على الأطفال.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-dna"></i></div><div style="font-weight:700">الوراثة: خلل في 'شيفرة' البناء الأولية</div>`,
+    quiz: { 
+      q: "متى يتقرر تأثير العوامل الوراثية في حدوث الإعاقة؟", 
+      opts: ["عند سن البلوغ", "في لحظة الإخصاب"], 
+      ans: 1, 
+      fb: "صحيح! الأسباب الوراثية محددة جينياً منذ اللحظة الأولى لتكون الجنين." 
+    }
+  },
+  {
+    tag: "الأسباب البيئية",
+    title: "المؤثرات الخارجية: البيئة المحيطة",
+    story: "تخيل بذرة ممتازة وُضعت في تربة ملوثة أو هواء سام؛ لن تنمو بشكل سليم مهما كانت جودتها الأصلية.",
+    content: "البيئة هي حصيلة المؤثرات الخارجية والظروف التي قد تلعب دوراً رئيساً في حدوث حالات الإعاقة منذ ظهور الحمل وحتى ما بعد الولادة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-seedling"></i></div><div style="font-weight:700">البيئة: من بداية الحمل لما بعد الولادة</div>`,
+    quiz: { 
+      q: "ما هو النطاق الزمني لتأثير الأسباب البيئية؟", 
+      opts: ["منذ بداية الحمل حتى ما بعد الولادة", "فقط خلال السنوات الدراسية"], 
+      ans: 0, 
+      fb: "دقيق جداً! الأسباب البيئية تشمل كل المؤثرات الخارجية التي يتعرض لها الجنين والطفل." 
+    }
+  },
+  {
+    tag: "عوامل الحمل والولادة",
+    title: "مخاطر الرحلة: (أ) صحة الأم",
+    story: "تخيل طائرة تمر بمطبات هوائية عنيفة؛ سلامة الركاب (الجنين) تعتمد كلياً على سلامة الطائرة (الأم) وقوة محركاتها.",
+    content: "تشمل المخاطر أثناء الحمل والولادة: أمراض اضطرابات التسمم الغذائي، اختناق الطفل لنقص الأكسجين، تسمم الحمل، ارتفاع الضغط، فقر الدم، والنزيف أثناء الحمل.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-lungs-virus"></i></div><div style="font-weight:700">نقص الأكسجين والنزيف = خطر الإعاقة</div>`,
+    quiz: { 
+      q: "ما هو المسبب الرئيس لاختناق الطفل أثناء الولادة؟", 
+      opts: ["نقص الأكسجين", "زيادة الغذاء"], 
+      ans: 0, 
+      fb: "أحسنت! نقص الأكسجين أثناء الولادة مسبب خطير للشلل الدماغي والإعاقات الذهنية." 
+    }
+  },
+  {
+    tag: "عوامل الحمل والولادة",
+    title: "مخاطر الرحلة: (ب) السموم والأشعة",
+    story: "تخيل تسرب غاز سام في حضانة آمنة. السموم التي تدخل جسم الأم تجد طريقها مباشرة لتعطيل نمو الطفل الصغير.",
+    content: "تشمل أيضاً: إدمان الأم أو تناول الكحول والمخدرات، العقاقير المختلفة، التعرض للأشعة، الصدمات، تلوث الهواء أو الماء، واضطرابات التمثيل الغذائي.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-radiation"></i></div><div style="font-weight:700">السموم الخارجية تهاجم الدماغ الجنيني</div>`,
+    quiz: { 
+      q: "تعرض الحامل للأشعة السينية (X-ray) بكثرة يندرج تحت أي سبب؟", 
+      opts: ["أسباب وراثية", "أسباب بيئية"], 
+      ans: 1, 
+      fb: "صحيح! الأشعة مسبب بيئي خارجي يؤثر على انقسام الخلايا ونمو الجنين." 
+    }
+  },
+  {
+    tag: "عوامل الحمل والولادة",
+    title: "مخاطر الرحلة: (ج) الأمراض المزمنة",
+    story: "العقبات الموجودة في طريق النمو قد تكون أمراضاً كامنة داخل جسد الأم، تعمل كحواجز تعيق التطور الطبيعي للجنين.",
+    content: "تشمل أمراضاً مثل: المرض الكلوي المزمن، السكري، الحصبة الألمانية، الالتهابات، اضطرابات الهرمونات، وسوء التغذية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-hospital-user"></i></div><div style="font-weight:700">أمراض الأم المزمنة تهدد الجنين</div>`,
+    quiz: { 
+      q: "أي من هذه الأمراض يعد خطيراً جداً على سمع وبصر الجنين؟", 
+      opts: ["الحصبة الألمانية", "الرشح البسيط"], 
+      ans: 0, 
+      fb: "ممتاز! الحصبة الألمانية تعد من أخطر المسببات للإعاقات الحسية والذهنية للجنين." 
+    }
+  },
+  {
+    tag: "عوامل الحمل والولادة",
+    title: "جيوش الميكروبات: العدوى والأمراض",
+    story: "تخيل قلعة تتعرض لهجوم من جيوش غير مرئية؛ الفيروسات والبكتيريا تهاجم الجهاز العصبي للطفل وتحاول تدميره.",
+    content: "تشمل أمراضاً معدية مثل: الصفراء، الحصبة، الدفتيريا، الكساح، الحمى القرمزية، النكاف، التهابات السحايا، وشلل الأطفال.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-virus-covid"></i></div><div style="font-weight:700">أمراض فيروسية تهاجم الجهاز العصبي</div>`,
+    quiz: { 
+      q: "التهاب السحايا وشلل الأطفال من المسببات التي تؤدي لـ:", 
+      opts: ["تحسين المناعة الطبيعية", "حدوث الإعاقة الدائمة"], 
+      ans: 1, 
+      fb: "أحسنت! هذه الأمراض تهاجم المراكز العصبية والقرون الأمامية للنخاع الشوكي." 
+    }
+  },
+  {
+    tag: "عوامل الحمل والولادة",
+    title: "عسر الولادة وتحديات الميكانيكا",
+    story: "تخيل سفينة ضخمة تحاول المرور عبر مضيق ضيق جداً؛ أي خطأ في التموضع أو التأخير قد يؤدي لتحطم السفينة.",
+    content: "تشمل: وضع الجنين الخاطئ في الرحم، عسر الولادة والاختناق، والولادة المبكرة، بالإضافة إلى الإجهاض المتكرر.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-baby-carriage"></i></div><div style="font-weight:700">مخاطر ميكانيكا الولادة والتموضع</div>`,
+    quiz: { 
+      q: "الولادة المبكرة (قبل الموعد) تعتبر خطراً لأنها:", 
+      opts: ["لا تسمح باكتمال نمو الأعضاء الحيوية", "تزيد من وزن الطفل"], 
+      ans: 0, 
+      fb: "صحيح! الأطفال المبتسرون هم الأكثر عرضة للإعاقات نتيجة عدم نضج أجهزتهم." 
+    }
+  },
+  {
+    tag: "عوامل الحمل والولادة",
+    title: "تسمم الحمل: الحريق الصامت",
+    story: "تسمم الحمل يبدأ مثل شرارة في مطبخ؛ إذا لم يتم إطفاؤها فوراً، ستلتهم المنزل (الأم) وتقتل من فيه (الجنين).",
+    content: "تحدث الالتهابات وتسمم الحمل أثناء الحمل أو الولادة أو بعدها، وقد تسبب آلاماً مبرحة أو العقم، ومشكلات عاطفية ونفسية وتفككاً في الحياة الزوجية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-triangle-exclamation"></i></div><div style="font-weight:700">تسمم الحمل = تهديد حياة الأم والجنين</div>`,
+    quiz: { 
+      q: "ما هي الآثار الاجتماعية لتسمم الحمل وإهمال علاجه؟", 
+      opts: ["تحسن العلاقات الأسرية", "تفكك الحياة الزوجية نتيجة الآلام المزمنة"], 
+      ans: 1, 
+      fb: "أحسنت! الإعاقة والمرض المزمن لهما تبعات اجتماعية ونفسية خطيرة." 
+    }
+  },
+  {
+    tag: "عوامل الحمل والولادة",
+    title: "مخاطر التسمم (متابعة)",
+    story: "تخيل أنك تملك 10 دقائق فقط لإنقاذ شخص قبل وقوع كارثة. هكذا هو التدخل في حالات تسمم الحمل.",
+    content: "يقدر انتشار تسمم الحمل بـ 10% بين النساء. إذا لم يتم التدخل السريع، قد تصاب الأم بالتهابات حادة في الحوض تهدد حياتها وتؤدي لمضاعفات للجنين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-thermometer"></i></div><div style="font-weight:700">10% من الحوامل معرضات للتسمم</div>`,
+    quiz: { 
+      q: "إهمال علاج التهابات الحوض بعد الولادة قد يسبب للأم:", 
+      opts: ["تهديداً مباشراً لحياتها", "زيادة في النشاط البدني"], 
+      ans: 0, 
+      fb: "صحيح! الالتهابات المهملة قد تؤدي لتعفن الدم والوفاة." 
+    }
+  },
+  {
+    tag: "سوء التغذية",
+    title: "اللبنات الضعيفة: أثر التغذية",
+    story: "بناء الجدران بآجر (طوب) هش وهزيل سيجعل الجدار ينهار عند أول ريح. غذاء الأم هو 'الآجر' الذي يبني جسد الطفل.",
+    content: "سوء تغذية الأم يؤدي لولادة أطفال بوزن أقل من الطبيعي، وهم معرضون لخطر الوفاة في الأسبوع الأول بنسبة أكبر بكثير من الأصحاء.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-apple-whole"></i></div><div style="font-weight:700">سوء التغذية = وزن منخفض = خطر وفاة</div>`,
+    quiz: { 
+      q: "ما هو الخطر المباشر لولادة طفل بوزن ناقص جداً؟", 
+      opts: ["الذكاء الخارق", "زيادة نسبة الوفاة في الأسبوع الأول"], 
+      ans: 1, 
+      fb: "أحسنت! الوزن المنخفض (L.B.W) هو أحد أكبر مؤشرات الخطر الصحي." 
+    }
+  },
+  {
+    tag: "سوء التغذية",
+    title: "مضاعفات 'الناجين' من نقص الوزن",
+    story: "النجاة من العاصفة لا يعني دائماً السلامة التامة؛ قد تخرج السفينة بصواري مكسورة ومحرك معطل.",
+    content: "من ينجو من الوفاة بفضل التقدم الطبي يكون معرضاً للإصابة بالشلل الدماغي، التشنجات، صعوبات التعلم الشديدة، أو الإعاقات العقلية والحسية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-brain"></i></div><div style="font-weight:700">مضاعفات: شلل دماغي وصعوبات تعلم</div>`,
+    quiz: { 
+      q: "ما الذي قد يواجهه الطفل الناجي من نقص الوزن الحاد؟", 
+      opts: ["صعوبات تعلم وإعاقات حسية", "تفوق رياضي مفاجئ"], 
+      ans: 0, 
+      fb: "صحيح! النجاة البيولوجية قد تتبعها إعاقات دائمة نتيجة نقص النمو." 
+    }
+  },
+  {
+    tag: "فقر الدم",
+    title: "خزان الوقود الفارغ: الأنيميا",
+    story: "تخيل سيارة تحاول تسلق جبل بخزان وقود فارغ؛ فقر الدم هو نقص 'الوقود' الحيوي للأم والجنين.",
+    content: "يؤثر فقر الدم الشديد على قدرة النساء على الإنجاب وصحتهن. وقد تسبب في وفيات ومضاعفات صحية واسعة في الدول النامية أضعفت خصوبة النساء.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-droplet"></i></div><div style="font-weight:700">فقر الدم = ضعف خصوبة + خطر وفاة</div>`,
+    quiz: { 
+      q: "فقر الدم (الأنيميا) لدى الحامل يعد سبباً لـ:", 
+      opts: ["زيادة مستويات الطاقة", "وفاة أو حدوث إصابات للأم والجنين"], 
+      ans: 1, 
+      fb: "دقيق! نقص الهيموجلوبين يعني نقص الأكسجين الواصل للأنسجة." 
+    }
+  },
+  {
+    tag: "ارتفاع ضغط الدم",
+    title: "انفجار البخار: ارتفاع الضغط",
+    story: "ارتفاع الضغط يشبه زيادة الضغط في غلاية بخارية؛ إذا زاد عن حده، قد يحرم الجنين من الغذاء أو يدمر جهازه التنفسي.",
+    content: "تعاني 6% من الحوامل من ارتفاع الضغط، مما يحرم الجنين من التغذية المناسبة أو يسبب إصابة الجهاز العصبي المركزي أو فشلاً تنفسياً.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-heart-pulse"></i></div><div style="font-weight:700">ضغط مرتفع = فشل تنفسي للجنين</div>`,
+    quiz: { 
+      q: "كيف يؤثر ارتفاع الضغط على الجنين داخل الرحم؟", 
+      opts: ["يحرمه من التغذية ويصيب جهازه العصبي", "يجعله ينمو أسرع"], 
+      ans: 0, 
+      fb: "أحسنت! الضغط المرتفع يقلص التروية الدموية للمشيمة." 
+    }
+  },
+  {
+    tag: "الآثار الاجتماعية",
+    title: "سقوط أحجار الدومينو: التدهور الأسري",
+    story: "عندما يسقط حجر واحد (مرض الأم)، تتوالى الأحجار في السقوط؛ تضيع المدخرات، وتترك الفتيات الدراسة، وينهار مستقبل الأسرة.",
+    content: "تؤثر مصاريف العلاج على استهلاك الأسرة ومدخراتها. وقد تضطر الفتيات لترك الدراسة للقيام بدور الأم المريضة، مما يدفع الأطفال لسوق العمل.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-house-crack"></i></div><div style="font-weight:700">المرض = تسرب دراسي + فقر مدقع</div>`,
+    quiz: { 
+      q: "ما هو الأثر الاجتماعي المباشر لمرض الأم في الأسر الفقيرة؟", 
+      opts: ["ترك الفتيات للدراسة للقيام بأعباء المنزل", "شراء أثاث جديد"], 
+      ans: 0, 
+      fb: "صحيح! المرض المزمن أو الإعاقة تعيد رسم الأدوار الاجتماعية بشكل قسري." 
+    }
+  },
+  {
+    tag: "التدخل العلاجي",
+    title: "إطفاء الحريق في مهده: التدخل المبكر",
+    story: "عود ثقاب واحد يمكن إطفاؤه بنفخة هواء؛ لكن إذا تُرك، سيحتاج لجيش من رجال الإطفاء. هكذا هو التدخل المبكر.",
+    content: "البدء بالتدخل العلاجي والوقائي المبكر يحد من تأثير المسببات. تدهور صحة الأم يؤثر على إنتاجيتها وقدرتها، مما يتطلب تدخلاً طبياً عاجلاً.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-clock-rotate-left"></i></div><div style="font-weight:700">التدخل المبكر يقلل حجم الخسائر</div>`,
+    quiz: { 
+      q: "لماذا يعد 'عنصر الزمن' حاسماً في علاج مسببات الإعاقة؟", 
+      opts: ["للحد من تأثير المسببات قبل تفاقمها", "لإعطاء الوقت للشفاء التلقائي"], 
+      ans: 0, 
+      fb: "أحسنت! كلما كان التدخل أسرع، كانت فرص الحد من العجز أكبر." 
+    }
+  },
+  {
+    tag: "التدخل الصحي",
+    title: "فريق الطوارئ: الإجراءات الطبية (1)",
+    story: "تخيل أنك في غرفة عمليات مجهزة بأحدث الأدوات؛ الفريق الطبي المدرب هو خط الدفاع الفاصل بين الموت والحياة.",
+    content: "يشمل: إجراء عمليات جراحية، نقل دم للتغلب على مضاعفات الضغط وفقر الدم، وتوفير طاقم طبي مدرب وأجهزة حديثة ونظام إحالة فعال.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-kit-medical"></i></div><div style="font-weight:700">طاقم مدرب + أجهزة حديثة = إنقاذ</div>`,
+    quiz: { 
+      q: "من أهم ركائز التدخل الطبي لمواجهة مضاعفات الحمل:", 
+      opts: ["توفير نظام إحالة فعال وطاقم مدرب", "الاعتماد على الوصفات الشعبية فقط"], 
+      ans: 0, 
+      fb: "دقيق جداً! نظام الإحالة (Referral System) يضمن وصول الحالات الحرجة للمختصين بسرعة." 
+    }
+  },
+  {
+    tag: "التدخل الصحي",
+    title: "جسر النجاة: الإجراءات الطبية (2)",
+    story: "الطريق السريع للمستشفى هو جسر الحياة. السرعة في نقل الحامل المريضة تنقذ شخصين في آن واحد.",
+    content: "يشمل أيضاً: تيسير نقل الحامل للمراكز الصحية بسرعة، وتوفير رعاية طبية ملائمة بعد الولادة أو الإجهاض لحل مشكلات النزيف والتلف العضوي.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-helicopter"></i></div><div style="font-weight:700">النقل السريع + الرعاية بعد الولادة</div>`,
+    quiz: { 
+      q: "تهدف الرعاية الطبية بعد الولادة أو الإجهاض لحل مشكلات:", 
+      opts: ["نقص الشهية", "النزيف والتلف العضوي والالتهابات"], 
+      ans: 1, 
+      fb: "أحسنت! الرعاية البعدية حاسمة لمنع حدوث مضاعفات دائمة للأم." 
+    }
+  },
+  {
+    tag: "التثقيف والتدريب",
+    title: "البوصلة الصحية: التوعية",
+    story: "تخيل أنك تمشي في الظلام؛ التثقيف الصحي هو المصباح الذي يكشف لك العقبات (المؤشرات الخطيرة) قبل أن تتعثر بها.",
+    content: "تدريب الأمهات، تشجيع الزيارة للطبيب (4 مرات على الأقل في الثلث الأول)، وتوعيتهن بالمؤشرات الخطيرة وكيفية التصرف عند الطوارئ.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-chalkboard-user"></i></div><div style="font-weight:700">4 زيارات للطبيب في الثلث الأول</div>`,
+    quiz: { 
+      q: "ما هو العدد الأدنى لزيارات الطبيب المنصوح بها في أول 3 أشهر؟", 
+      opts: ["4 مرات على الأقل", "مرة واحدة فقط عند الألم"], 
+      ans: 0, 
+      fb: "صحيح! المتابعة الدورية تكشف التسمم والضغط والأنيميا مبكراً." 
+    }
+  },
+  {
+    tag: "التثقيف والتدريب",
+    title: "الوقود الحيوي: التغذية السليمة",
+    story: "تخيل أن جسدك مصنع يحتاج لمواد خام ممتازة (فيتامينات) لإنتاج منتج نهائي رائع (طفل سليم).",
+    content: "تثقيف النساء بالعادات الغذائية السليمة وتزويدهن بالفيتامينات. سوء التغذية يقلل المقاومة للأمراض والالتهابات وارتفاع الضغط.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-carrot"></i></div><div style="font-weight:700">التغذية = مقاومة للأمراض</div>`,
+    quiz: { 
+      q: "ما هي النتيجة المباشرة لنقص الفيتامينات وسوء التغذية؟", 
+      opts: ["زيادة مناعة الجسم", "تقليل مقاومة الأم للأمراض والالتهابات"], 
+      ans: 1, 
+      fb: "أحسنت! التغذية هي خط الدفاع الكيميائي الأول لجسم الحامل." 
+    }
+  },
+  {
+    tag: "مفهوم الوقاية",
+    title: "الدرع المنيع: مفهوم الوقاية",
+    story: "الوقاية ليست مجرد منع المرض، بل هي بناء سياج حول الغابة لمنع الحرائق، وتجهيز ممرات آمنة للحيوانات (التفاعل مع البيئة).",
+    content: "مجموعة إجراءات منظمة تهدف للإقلال من حدوث الخلل المؤدي لعجز الوظائف، والحد من آثار العجز، لإتاحة الفرصة للفرد للتفاعل المثمر مع بيئته.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-shield-halved"></i></div><div style="font-weight:700">منع الخلل + الحد من آثار العجز</div>`,
+    quiz: { 
+      q: "ما هو الهدف النهائي من عملية الوقاية؟", 
+      opts: ["تحقيق أقصى درجة تفاعل للمجتمع مع المعاق", "ترك الإعاقة لمسارها الطبيعي"], 
+      ans: 0, 
+      fb: "رائع! الوقاية تهدف لدمج الفرد في بيئته بشكل منتج ومثمر." 
+    }
+  },
+  {
+    tag: "مستويات الوقاية",
+    title: "المستوى 1: الوقاية الأولية",
+    story: "إغلاق بوابة القلعة 'قبل' أن يصل الأعداء. المنع قبل الحدوث هو أذكى أنواع الوقاية.",
+    content: "إجراءات تُتخذ قبل حدوث المشكلة لمنعها. مثل: التحصين (التطعيم)، رعاية الحامل، التوعية بأمن الطرق، الإرشاد الجيني، ورفع المستوى الاقتصادي.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-1"></i></div><div style="font-weight:700">المنع قبل الحدوث (Pre-occurrence)</div>`,
+    quiz: { 
+      q: "التطعيم (التحصين) ضد شلل الأطفال يعتبر وقاية:", 
+      opts: ["أولية", "ثانوية"], 
+      ans: 0, 
+      fb: "صحيح! التحصين يمنع حدوث المرض أصلاً، لذا هو وقاية أولية." 
+    }
+  },
+  {
+    tag: "مستويات الوقاية",
+    title: "المستوى 2: الوقاية الثانوية",
+    story: "رؤية تسرب صغير في السد وإصلاحه فوراً 'قبل' أن ينهار السد بالكامل. التشخيص المبكر هو المفتاح.",
+    content: "إجراءات تكفل التقليل من استمرار الإصابة أو شفائها، وتحول دون تطورها عبر التشخيص والعلاج المبكر لذوي الإعاقات.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-2"></i></div><div style="font-weight:700">التشخيص المبكر لمنع التفاقم</div>`,
+    quiz: { 
+      q: "العلاج السريع والمبكر لإصابة بسيطة قبل أن تصبح إعاقة دائمة هو وقاية:", 
+      opts: ["ثانوية", "علاجية"], 
+      ans: 0, 
+      fb: "أحسنت! الثانوية تركز على 'الاحتواء' ومنع التدهور." 
+    }
+  },
+  {
+    tag: "مستويات الوقاية",
+    title: "المستوى 3: الوقاية العلاجية",
+    story: "تعلم العيش وبناء القوة بعد حدوث الإصابة. حتى لو تضرر الجسم، يمكن للعقل والروح والتدريب أن يفتحوا آفاقاً جديدة.",
+    content: "إجراءات تحد من المشكلات المترتبة على الإعاقة، وتحسن الأداء الوظيفي وتخفف الآثار النفسية عبر برامج التأهيل المختلفة والدمج الفعال.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-3"></i></div><div style="font-weight:700">تأهيل ودمج للحد من تبعات العجز</div>`,
+    quiz: { 
+      q: "برامج التأهيل المهني والدمج المدرسي تندرج تحت الوقاية:", 
+      opts: ["العلاجية", "الأولية"], 
+      ans: 0, 
+      fb: "صحيح! الوقاية العلاجية (أو الثالثية) تأتي بعد وقوع الإعاقة للحد من آثارها الاجتماعية والنفسية." 
+    }
+  },
+  {
+    tag: "برامج الوقاية",
+    title: "الإرشاد الوراثي: قراءة الخارطة",
+    story: "فحص البوصلة والخرائط قبل الإبحار؛ معرفة التاريخ الجيني يحميك من التيه في بحر الأمراض الوراثية.",
+    content: "مساعدة الأسر لتجنب تكرار الإعاقة، وتقديم النصح للمقبلين على الزواج حول الصفات الوراثية وتوعية المجتمع بمخاطر زواج الأقارب في انتشار الأمراض.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-microscope"></i></div><div style="font-weight:700">الوعي الجيني يمنع تكرار الإعاقة</div>`,
+    quiz: { 
+      q: "ما هو الهدف الرئيس للإرشاد الوراثي؟", 
+      opts: ["توعية المقبلين على الزواج وتجنب تكرار الإعاقة", "علاج الأمراض بعد الولادة"], 
+      ans: 0, 
+      fb: "أحسنت! الإرشاد الوراثي هو أداة وقائية استباقية." 
+    }
+  },
+  {
+    tag: "برامج الوقاية",
+    title: "العناية المؤسسية أثناء الحمل",
+    story: "الصيانة الدورية لمحرك ثمين جداً؛ الولادة في المستشفى تضمن وجود 'المهندسين' (الأطباء) عند حدوث أي عطل مفاجئ.",
+    content: "توعية الحوامل بالتغذية وتجنب الأدوية والأشعة، وأهمية الولادة في المستشفى لتجنب مشاكل نقص الأكسجين التي تسبب الشلل الدماغي.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-hospital"></i></div><div style="font-weight:700">الولادة في المستشفى = أمان للجنين</div>`,
+    quiz: { 
+      q: "الولادة في المستشفى تساعد تحديداً في تجنب:", 
+      opts: ["الشلل الدماغي الناتج عن نقص الأكسجين", "زيادة طول الطفل"], 
+      ans: 0, 
+      fb: "صحيح! توفر الأكسجين والتدخل السريع يحمي خلايا الدماغ من التلف." 
+    }
+  },
+  {
+    tag: "برامج الوقاية",
+    title: "المسح الطبي: كشف الأسرار",
+    story: "تخيل أنك تفحص كل قطعة في سيارة جديدة خرجت من المصنع؛ اكتشاف خلل صغير في الغدة الدرقية ينقذ ذكاء الطفل للأبد.",
+    content: "فحص كافة المواليد للاكتشاف المبكر لأمراض مسببة للإعاقة، مثل نقص هرمون الغدة الدرقية المسبب للتخلف العقلي واضطرابات التمثيل الغذائي.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-stethoscope"></i></div><div style="font-weight:700">فحص المواليد يحمي القدرات العقلية</div>`,
+    quiz: { 
+      q: "نقص هرمون الغدة الدرقية عند المولود المكتشف بالمسح الطبي يسبب:", 
+      opts: ["التخلف العقلي (إذا لم يُعالج)", "نمواً بدنياً فائقاً"], 
+      ans: 0, 
+      fb: "أحسنت! اكتشاف هذا النقص وعلاجه فوراً يحمي الطفل من إعاقة ذهنية دائمة." 
+    }
+  },
+  {
+    tag: "برامج الوقاية",
+    title: "التأهيل والدمج: جناحا النجاة",
+    story: "مثل عصفور بكتف مكسورة تم علاجه؛ التأهيل يساعده على الطيران من جديد والدمج يسمح له بالعودة لسرب الطيور بحرية.",
+    content: "تفعيل الطاقات لتغيير نظرة المجتمع وسلوكهم، وتمكين ذوي الإعاقة من الوصول لإمكاناتهم البدنية والعقلية القصوى للاندماج الكامل والتمتع بالحقوق والرفاه.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-handshake-angle"></i></div><div style="font-weight:700">دمج كامل + تمتع بالحقوق والرفاه</div>`,
+    quiz: { 
+      q: "ما هو الجوهر الأخلاقي والعملي لبرامج التأهيل؟", 
+      opts: ["تحقيق أقصى إمكانات الفرد ودمجه اجتماعياً", "عزله في مراكز خاصة دائماً"], 
+      ans: 0, 
+      fb: "رائع! التأهيل يهدف للاستقلالية والكرامة والاندماج في نسيج المجتمع." 
+    }
+  }
+];
+// --- Logic (Identical to test4.html system) ---
+let currentSlide = 0;
+let userScore = 0;
+const totalSlides = SLIDE_DATA.length;
+const mainContainer = document.getElementById('main-container');
+const prevBtn = document.getElementById('btn-prev');
+const nextBtn = document.getElementById('btn-next');
+const scoreDisplay = document.getElementById('scoreDisplay');
+
+function initApp() {
+  SLIDE_DATA.forEach((slide, index) => {
+    const slideDiv = document.createElement('div');
+    slideDiv.className = 'slide card' + (index === 0 ? ' active' : '');
+    slideDiv.id = 'slide-' + index;
+
+    let html = `<div class="tag">${slide.tag}</div><h2>${slide.title}</h2>`;
+    if(slide.story) html += `<div class="story-box"><i class="fa-solid fa-quote-right"></i><p>${slide.story}</p></div>`;
+    if(slide.content) html += `<p>${slide.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>`;
+    if(slide.visual) html += `<div class="visual-box">${slide.visual}</div>`;
+    if(slide.quiz) {
+      html += `
+        <div class="activity-box" id="actBox-${index}" data-answered="false">
+          <div class="act-header"><i class="fa-solid fa-bolt"></i> تحدي الاستيعاب:</div>
+          <p style="font-weight:700;">${slide.quiz.q}</p>
+          <div class="act-options">
+            <button class="act-btn" onclick="handleAct(${index}, this, 0, ${slide.quiz.ans}, '${slide.quiz.fb}')"><span>${slide.quiz.opts[0]}</span></button>
+            <button class="act-btn" onclick="handleAct(${index}, this, 1, ${slide.quiz.ans}, '${slide.quiz.fb}')"><span>${slide.quiz.opts[1]}</span></button>
+          </div>
+          <div class="feedback-msg" id="fb-${index}"></div>
+        </div>`;
+    }
+    if(index === totalSlides - 1) html += `<center><button class="btn btn-primary" onclick="location.reload()">إعادة الدورة</button></center>`;
+    slideDiv.innerHTML = html;
+    mainContainer.appendChild(slideDiv);
+  });
+  updateUI();
+}
+
+function handleAct(slideIdx, btn, chosenIdx, correctIdx, fb) {
+  const box = document.getElementById(`actBox-${slideIdx}`);
+  if (box.getAttribute('data-answered') === "true") return;
+  box.setAttribute('data-answered', "true");
+  const buttons = box.querySelectorAll('.act-btn');
+  const fbDiv = document.getElementById(`fb-${slideIdx}`);
+  buttons.forEach(b => b.disabled = true);
+  if (chosenIdx === correctIdx) {
+    btn.classList.add('correct');
+    fbDiv.innerHTML = "✅ " + fb; fbDiv.style.backgroundColor = "var(--c-success-light)";
+    userScore += 50; scoreDisplay.innerText = userScore;
+    confetti({ particleCount: 50, spread: 60 });
+  } else {
+    btn.classList.add('wrong');
+    fbDiv.innerHTML = "❌ " + fb; fbDiv.style.backgroundColor = "var(--c-danger-light)";
+    buttons[correctIdx].classList.add('correct');
+  }
+  fbDiv.style.display = "block";
+}
+
+function move(dir) {
+  const slides = document.querySelectorAll('.slide');
+  if (currentSlide + dir < 0 || currentSlide + dir >= totalSlides) return;
+  slides[currentSlide].classList.remove('active');
+  currentSlide += dir;
+  slides[currentSlide].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateUI();
+  if (currentSlide === totalSlides - 1) document.getElementById('finalScoreText').innerText = userScore;
+}
+
+function updateUI() {
+  document.getElementById('counter').innerText = `${currentSlide + 1} / ${totalSlides}`;
+  document.getElementById('progress-bar').style.width = (((currentSlide + 1) / totalSlides) * 100) + '%';
+  prevBtn.disabled = currentSlide === 0;
+  nextBtn.style.display = currentSlide === totalSlides - 1 ? "none" : "flex";
+  const lv = userScore >= 300 ? "خبير وقائي" : (userScore >= 150 ? "متدرب" : "مبتدئ");
+  document.getElementById('levelDisplay').innerText = lv;
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>

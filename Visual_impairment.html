@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>الإعاقة البصرية - الدورة الكاملة المتقدمة</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+/* ==========================================================================
+   CSS System - Emerald Luxury Theme (نفس نمط ملفاتك المعتمدة)
+   ========================================================================== */
+:root {
+  --c-primary: #059669; 
+  --c-primary-light: #d1fae5; 
+  --c-primary-dark: #047857; 
+  --c-accent: #f59e0b; 
+  --c-bg: #f8fafc; 
+  --c-surface: #ffffff;
+  --c-text-main: #1e293b; 
+  --c-text-muted: #64748b; 
+  --c-danger: #ef4444;
+  --c-success: #10b981;
+  --c-border: #e2e8f0;
+  --font-main: 'Cairo', sans-serif;
+  --font-story: 'Tajawal', sans-serif;
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --r-lg: 20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--c-bg);
+  color: var(--c-text-main);
+  line-height: 1.8;
+  background-image: radial-gradient(var(--c-primary-light) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+#progress-container { position: fixed; top: 0; left: 0; right: 0; height: 6px; background: var(--c-border); z-index: 1001; }
+#progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--c-accent), var(--c-primary)); transition: 0.3s; }
+
+header {
+  position: fixed; top: 6px; left: 0; right: 0; height: 65px;
+  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; border-bottom: 1px solid var(--c-border); z-index: 1000;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--c-primary-dark); }
+.stats { display: flex; align-items: center; gap: 10px; }
+.badge { background: var(--c-bg); border: 1px solid var(--c-border); padding: 5px 12px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; }
+
+main { padding: 90px 15px 120px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+.slide { display: none; width: 100%; max-width: 900px; animation: fadeUp 0.4s forwards; }
+.slide.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.card { background: var(--c-surface); border-radius: var(--r-lg); padding: clamp(20px, 4vw, 35px); box-shadow: var(--shadow-md); border: 1px solid rgba(5, 150, 105, 0.1); margin-bottom: 25px; }
+.tag { display: inline-block; padding: 5px 15px; background: var(--c-primary-light); color: var(--c-primary-dark); border-radius: 50px; font-size: 0.8rem; font-weight: 800; margin-bottom: 15px; }
+
+.story-box { background: linear-gradient(to left, var(--c-bg), var(--c-surface)); border-right: 4px solid var(--c-accent); padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 15px; }
+.story-box i { font-size: 1.8rem; color: var(--c-accent); }
+.story-box p { font-family: var(--font-story); font-style: italic; margin: 0; }
+
+.visual-box { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 15px; padding: 25px; margin: 20px 0; text-align: center; }
+.v-icon { font-size: 3.5rem; color: var(--c-primary); margin-bottom: 10px; }
+
+.activity-box { background: linear-gradient(135deg, var(--c-surface), #fefce8); border: 1px solid var(--c-accent); border-radius: var(--r-lg); padding: 25px; }
+.act-btn {
+  width: 100%; background: var(--c-surface); border: 2px solid var(--c-border); padding: 15px;
+  border-radius: 12px; cursor: pointer; font-family: var(--font-main); font-size: 1rem;
+  font-weight: 600; text-align: right; margin-bottom: 10px; transition: all 0.2s;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.act-btn:hover:not(:disabled) { border-color: var(--c-primary); transform: translateX(-5px); }
+.act-btn.correct { background: #d1fae5; border-color: var(--c-success); color: #065f46; }
+.act-btn.wrong { background: #fee2e2; border-color: var(--c-danger); color: #991b1b; }
+
+footer {
+  position: fixed; bottom: 0; left: 0; right: 0; padding: 15px 30px;
+  background: white; border-top: 1px solid var(--c-border);
+  display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+}
+.btn { padding: 12px 25px; border-radius: 50px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; }
+.btn-primary { background: var(--c-primary); color: white; }
+.btn-outline { background: white; color: var(--text-muted); border: 1px solid var(--c-border); }
+
+.toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 20px; border-radius: 50px; z-index: 2000; display: none; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div id="progress-container"><div id="progress-bar"></div></div>
+
+<header>
+  <div class="brand"><i class="fa-solid fa-eye"></i> أكاديمية الإعاقة البصرية</div>
+  <div class="stats">
+    <div class="badge"><i class="fa-solid fa-star"></i> <span id="scoreDisplay">0</span></div>
+    <div class="badge" style="color:var(--c-primary);"><i class="fa-solid fa-award"></i> <span id="levelDisplay">مبتدئ</span></div>
+  </div>
+</header>
+
+<div class="toast" id="toast"></div>
+
+<main id="main-container"></main>
+
+<footer>
+  <button class="btn btn-outline" id="btn-prev" onclick="move(-1)">السابق</button>
+  <div id="counter" style="font-weight:900; color:var(--c-primary);">1 / --</div>
+  <button class="btn btn-primary" id="btn-next" onclick="move(1)">التالي</button>
+</footer>
+
+<script>
+/* ==========================================================================
+   DATASET: الإعاقة البصرية (30 شريحة مدمجة ومحدثة)
+   ========================================================================== */
+const SLIDE_DATA = [
+  {
+    tag: "التعريف الطبي",
+    title: "مفهوم الكفيف طبياً",
+    story: "تخيل أنك تنظر إلى العالم من خلال ضباب كثيف جداً؛ ما يراه الشخص العادي بوضوح من مسافة بعيدة، لا تراه أنت إلا إذا اقتربت منه لدرجة الالتصاق.. هذا هو جوهر القياس الطبي.",
+    content: "الشخص الكفيف طبياً هو الذي لا تزيد حدة إبصاره عن (6/60 متر) في أحسن العينين باستخدام النظارة. هذا الرقم يعني أن الكفيف يحتاج للاقتراب لمسافة 6 أمتار ليرى ما يراه الشخص الطبيعي من مسافة 60 متراً.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-eye-low-vision"></i></div><div style="font-weight:700">6/60 متر: معيار العجز البصري الطبي</div>`,
+    quiz: { q: "ماذا يعني مقياس (6/60) في فحص حدة الإبصار؟", opts: ["أن ما يراه المبصر على بعد 60 متراً يراه الكفيف على بعد 6 أمتار", "أن الكفيف يرى بوضوح تام حتى مسافة 60 متراً"], ans: 0, fb: "أحسنت! هذا المقياس يوضح الفجوة الكبيرة في القدرة البصرية بين الكفيف والشخص العادي." }
+  },
+  {
+    tag: "التعريف التعليمي",
+    title: "برايل: لغة الأنامل",
+    story: "عندما تغيب لغة العيون عن الأوراق، تبرز لغة الأنامل. في التعليم، لا يهمنا فقط قوة العين، بل يهمنا 'كيف سيتعلم هذا الطفل؟'.",
+    content: "تربوياً، يُعرف الكفيف بأنه الشخص الذي بلغت إعاقته حداً يحتم عليه استخدام حواسه الأخرى للتعلم، وتحديداً استخدام طريقة 'برايل' (النقاط البارزة) للقراءة والكتابة بدلاً من الحروف المطبوعة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-braille"></i></div><div style="font-weight:700">برايل: الجسر التعليمي نحو المعرفة</div>`,
+    quiz: { q: "ما هو المحك الأساسي لتعريف الكفيف من منظور تربوي؟", opts: ["القدرة على رؤية الألوان", "الحاجة لاستخدام طريقة برايل في التعلم"], ans: 1, fb: "دقيق جداً! التعريف التربوي يركز على الوسيلة التعليمية المناسبة لحالة الطفل." }
+  },
+  {
+    tag: "التصنيف",
+    title: "طيف الإعاقة البصرية",
+    story: "الإعاقة البصرية ليست لوناً واحداً، بل هي طيف يبدأ من 'ضعف البصر' حيث تبدو الأشياء باهتة، وصولاً إلى 'الكف الكلي' حيث يسود الظلام.",
+    content: "نميز بين العجز الكلي (الشرعي والتربوي) والعجز الجزئي. 'ضعاف البصر' تتراوح حدة إبصارهم بين (6/21) و (6/60) متر، وهم يستطيعون القراءة إذا استخدموا حروفاً كبيرة أو وسائل تكبير.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-layer-group"></i></div><div style="font-weight:700">6/21 إلى 6/60 = فئة ضعاف البصر</div>`,
+    quiz: { q: "من هم الأفراد الذين يصنفون ضمن فئة 'ضعاف البصر'؟", opts: ["من تتراوح حدة إبصارهم بين 6/21 و 6/60 متر", "من لا يرون الضوء تماماً"], ans: 0, fb: "رائع! هذه الفئة تمتلك بقايا بصرية يمكن استثمارها في التعليم بوسائل مساعدة." }
+  },
+  {
+    tag: "المظاهر",
+    title: "أخطاء الانكسار: القصر والطول",
+    story: "تخيل كاميرا لا تستطيع التركيز؛ أحياناً يكون المشهد البعيد ضبابياً (قصر نظر)، وأحياناً تعجز عن رؤية التفاصيل القريبة (طول نظر).",
+    content: "طول النظر يعني صعوبة رؤية الأجسام القريبة بوضوح. أما قصر النظر فهو العكس؛ حيث يواجه الفرد صعوبة في رؤية الأجسام البعيدة (مثل السبورة)، والسبب هو خلل في تركيز الضوء داخل العين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-magnifying-glass-plus"></i></div><div style="font-weight:700">اضطرابات الانكسار الضوئي في العين</div>`,
+    quiz: { q: "إذا كان الطالب يعجز عن رؤية ما يُكتب على السبورة البعيدة، فهو يعاني من:", opts: ["طول النظر", "قصر النظر"], ans: 1, fb: "صحيح! قصر النظر يجعل المسافات البعيدة غير واضحة." }
+  },
+  {
+    tag: "المظاهر",
+    title: "اللا بؤرية والحول",
+    story: "عندما لا تسقط الصورة في نقطة واحدة أو لا تتجه العينان نحو هدف مشترك، يتبعثر العالم وتضيع دقة التفاصيل.",
+    content: "اللا بؤرية (الاستجماتزم) تسبب رؤية مشوشة وغير محددة. أما الحول فهو اختلال في توازن عضلات العين، مما يجعل العينين لا تنظران في نفس الاتجاه، مما يعيق الإبصار المركز.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-arrows-to-dot"></i></div><div style="font-weight:700">اختلال التوازن العضلي والبؤري</div>`,
+    quiz: { q: "ما هو المصطلح العلمي لاختلال وضع إحدى العينين أو كلتيهما؟", opts: ["الحول", "اللا بؤرية"], ans: 0, fb: "أحسنت! الحول هو مشكلة في عضلات العين تؤثر على التآزر البصري." }
+  },
+  {
+    tag: "الأسباب",
+    title: "البدايات المبكرة: قبل الولادة",
+    story: "أحياناً تبدأ القصة قبل أن يرى الطفل النور؛ جينات وراثية أو بيئة رحمية غير مستقرة قد ترسم مسار البصر مبكراً.",
+    content: "تشمل أسباب ما قبل الولادة العوامل الوراثية (الكروموسومات) والبيئية، مثل إصابة الأم بالحصبة الألمانية أو تعرضها للأشعة، مما يؤثر على نمو الجهاز البصري للجنين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-dna"></i></div><div style="font-weight:700">الوراثة والبيئة الرحمية كعوامل حاسمة</div>`,
+    quiz: { q: "الأسباب الوراثية للإعاقة البصرية تندرج تحت أي فئة؟", opts: ["أسباب ما قبل الولادة", "أسباب ما بعد الولادة"], ans: 0, fb: "دقيق! الوراثة تحدد التركيب الجيني للبصر منذ اللحظات الأولى للتكوين." }
+  },
+  {
+    tag: "الأسباب المرضية",
+    title: "انفصال الشبكية: الستارة المنسدلة",
+    story: "تخيل ورق جدران بدأ ينخلع عن الحائط؛ عندما تنفصل الشبكية عن خلفية العين، يتوقف تدفق المعلومات البصرية تدريجياً.",
+    content: "ينجم انفصال الشبكية عن وجود ثقب يسمح للسوائل بالتجمع خلفها، مما يؤدي لانفصالها عن مصدر غذائها. من أهم أسبابه: إصابات الرأس الشديدة، ومرض السكري.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-user-injured"></i></div><div style="font-weight:700">انفصال الشبكية بسبب الإصابات أو السكري</div>`,
+    quiz: { q: "أي من الأمراض التالية يعتبر مسبباً قوياً لانفصال الشبكية؟", opts: ["السكري وإصابات الرأس", "التهاب اللوزتين"], ans: 0, fb: "رائع! السكري يؤثر بشكل مباشر على الأوعية الدموية في الشبكية." }
+  },
+  {
+    tag: "الأسباب المرضية",
+    title: "انتكاس النقطة المركزية",
+    story: "هذا المرض يشبه وجود بقعة حبر سوداء في مركز كل صورة تلتقطها؛ ترى الحواف بوضوح، لكنك تعجز عن رؤية ما في المنتصف.",
+    content: "هو اضطراب في الأوعية الدموية بمركز الشبكية، يسبب فقدان البصر المركزي (اللازم للقراءة) وبقاء البصر المحيطي فقط. يصيب الكبار والإناث بنسبة أكبر.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-circle-dot"></i></div><div style="font-weight:700">فقدان القدرة على رؤية 'المركز' بوضوح</div>`,
+    quiz: { q: "في حالة انتكاس النقطة المركزية، هل يكفي البصر المحيطي للقراءة؟", opts: ["نعم، يكفي تماماً", "لا، لا يكفي لتأدية الأعمال القريبة كالقراءة"], ans: 1, fb: "صحيح! القراءة تتطلب حدة بصرية مركزية هي المفقودة في هذا المرض." }
+  },
+  {
+    tag: "الأسباب المرضية",
+    title: "الخلع العدسي",
+    story: "العدسة هي محرك التركيز في العين؛ فإذا تزحزحت من مكانها، يصبح العالم مشوشاً ومؤلماً.",
+    content: "يحدث الخلع العدسي عندما تنزاح عدسة العين عن موقعها الطبيعي خلف القزحية، مما يسبب ضعفاً بصرياً واضحاً واحمراراً مستمراً في العين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-up-down-left-right"></i></div><div style="font-weight:700">تزحزح العدسة = تشوه الرؤية</div>`,
+    quiz: { q: "ما هي النتيجة المباشرة للخلع العدسي؟", opts: ["ضعف بصري واحمرار في العين", "تحسن القدرة على رؤية الألوان"], ans: 0, fb: "أحسنت! العدسة يجب أن تكون في مكانها الدقيق لكسر الضوء بشكل سليم." }
+  },
+  {
+    tag: "الخصائص الجسمية",
+    title: "العلامات الظاهرية (1)",
+    story: "العين تتحدث لغة الألم؛ الاحمرار المستمر ليس مجرد تعب، بل هو نداء استغاثة من جهاز بصري يعاني.",
+    content: "من أبرز المؤشرات الفيزيائية لذوي الإعاقة البصرية: الاحمرار الدائم في العينين، كثرة الإدماع غير المبرر، ووجود إفرازات غريبة أو تورم في الجفون.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-droplet"></i></div><div style="font-weight:700">الاحمرار والإدماع: مؤشرات الخطر الأولية</div>`,
+    quiz: { q: "كثرة الإدماع المستمر في العين قد تكون مؤشراً على:", opts: ["التهاب أو إعاقة بصرية كامنة", "قوة الإبصار العالية"], ans: 0, fb: "صحيح! الإفرازات والدموع الزائدة علامة على وجود خلل وظيفي أو مرضي." }
+  },
+  {
+    tag: "الخصائص الجسمية",
+    title: "العلامات الظاهرية (2)",
+    story: "لاحظ كيف يتحرك الطفل؛ هل يميل برأسه؟ هل يقرب الكتاب من أنفه؟ هذه الحركات هي محاولات يائسة من العقل لتعديل الصورة.",
+    content: "يظهر الأطفال ذوو الإعاقة البصرية وضعاً غير طبيعي للرأس عند القراءة، ويقومون بتقريب أو إبعاد المادة المقروءة بشكل مبالغ فيه، كما يتعثرون كثيراً أثناء المشي.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-book-open"></i></div><div style="font-weight:700">سلوكيات القراءة والمشي غير المنتظمة</div>`,
+    quiz: { q: "التعثر المستمر والاصطدام بالعوائق أثناء المشي ناتج عن:", opts: ["قصور في إدراك المسافات والعوائق بصرياً", "حب الطفل للعب والمرح"], ans: 0, fb: "أحسنت! غياب الرؤية الواضحة للأرضية يجعل الحركة مغامرة غير محسوبة." }
+  },
+  {
+    tag: "الخصائص الجسمية",
+    title: "العلامات الظاهرية (3)",
+    story: "فرك العين بقوة هو محاولة فطرية لتخفيف 'الحرقان' أو الضغط الداخلي، لكنه مؤشر مهم للمعلم والأم.",
+    content: "تشمل العلامات أيضاً: صعوبة التمييز بين الألوان، حجب إحدى العينين باليد للتركيز بالأخرى، وفرك العينين باستمرار بسبب الشعور بالحرقان أو الإجهاد.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-hand-dots"></i></div><div style="font-weight:700">فرك العين المستمر = إجهاد بصري شديد</div>`,
+    quiz: { q: "فرك العين المستمر مع الشعور بالحرقان يدل غالباً على:", opts: ["إجهاد بصري شديد وحاجة للفحص", "الرغبة في النوم فقط"], ans: 0, fb: "دقيق! العين المجهدة ترسل إشارات عصبية تترجم لرغبة في الفرك لتخفيف التوتر." }
+  },
+  {
+    tag: "التآزر الحركي",
+    title: "تحدي التناسق الحركي",
+    story: "تخيل أنك تحاول الرقص دون أن ترى خطوات المعلم؛ بدون 'التقليد البصري'، يصبح تعلم الحركات المتناسقة رحلة شاقة.",
+    content: "يعاني الكفيف من قصور في مهارات التناسق الحركي نتيجة حرمانهم من فرص 'التقليد البصري' للمهارات، بالإضافة لقلة فرص النشاط الحركي المتاح لهم في البيئة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-person-walking-arrow-loop-left"></i></div><div style="font-weight:700">غياب التقليد البصري يضعف التآزر الحركي</div>`,
+    quiz: { q: "ما هو السبب الرئيسي لقصور التآزر العضلي لدى الكفيف؟", opts: ["ضعف وراثي في العضلات", "الحرمان من التقليد البصري وقلة النشاط"], ans: 1, fb: "رائع! البصر هو المعلم الأول للحركة، وغيابه يتطلب تدريباً حركياً خاصاً." }
+  },
+  {
+    tag: "اللزمات الحركية",
+    title: "الحركات النمطية (Stereotypes)",
+    story: "هز الجسم أو الرأس باستمرار ليس خللاً عقلياً، بل هو غالباً وسيلة الطفل الكفيف لاستثارة جسده في عالم يفتقر للمثيرات البصرية.",
+    content: "يتصف الكثير من المكفوفين بـ 'لزمات حركية نمطية' تكرارية (هز الجسم، وضع الأصابع في العين)، وهي سلوكيات تظهر أيضاً في بعض حالات الإعاقة الذهنية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-arrows-spin"></i></div><div style="font-weight:700">اللزمات الحركية: وسيلة لاستثارة الذات</div>`,
+    quiz: { q: "هل تقتصر اللزمات الحركية النمطية على المكفوفين فقط؟", opts: ["نعم، هم فقط من يقومون بها", "لا، توجد أيضاً في بعض حالات الإعاقة الذهنية"], ans: 1, fb: "صحيح! هي سلوكيات تعويضية للبحث عن مثيرات حسية داخلية." }
+  },
+  {
+    tag: "النمو المعرفي",
+    title: "بناء العالم الذهني",
+    story: "العقل كالمعالج القوي، لكن مدخلات البيانات لديه محدودة؛ فكيف يبني الكفيف صورة عن العالم دون ألوان أو أبعاد بصرية؟",
+    content: "في الأشهر الأولى لا تظهر فوارق كبيرة، ولكن عند الحاجة للتفاعل مع البيئة، يواجه الكفيف صعوبات في 'المواءمة' المعرفية بسبب محدودية الخبرات الحسية المباشرة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-brain"></i></div><div style="font-weight:700">محدودية الخبرة تؤخر المواءمة المعرفية</div>`,
+    quiz: { q: "لماذا يواجه الكفيف صعوبة في 'المواءمة' المعرفية؟", opts: ["بسبب محدودية الخبرات البيئية المباشرة", "بسبب انخفاض ذكائه الفطري"], ans: 0, fb: "أحسنت! المعرفة تبنى على الخبرة، وغياب البصر يقلل من حجم هذه الخبرات." }
+  },
+  {
+    tag: "النمو المعرفي",
+    title: "تحدي الزمان والمكان",
+    story: "كلمات مثل 'بعيد'، 'فوق'، 'أمس'، أو 'أزرق'.. هي مفاهيم مجردة وصعبة جداً لمن لا يراها تتجسد أمامه.",
+    content: "يواجه الكفيف تحديات كبرى في إدراك مفاهيم الألوان، العلاقات المكانية المعقدة، الوقت، والأبعاد والمسافات، لأنها تعتمد أصلاً على الإدراك البصري.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-ruler-combined"></i></div><div style="font-weight:700">صعوبة إدراك المفاهيم المجردة والمكانية</div>`,
+    quiz: { q: "أي من المفاهيم التالية يعتبر الأكثر تحدياً للكفيف في إدراكه؟", opts: ["المسافات والأبعاد والعلاقات المكانية", "الأصوات والروائح"], ans: 0, fb: "دقيق جداً! المكان هو بُعد بصري بالدرجة الأولى." }
+  },
+  {
+    tag: "القدرة العقلية",
+    title: "الذكاء الكامن",
+    story: "محرك السيارة سليم تماماً، لكن الطريق وعر؛ عقل الكفيف سليم فيزيولوجياً، لكنه يحتاج لطرق بديلة لاستيعاب المفاهيم.",
+    content: "القدرة العقلية للكفيف سليمة فيزيولوجياً، لكن المشكلات تظهر في 'استيعاب' المفاهيم المجردة، والقدرة على التصنيف، والتخيل البصري للمواقف.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-lightbulb"></i></div><div style="font-weight:700">الذكاء سليم والمشكلة في 'قنوات الاستقبال'</div>`,
+    quiz: { q: "أين تكمن المشكلة الأساسية في القدرات العقلية للكفيف؟", opts: ["في تلف خلايا التفكير في الدماغ", "في إدراك المفاهيم المجردة والتصنيف"], ans: 1, fb: "رائع! الكفيف ذكي، لكنه يفتقر للمادة الخام البصرية لبناء التخيلات." }
+  },
+  {
+    tag: "التنقل",
+    title: "البوصلة المفقودة",
+    story: "تخيل أنك في وسط صحراء دون معالم؛ الكفيف يفتقر للبوصلة البصرية التي تحدد له أين هو في الفضاء المحيط.",
+    content: "يصعب على المكفوف التموضع في الفضاء (Space Orientation) حسب الاتجاهات المكانية، لعدم قدرته على إدراك المعالم البصرية المحيطة به وتحديد موقعه بالنسبة لها.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-compass"></i></div><div style="font-weight:700">صعوبة التموضع في الفضاء والاتجاهات</div>`,
+    quiz: { q: "لماذا يصعب على الكفيف تحديد موقعه واتجاهاته بدقة؟", opts: ["لعدم إدراكه البصري للمعالم المحيطة", "لأنه لا يمتلك حاسة سمع قوية"], ans: 0, fb: "أحسنت! المعالم البصرية هي التي تمنحنا الشعور بالمكان." }
+  },
+  {
+    tag: "التنقل",
+    title: "الحركة الساكنة",
+    story: "نحن نتحرك نحو ما نراه؛ فإذا غاب المثير البصري، غابت الرغبة التلقائية في الاستكشاف والحركة نحو الأشياء.",
+    content: "يتميز الكفيف بفقر في 'الحركة التلقائية'؛ فهو لا يتحرك نحو الأهداف لعدم وجود مثيرات بصرية تجذبه للاستكشاف، مما يجعله أكثر سكوناً من المبصرين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-shoe-prints"></i></div><div style="font-weight:700">غياب المثير البصري = نقص الحركة التلقائية</div>`,
+    quiz: { q: "تتميز حركة الطفل الكفيف بأنها:", opts: ["سريعة وعشوائية دائماً", "ليست ذات دافعية تلقائية نحو الأهداف"], ans: 1, fb: "صحيح! المثير البصري هو المحفز الأول للحركة والاستكشاف." }
+  },
+  {
+    tag: "التنقل",
+    title: "رحلة المشي المتأخرة",
+    story: "بينما يبدأ الطفل المبصر المشي في عامه الأول، يحتاج الطفل الكفيف لضعف هذا الوقت ليشعر بالأمان الكافي للمشي منفرداً.",
+    content: "تطور المشي الاستقلالي لدى الكفيف يكون بطيئاً؛ حيث يظهر غالباً بين عمر 15 شهراً و3 سنوات (بمتوسط 25 شهراً)، وذلك لنقص المعلومات البصرية الموجهة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-baby"></i></div><div style="font-weight:700">25 شهراً: متوسط عمر المشي الاستقلالي</div>`,
+    quiz: { q: "متى يبدأ الطفل الكفيف المشي الاستقلالي في المتوسط؟", opts: ["عند عمر 12 شهراً", "عند عمر 25 شهراً"], ans: 1, fb: "أحسنت! التأخر ناتج عن الحاجة للشعور بالأمان الحركي قبل الانطلاق." }
+  },
+  {
+    tag: "التصوير الجسدي",
+    title: "خريطة الجسد اللمسية",
+    story: "كيف تعرف شكلك دون مرآة؟ الكفيف يرسم خريطة جسده من خلال أنامله، متلمساً حدود كيانه ووجوه الآخرين.",
+    content: "بناء 'الصورة الجسدية' ينمو ببطء شديد لدى الكفيف لغياب التدفق البصري. هو يتعرف على جسده ووجوه من حوله من خلال 'اللمس' كأداة أساسية للوعي بالذات.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-child-reaching"></i></div><div style="font-weight:700">اللمس: المرآة البديلة لبناء صورة الجسد</div>`,
+    quiz: { q: "كيف يبني الطفل المكفوف تصوره عن جسده وشكله؟", opts: ["من خلال لمس نفسه ووجوه الآخرين", "من خلال الاستماع للأغاني"], ans: 0, fb: "رائع! اللمس يحل محل البصر في رسم الملامح والحدود الجسدية." }
+  },
+  {
+    tag: "البدائل الحسية",
+    title: "جيش الحواس البديل",
+    story: "عندما ينطفئ الضوء، تستيقظ الحواس الأخرى؛ الأذن تصبح راداراً، والأنف يصبح دليلاً، والجلد يصبح مجساً دقيقاً.",
+    content: "تتكون لدى الكفيف 'مكتبة صوتية' هائلة؛ حيث يرتفع لديه التمييز السمعي واللمسي والشمي، مما يساعده في التعرف على الأشخاص والأماكن بدقة مدهشة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-ear-listen"></i></div><div style="font-weight:700">تطوير 'مكتبة صوتية' وتمييز لمسي فائق</div>`,
+    quiz: { q: "كيف يعوض الكفيف غياب حاسة البصر في حياته؟", opts: ["بالاعتماد على الذكاء فقط", "برفع كفاءة التمييز السمعي واللمسي والشمي"], ans: 1, fb: "صحيح! الحواس الأخرى تتكاتف لتقديم صورة بديلة عن الواقع." }
+  },
+  {
+    tag: "البدائل الحسية",
+    title: "حدود التعويض",
+    story: "رغم قوة الأذن وبراعة الأنامل، يظل البصر هو الملك؛ فهو الحاسة الوحيدة التي تمنحنا صورة كاملة وفورية وشاملة.",
+    content: "يجب التأكيد على أن البدائل الحسية (السمع واللمس والشم) لا يمكنها أبداً تعويض وظيفة حاسة البصر بالكامل، نظراً لخصائص البصر الفريدة في الشمولية والسرعة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-triangle-exclamation"></i></div><div style="font-weight:700">لا بديل كامل عن وظيفة البصر</div>`,
+    quiz: { q: "هل يمكن للسمع واللمس تعويض البصر بنسبة 100%؟", opts: ["نعم، وبكفاءة أعلى", "لا، لا يمكنها تعويض وظيفة البصر بالكامل"], ans: 1, fb: "أحسنت! البصر يجمع المعلومات بآن واحد وبسرعة لا تضاهيها الحواس الأخرى." }
+  },
+  {
+    tag: "النمو العاطفي",
+    title: "الابتسامة الصامتة",
+    story: "ابتسامة الرضيع المبصر هي استجابة لرؤية وجه الأم، أما ابتسامة الكفيف فهي همس داخلي يستيقظ بلمسة حانية.",
+    content: "تظهر الابتسامة عند الرضع المكفوفين متأخرة، وتكون صامتة وأقل تعبيراً. المثير هنا ليس وجه الأم بصرياً، بل استثارة جسد الطفل من خلال 'اللمس'.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-face-smile"></i></div><div style="font-weight:700">اللمس هو مفتاح الابتسامة لدى الرضيع الكفيف</div>`,
+    quiz: { q: "بماذا يتم استثارة ابتسامة الرضيع المكفوف عادةً؟", opts: ["عن طريق رؤية الألوان الزاهية", "عن طريق استثارة الجسد باللمس"], ans: 1, fb: "دقيق جداً! التواصل الحسي الجسدي هو لغة الحب الأولى للكفيف." }
+  },
+  {
+    tag: "النمو العاطفي",
+    title: "فجوة التواصل العاطفي",
+    story: "الاتصال بالعين هو أقصر طريق بين قلبين؛ فإذا غاب هذا الاتصال، قد تسيء الأم فهم هدوء طفلها الكفيف.",
+    content: "غياب الاتصال البصري يجعل التواصل بين الأم وطفلها الكفيف صعباً؛ فالطفل قد يستجيب داخلياً للمس أو الصوت لكنه لا يظهر ذلك بصرياً، مما قد يسبب للأم شعوراً بالإحباط.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-user-group"></i></div><div style="font-weight:700">تحدي غياب 'الاتصال البصري' في العلاقة</div>`,
+    quiz: { q: "ما هو الخطر التربوي لغياب التواصل البصري بين الأم والطفل الكفيف؟", opts: ["عدم ملاحظة الأم لردود فعل الطفل العاطفية", "زيادة ذكاء الطفل بشكل مفرط"], ans: 0, fb: "أحسنت! الأم تحتاج لتعلم قراءة إشارات طفلها غير البصرية." }
+  },
+  {
+    tag: "النمو العاطفي",
+    title: "ضبط قناع المشاعر",
+    story: "نحن نتعلم كيف نعبر عن غضبنا أو فرحنا بوجوهنا من خلال مراقبة الآخرين؛ الكفيف يفتقر لهذا 'النموذج'.",
+    content: "يواجه المكفوفون صعوبة في تنظيم تعابير وجوههم المترجمة لانفعالاتهم، لأنهم لم يشاهدوا قط كيف يحاكي الناس التعابير الانفعالية (الفرح، الحزن، الدهشة).",
+    visual: `<div class="v-icon"><i class="fa-solid fa-masks-theater"></i></div><div style="font-weight:700">صعوبة محاكاة التعابير الانفعالية للوجه</div>`,
+    quiz: { q: "لماذا يجد الكفيف صعوبة في التعبير عن مشاعره بوجهه؟", opts: ["لأنه لا يشعر بالعواطف أصلاً", "لأنه لم يشاهد نماذج بصرية ليقلدها"], ans: 1, fb: "صحيح! التقليد هو أساس تعلم لغة الجسد، وهو مفقود هنا." }
+  },
+  {
+    tag: "النمو الاجتماعي",
+    title: "اللعب في عزلة",
+    story: "الأطفال يلعبون بالنظر والتقليد؛ الكفيف يقف بعيداً عن صخب الألعاب الجماعية لأنه لا يرى كيف تدور قواعد اللعبة.",
+    content: "يعاني الأطفال المكفوفون من صعوبة الانخراط في اللعب مع الأقران، وهم أقل استعداداً للاستجابة لاهتمامات زملائهم لعدم قدرتهم على مشاهدة التفاعل الجماعي.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-users-slash"></i></div><div style="font-weight:700">صعوبة الانخراط في اللعب الجماعي</div>`,
+    quiz: { q: "ما الذي يجعل الكفيف أقل استعداداً للتفاعل الاجتماعي المبكر؟", opts: ["عدم قدرته على مشاهدة ومحاكاة كيفية اللعب", "عدم رغبته في الكلام"], ans: 0, fb: "رائع! التفاعل الاجتماعي في الطفولة يعتمد بشدة على البصر." }
+  },
+  {
+    tag: "النمو الاجتماعي",
+    title: "تحدي الوحدة لدى الراشدين",
+    story: "يكبر الطفل وتكبر معه الفجوة الاجتماعية؛ الراشد الكفيف يجد نفسه أحياناً في جزيرة معزولة رغم وجوده بين الناس.",
+    content: "يعاني الراشدون المكفوفون غالباً من مشاعر الوحدة، ويواجهون صعوبات جمة في إنشاء علاقات اجتماعية مستقرة أو بناء علاقات مع الجنس الآخر.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-person-shelter"></i></div><div style="font-weight:700">الوحدة الاجتماعية وتحدي العلاقات المستمرة</div>`,
+    quiz: { q: "يعاني الراشد المكفوف غالباً من:", opts: ["سهولة تكوين صداقات لا حصر لها", "الوحدة وصعوبة إنشاء علاقات منتظمة"], ans: 1, fb: "أحسنت! الاندماج الاجتماعي يتطلب جهداً مضاعفاً من المجتمع ومن الكفيف." }
+  },
+  {
+    tag: "مفهوم الذات",
+    title: "الذات المفقودة في المرآة",
+    story: "من أنا؟ كيف أبدو؟ الكفيف يطرح هذه الأسئلة دون أن يجد إجابة في المرآة، مما يجعل بناء الهوية الشخصية عملية معقدة.",
+    content: "يصعب على الكفيف بناء تصور تدريجي لجسده وإدراكه لذاته لعدم قدرته على مشاهدة جسمه أو وجهه، مما يجعل صورته الذهنية عن نفسه تتشكل ببطء.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-user-gear"></i></div><div style="font-weight:700">تحدي بناء الهوية وتصور الذات</div>`,
+    quiz: { q: "ما هو العائق الرئيسي لبناء 'مفهوم الذات' لدى الكفيف؟", opts: ["عدم إمكانية مشاهدة جسمه ووجهه", "عدم امتلاكه لاسم شخصي"], ans: 0, fb: "دقيق! الصورة المرئية للذات هي ركن أساسي في تكوين الهوية." }
+  },
+  {
+    tag: "مفهوم الذات",
+    title: "فخ التبعية والانعزال",
+    story: "عندما تضطر للاعتماد على 'عيون الآخرين' في كل خطوة، قد تشعر بأنك فقدت السيطرة على عالمك الخاص.",
+    content: "نظراً لتبعيتهم للمبصرين كوسطاء في التواصل والتحرك، يقل شعور المكفوفين بالتحكم في بيئتهم، مما قد يدفعهم للانعزال ويؤثر سلباً على تقديرهم لذواتهم.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-link"></i></div><div style="font-weight:700">التبعية للوسطاء وأثرها على الاستقلال</div>`,
+    quiz: { q: "إلى ماذا يؤدي شعور الكفيف بقلة التحكم في بيئته؟", opts: ["إلى زيادة الانعزال وتأثر إدراك الذات سلباً", "إلى الشعور بالحرية المطلقة"], ans: 0, fb: "أحسنت! الاستقلالية هي جوهر الصحة النفسية، وهي تحدٍ كبير للكفيف." }
+  }
+];
+// --- Core Engine ---
+let currentSlide = 0;
+let userScore = 0;
+const total = SLIDE_DATA.length;
+
+function initApp() {
+  const container = document.getElementById('main-container');
+  SLIDE_DATA.forEach((slide, index) => {
+    const slideDiv = document.createElement('div');
+    slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+    slideDiv.id = 'slide-' + index;
+    
+    slideDiv.innerHTML = `
+      <div class="card">
+        <div class="tag">${slide.tag}</div>
+        <h2>${slide.title}</h2>
+        ${slide.story ? `<div class="story-box"><i class="fa-solid fa-quote-right"></i><p>${slide.story}</p></div>` : ''}
+        <p style="font-size:1.15rem; margin-bottom:20px; font-weight:600; text-align:justify;">${slide.content}</p>
+        <div class="visual-box">${slide.visual}</div>
+        <div class="activity-box" id="actBox-${index}">
+          <p style="font-weight:900; margin-bottom:15px; color:#b45309;"><i class="fa-solid fa-bolt"></i> تحدي الاستيعاب:</p>
+          <p style="margin-bottom:15px; font-weight:700;">${slide.quiz.q}</p>
+          <div style="display:grid; gap:10px;">
+            <button class="act-btn" onclick="checkAns(${index}, 0, ${slide.quiz.ans}, this)"><span>${slide.quiz.opts[0]}</span></button>
+            <button class="act-btn" onclick="checkAns(${index}, 1, ${slide.quiz.ans}, this)"><span>${slide.quiz.opts[1]}</span></button>
+          </div>
+          <div class="feedback-msg" id="fb-${index}" style="display:none; padding:12px; border-radius:8px; margin-top:10px; font-weight:800;"></div>
+        </div>
+      </div>
+    `;
+    container.appendChild(slideDiv);
+  });
+  updateUI();
+}
+
+function checkAns(sIdx, chosen, correct, btn) {
+  const box = document.getElementById(`actBox-${sIdx}`);
+  if (box.dataset.answered === "true") return;
+  box.dataset.answered = "true";
+
+  const fb = document.getElementById(`fb-${sIdx}`);
+  const buttons = box.querySelectorAll('.act-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    fb.innerHTML = "✅ إجابة رائعة! لقد أتقنت هذه المعلومة بجدارة.";
+    fb.style.backgroundColor = "#d1fae5";
+    fb.style.color = "#065f46";
+    userScore += 100;
+    showToast("+100 نقطة! استمر في التقدم");
+    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#059669', '#f59e0b'] });
+  } else {
+    btn.classList.add('wrong');
+    fb.innerHTML = "❌ محاولة جيدة.. الإجابة الصحيحة هي المحددة بالأخضر.";
+    fb.style.backgroundColor = "#fee2e2";
+    fb.style.color = "#991b1b";
+    buttons[correct].classList.add('correct');
+  }
+  fb.style.display = "block";
+  updateStats();
+}
+
+function move(dir) {
+  const slides = document.querySelectorAll('.slide');
+  if (currentSlide + dir < 0 || currentSlide + dir >= total) return;
+  
+  slides[currentSlide].classList.remove('active');
+  currentSlide += dir;
+  slides[currentSlide].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateUI();
+}
+
+function updateUI() {
+  document.getElementById('counter').innerText = `${currentSlide + 1} / ${total}`;
+  document.getElementById('progress-bar').style.width = ((currentSlide + 1) / total * 100) + '%';
+  document.getElementById('btn-prev').disabled = currentSlide === 0;
+  document.getElementById('btn-next').disabled = currentSlide === total - 1;
+}
+
+function updateStats() {
+  document.getElementById('scoreDisplay').innerText = userScore;
+  let level = "مبتدئ";
+  if (userScore >= 200) level = "باحث واعد";
+  if (userScore >= 400) level = "أخصائي بصريات";
+  if (userScore >= 600) level = "خبير شامل";
+  document.getElementById('levelDisplay').innerText = level;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 2500);
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>

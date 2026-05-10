@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>اضطراب ADHD - الدورة الاحترافية المتقدمة</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+/* ==========================================================================
+   CSS System - Emerald Neuro Theme
+   ========================================================================== */
+:root {
+  --c-primary: #059669; 
+  --c-primary-light: #d1fae5; 
+  --c-primary-dark: #047857; 
+  --c-accent: #f59e0b; 
+  --c-bg: #0f172a; /* تم اختيار خلفية داكنة تناسب طابع الدماغ والأعصاب */
+  --c-surface: #1e293b;
+  --c-text-main: #f8fafc; 
+  --c-text-muted: #94a3b8; 
+  --c-danger: #ef4444;
+  --c-success: #10b981;
+  --c-border: rgba(255, 255, 255, 0.1);
+  --font-main: 'Cairo', sans-serif;
+  --font-story: 'Tajawal', sans-serif;
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --r-lg: 20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--c-bg);
+  color: var(--c-text-main);
+  line-height: 1.8;
+  background-image: radial-gradient(rgba(5, 150, 105, 0.15) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+#progress-container { position: fixed; top: 0; left: 0; right: 0; height: 6px; background: rgba(255,255,255,0.1); z-index: 1001; }
+#progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--c-accent), var(--c-primary)); transition: 0.3s; box-shadow: 0 0 10px var(--c-primary); }
+
+header {
+  position: fixed; top: 6px; left: 0; right: 0; height: 65px;
+  background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; border-bottom: 1px solid var(--c-border); z-index: 1000;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: #10b981; }
+.stats { display: flex; align-items: center; gap: 10px; }
+.badge { background: rgba(255,255,255,0.05); border: 1px solid var(--c-border); padding: 5px 12px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; color: white; }
+
+main { padding: 90px 15px 120px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+.slide { display: none; width: 100%; max-width: 900px; animation: fadeUp 0.5s forwards; }
+.slide.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.card { background: var(--c-surface); border-radius: var(--r-lg); padding: clamp(20px, 4vw, 35px); box-shadow: var(--shadow-lg); border: 1px solid var(--c-border); margin-bottom: 25px; }
+.tag { display: inline-block; padding: 5px 15px; background: rgba(16, 185, 129, 0.2); color: #34d399; border-radius: 50px; font-size: 0.8rem; font-weight: 800; margin-bottom: 15px; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+.story-box { background: rgba(255, 255, 255, 0.03); border-right: 4px solid var(--c-accent); padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 15px; }
+.story-box i { font-size: 1.8rem; color: var(--c-accent); }
+.story-box p { font-family: var(--font-story); font-style: italic; margin: 0; color: #e2e8f0; }
+
+.visual-box { background: rgba(0,0,0,0.2); border: 2px dashed rgba(255,255,255,0.1); border-radius: 15px; padding: 25px; margin: 20px 0; text-align: center; }
+.v-icon { font-size: 3.5rem; color: #10b981; margin-bottom: 10px; text-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+
+.activity-box { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--r-lg); padding: 25px; }
+.act-btn {
+  width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--c-border); padding: 15px;
+  border-radius: 12px; cursor: pointer; font-family: var(--font-main); font-size: 1rem;
+  font-weight: 600; text-align: right; margin-bottom: 10px; transition: all 0.2s; color: white;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.act-btn:hover:not(:disabled) { background: rgba(16, 185, 129, 0.1); border-color: var(--c-primary); transform: translateX(-5px); }
+.act-btn.correct { background: rgba(16, 185, 129, 0.2); border-color: var(--c-success); color: #34d399; }
+.act-btn.wrong { background: rgba(239, 68, 68, 0.2); border-color: var(--c-danger); color: #f87171; }
+
+footer {
+  position: fixed; bottom: 0; left: 0; right: 0; padding: 15px 30px;
+  background: rgba(15, 23, 42, 0.95); border-top: 1px solid var(--c-border);
+  display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+}
+.btn { padding: 12px 25px; border-radius: 50px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; }
+.btn-primary { background: linear-gradient(135deg, #059669, #10b981); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
+.btn-outline { background: transparent; color: #94a3b8; border: 1px solid var(--c-border); }
+
+.toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background: #10b981; color: white; padding: 10px 25px; border-radius: 50px; z-index: 2000; display: none; font-weight: 700; box-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+</style>
+</head>
+<body>
+
+<div id="progress-container"><div id="progress-bar"></div></div>
+
+<header>
+  <div class="brand"><i class="fa-solid fa-microchip"></i> استكشاف ADHD</div>
+  <div class="stats">
+    <div class="badge"><i class="fa-solid fa-bolt"></i> <span id="scoreDisplay">0</span></div>
+    <div class="badge" style="color:#10b981;"><i class="fa-solid fa-brain"></i> <span id="levelDisplay">مبتدئ</span></div>
+  </div>
+</header>
+
+<div class="toast" id="toast"></div>
+
+<main id="main-container"></main>
+
+<footer>
+  <button class="btn btn-outline" id="btn-prev" onclick="move(-1)">السابق</button>
+  <div id="counter" style="font-weight:900; color:#10b981;">1 / --</div>
+  <button class="btn btn-primary" id="btn-next" onclick="move(1)">التالي</button>
+</footer>
+
+<script>
+/* ==========================================================================
+   DATASET: اضطراب ADHD (إعادة هيكلة كاملة للمحتوى)
+   ========================================================================== */
+const SLIDE_DATA = [
+  {
+    tag: "مقدمة",
+    title: "سيارة بلا مكابح",
+    story: "تخيل أنك تقود سيارة سباق فائقة السرعة، المحرك يزأر والقوة تفيض.. ولكن، تكتشف فجأة أنك تحاول القيادة بدون مكابح! الأفكار تتسارع والانتباه يطير من فكرة لأخرى في أجزاء من الثانية.",
+    content: "هذا هو الواقع اليومي لملايين الأشخاص المصابين باضطراب نقص الانتباه مع فرط النشاط (ADHD). هو حالة مرتبطة بنمو الدماغ تؤثر جوهرياً على الإدراك والتواصل.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-car-burst"></i></div><div style="font-weight:700">ADHD: عقل سريع.. ومكابح غائبة</div>`,
+    quiz: { 
+      q: "ما هو التوصيف الأدق لاضطراب (ADHD) بناءً على التشبيه؟", 
+      opts: ["نقص في طاقة الدماغ", "حالة نمائية تؤثر على التحكم والانتباه"], 
+      ans: 1, 
+      fb: "أحسنت! الاضطراب يتعلق بكيفية إدارة الدماغ للانتباه والحركة وليس نقصاً في الذكاء أو الطاقة." 
+    }
+  },
+  {
+    tag: "تشبيه مبسط",
+    title: "أوركسترا بلا مايسترو",
+    story: "دماغ الإنسان يشبه فرقة موسيقية ضخمة. في العقل الطبيعي، يوجد 'مايسترو' يوجه العازفين ليعزفوا بتناغم. لكن في الـ (ADHD)، الفرقة تعزف بمهارة، لكن المايسترو غائب أو مشتت!",
+    content: "هذا الاضطراب ليس مجرد 'شقاوة'، بل هو خلل في التنسيق بين وظائف الدماغ العليا مثل الانتباه، الحركة، والمشاعر، مما يؤثر على جودة الحياة والتفاعل الاجتماعي.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-music"></i></div><div style="font-weight:700">غياب 'المايسترو' الداخلي للدماغ</div>`,
+    quiz: { 
+      q: "ما الذي يمثله 'المايسترو' في هذا التشبيه؟", 
+      opts: ["مركز التحكم والانتباه في الدماغ", "قوة العضلات والحركة"], 
+      ans: 0, 
+      fb: "صحيح! المايسترو هو الوظائف التنفيذية التي تنظم الأفكار والأفعال." 
+    }
+  },
+  {
+    tag: "الأسباب",
+    title: "عوامل خطر أثناء الحمل",
+    story: "القصة تبدأ أحياناً قبل الصرخة الأولى للولادة. بيئة الرحم هي المختبر الذي يُبنى فيه الدماغ؛ وأي خلل في المدخلات قد يغير مسار بناء الجهاز العصبي.",
+    content: "تشمل عوامل الخطر: الولادة المبكرة قبل اكتمال نمو الجهاز العصبي، تعاطي الأم للمخدرات أو الكحول مما يشوه المسارات العصبية، والتدخين الذي يقلل الأكسجين الواصل للجنين.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-dna"></i></div><div style="font-weight:700">عوامل الحمل: اللبنات الأولى للدماغ</div>`,
+    quiz: { 
+      q: "كيف يؤثر التدخين أثناء الحمل على احتمالية الإصابة بـ ADHD؟", 
+      opts: ["يزيد من نسبة ذكاء الطفل", "يقلل الأكسجين ويعيق تطور الدماغ الطبيعي"], 
+      ans: 1, 
+      fb: "دقيق جداً! نقص الأكسجين يعد من أخطر العوامل التي تهدد سلامة نمو المراكز العصبية." 
+    }
+  },
+  {
+    tag: "الأسباب",
+    title: "الأمراض القديمة وندبات الجهاز العصبي",
+    story: "خلف الكواليس، قد تترك بعض الوعكات الصحية آثاراً لا تُرى بالعين المجردة. الأمراض ليست مجرد حرارة وألم، بل هي أحياناً صراعات تترك ندبات في مراكز التحكم.",
+    content: "إصابة الطفل أو الأم ببعض الأمراض القديمة قد تترك أثراً سلبياً على الجهاز العصبي، مما يؤثر لاحقاً على مراكز الانتباه والتحكم الحركي في الدماغ.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-thermometer"></i></div><div style="font-weight:700">إصابات الجهاز العصبي الناتجة عن الأمراض</div>`,
+    quiz: { 
+      q: "هل يمكن للأمراض القديمة أن تكون سبباً في ظهور ADHD؟", 
+      opts: ["نعم، عبر تأثيرها على مراكز التحكم في الجهاز العصبي", "لا، الأمراض لا علاقة لها بالدماغ"], 
+      ans: 0, 
+      fb: "أحسنت! الصحة العامة للأم والطفل مرتبطة ارتباطاً وثيقاً بسلامة العمليات الذهنية." 
+    }
+  },
+  {
+    tag: "الوقاية",
+    title: "غذاء الأم: درع الحماية الأول",
+    story: "تخيل أنك تبني حصناً؛ جودة الأحجار تحدد قوة الجدران. الغذاء الصحي للأم هو الحجر الكريم الذي يبني خلايا عصبية متينة وقادرة على الصمود.",
+    content: "لتقليل خطر الإصابة، يجب الاهتمام بغذاء الأم أثناء الحمل. الغذاء المتوازن يوفر اللبنات الأساسية لبناء دماغ صحي، بينما الغذاء الفقير يضعف بناء الخلايا العصبية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-apple-whole"></i></div><div style="font-weight:700">الغذاء المتوازن = دماغ سليم</div>`,
+    quiz: { 
+      q: "ما هو دور الغذاء الصحي للأم في الوقاية؟", 
+      opts: ["توفير اللبنات الأساسية لبناء الدماغ", "لا دور له في الاضطرابات النفسية"], 
+      ans: 0, 
+      fb: "رائع! التغذية هي الوقود الذي يحرك عملية الانقسام والنمو الخلوي في الدماغ الجنيني." 
+    }
+  },
+  {
+    tag: "الوقاية",
+    title: "تطهير بيئة الطفل من السموم",
+    story: "في عالمنا المليء بالصناعات، قد يختبئ العدو في ألوان الجدران أو في دخان السجائر. تطهير البيئة هو بمثابة تنقية الهواء الذي يتنفسه عقل الطفل الصغير.",
+    content: "من الضروري حماية الطفل من الملوثات مثل التدخين السلبي، والطلاء القديم الذي يحتوي على مادة الرصاص، حيث أن هذه السموم تهاجم الجهاز العصبي للطفل مباشرة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-mask-ventilator"></i></div><div style="font-weight:700">بيئة خالية من الرصاص والدخان</div>`,
+    quiz: { 
+      q: "أي من المواد التالية يجب تجنبها لحماية دماغ الطفل؟", 
+      opts: ["الطلاء المحتوي على الرصاص", "الألعاب الخشبية الطبيعية"], 
+      ans: 0, 
+      fb: "صحيح! الرصاص سم عصبي قوي يؤثر بشدة على القدرات الذهنية للأطفال." 
+    }
+  },
+  {
+    tag: "الوقاية",
+    title: "نمط الحياة والعدو الخفي (الشاشات)",
+    story: "الشاشات السريعة تبرمج الدماغ على 'السرعة الزائفة'. عندما يعتاد الطفل على ومضات الألعاب المتلاحقة، يصبح العالم الواقعي بالنسبة له بطيئاً ومملاً، مما يشتت انتباهه.",
+    content: "يجب الحد من فترات مشاهدة التلفاز وألعاب الفيديو، مع توفير بيئة أسرية دافئة ومستقرة. التربية النفسية السوية تخفف التوتر الذي قد يحفز ظهور الأعراض.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-tv"></i></div><div style="font-weight:700">الحد من الشاشات + بيئة دافئة</div>`,
+    quiz: { 
+      q: "لماذا يوصى بالحد من ألعاب الفيديو للأطفال المعرضين للتشتت؟", 
+      opts: ["لأنها تزيد من نسبة الذكاء", "لأنها تبرمج الدماغ على قصر مدة الانتباه"], 
+      ans: 1, 
+      fb: "أحسنت! الدماغ يحتاج لتعلم الصبر والتركيز المستمر، وهو ما تفتقر إليه الشاشات السريعة." 
+    }
+  },
+  {
+    tag: "العلاج",
+    title: "قاعدة المثلث الذهبي للعلاج",
+    story: "تخيل أنك تحاول موازنة طاولة بثلاث أرجل؛ إذا فقدت إحداها سقط كل شيء. العلاج ليس حبة دواء فقط، بل هو منظومة متكاملة تدعم الطفل من كل جانب.",
+    content: "يعتمد علاج ADHD على ثلاث ركائز: العلاج الدوائي (لضبط كيمياء الدماغ)، العلاج السلوكي (لزرع العادات)، والعلاج التربوي (لتكييف البيئة التعليمية).",
+    visual: `<div class="v-icon"><i class="fa-solid fa-triangle-exclamation"></i></div><div style="font-weight:700">المثلث الذهبي: دوائي + سلوكي + تربوي</div>`,
+    quiz: { 
+      q: "ما هي الركائز الأساسية لعلاج اضطراب ADHD؟", 
+      opts: ["الدواء وحده فقط", "تكامل العلاج الدوائي والسلوكي والتربوي"], 
+      ans: 1, 
+      fb: "رائع! التكامل هو مفتاح النجاح؛ فالدواء يجهز الدماغ، والسلوك يبني الشخصية." 
+    }
+  },
+  {
+    tag: "العلاج الدوائي",
+    title: "تركيب المكابح للدماغ",
+    story: "الدواء في حالة الـ ADHD لا يعمل كمنوم، بل كمهندس صيانة. هو يعيد ربط المسارات المقطوعة ليتيح للمكابح أن تعمل أخيراً بفعالية.",
+    content: "يساعد العلاج الدوائي المريض على زيادة التركيز والانتباه لمدة أطول، كما يعمل على تقليص الاندفاعية والحركة المفرطة عبر ضبط الناقلات العصبية.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-pills"></i></div><div style="font-weight:700">ضبط التركيز وتقليص الاندفاعية</div>`,
+    quiz: { 
+      q: "ما هو الهدف الأساسي من استخدام الدواء في علاج ADHD؟", 
+      opts: ["زيادة مدة التركيز وتقليل الاندفاعية", "جعل الطفل ينام لفترات طويلة"], 
+      ans: 0, 
+      fb: "صحيح! الدواء يحسن من 'جودة' الانتباه وليس مجرد تهدئة الحركة." 
+    }
+  },
+  {
+    tag: "أنواع الأدوية",
+    title: "المنشطات (شرارة الإيقاظ)",
+    story: "قد يبدو الاسم غريباً: 'نعطي منشطاً لطفل لديه فرط حركة؟'. السر يكمن في أننا ننشط 'مركز التحكم' النائم في الدماغ، لكي يستيقظ المايسترو ويضبط العازفين.",
+    content: "تعمل الأدوية المنشطة (Stimulants) على تنشيط الناقلات العصبية في الدماغ، مما يرفع القدرة على التحكم بالسلوكيات ويزيد من حدة الانتباه.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-bolt-lightning"></i></div><div style="font-weight:700">المنشطات: إيقاظ مركز التحكم في الدماغ</div>`,
+    quiz: { 
+      q: "كيف تعمل الأدوية المنشطة في علاج فرط الحركة؟", 
+      opts: ["عبر تنشيط الناقلات العصبية في مراكز الانتباه", "عبر إضعاف عضلات الطفل"], 
+      ans: 0, 
+      fb: "أحسنت! هي تنشط 'المكابح' الذهنية وليس الحركة الجسدية." 
+    }
+  },
+  {
+    tag: "أنواع الأدوية",
+    title: "غير المنشطات (مقويات المستقبلات)",
+    story: "إذا كانت المنشطات هي الشرارة، فإن غير المنشطات هي 'المقوي'. هي لا توقظ الناقلات فحسب، بل تجعل المستقبلات أكثر قدرة على استقبال الرسائل الكيميائية بوضوح.",
+    content: "تعمل الأدوية غير المنشطة (المثبطة) على تقوية المستقبلات الكيميائية في خلايا الدماغ، مما يزيد من فعالية الناقلات العصبية الموجودة لتحسين السيطرة على الأعراض.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-shield-halved"></i></div><div style="font-weight:700">تقوية المستقبلات الكيميائية للدماغ</div>`,
+    quiz: { 
+      q: "بماذا تتميز آلية عمل الأدوية غير المنشطة؟", 
+      opts: ["بتقوية المستقبلات الكيميائية في الخلايا", "بإيقاف عمل الدماغ تماماً"], 
+      ans: 0, 
+      fb: "دقيق جداً! هي تحسن من كفاءة استقبال الإشارات العصبية." 
+    }
+  },
+  {
+    tag: "العلاج السلوكي",
+    title: "غرس العادات وبناء الشخصية",
+    story: "الدواء يجهز الأرض للزراعة، لكن العلاج السلوكي هو الذي يغرس البذور. بدون استراتيجيات الأهل، يظل الدواء حلاً مؤقتاً لا يبني مهارات دائمة.",
+    content: "يعتمد العلاج السلوكي والتربوي على تعديل سلوكيات الطفل عبر استراتيجيات يستخدمها الأهل والمعلمون باستمرار. الدواء وحده لا يغني أبداً عن هذه الركيزة المكملة.",
+    visual: `<div class="v-icon"><i class="fa-solid fa-hands-holding-child"></i></div><div style="font-weight:700">الأسرة: المعالج الأهم في رحلة الطفل</div>`,
+    quiz: { 
+      q: "ما هي الحقيقة القاطعة حول العلاج الدوائي؟", 
+      opts: ["هو الحل الوحيد والنهائي", "لا يغني عن العلاج السلوكي والتربوي المكملين"], 
+      ans: 1, 
+      fb: "أحسنت! الشفاء والاندماج يتطلبان تعديلاً في السلوك والبيئة جنباً إلى جنب مع الدواء." 
+    }
+  }
+];
+// --- Core Engine (Emerald System) ---
+let currentSlide = 0;
+let userScore = 0;
+const total = SLIDE_DATA.length;
+
+function initApp() {
+  const container = document.getElementById('main-container');
+  SLIDE_DATA.forEach((slide, index) => {
+    const slideDiv = document.createElement('div');
+    slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+    slideDiv.id = 'slide-' + index;
+    
+    slideDiv.innerHTML = `
+      <div class="card">
+        <div class="tag">${slide.tag}</div>
+        <h2>${slide.title}</h2>
+        <div class="story-box"><i class="fa-solid fa-quote-right"></i><p>${slide.story}</p></div>
+        <p style="font-size:1.15rem; margin-bottom:20px; font-weight:600; text-align:justify; color:#cbd5e1;">${slide.content}</p>
+        <div class="visual-box">${slide.visual}</div>
+        <div class="activity-box" id="actBox-${index}">
+          <p style="font-weight:900; margin-bottom:15px; color:#f59e0b;"><i class="fa-solid fa-bolt"></i> تحدي النيورون:</p>
+          <p style="margin-bottom:15px; font-weight:700; color:white;">${slide.quiz.q}</p>
+          <div style="display:grid; gap:10px;">
+            <button class="act-btn" onclick="checkAns(${index}, 0, ${slide.quiz.ans}, this)"><span>${slide.quiz.opts[0]}</span></button>
+            <button class="act-btn" onclick="checkAns(${index}, 1, ${slide.quiz.ans}, this)"><span>${slide.quiz.opts[1]}</span></button>
+          </div>
+          <div class="feedback-msg" id="fb-${index}" style="display:none; padding:12px; border-radius:8px; margin-top:10px; font-weight:800;"></div>
+        </div>
+      </div>
+    `;
+    container.appendChild(slideDiv);
+  });
+  updateUI();
+}
+
+function checkAns(sIdx, chosen, correct, btn) {
+  const box = document.getElementById(`actBox-${sIdx}`);
+  if (box.dataset.answered === "true") return;
+  box.dataset.answered = "true";
+
+  const fb = document.getElementById(`fb-${sIdx}`);
+  const buttons = box.querySelectorAll('.act-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    fb.innerHTML = "✅ استنتاج عبقري! مساراتك العصبية في قمة نشاطها.";
+    fb.style.backgroundColor = "rgba(16, 185, 129, 0.2)";
+    fb.style.color = "#34d399";
+    userScore += 100;
+    showToast("+100 نقطة إدراك!");
+    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#10b981', '#f59e0b', '#ffffff'] });
+  } else {
+    btn.classList.add('wrong');
+    fb.innerHTML = "❌ محاولة جيدة.. تذكر أن التكامل هو المفتاح دائماً.";
+    fb.style.backgroundColor = "rgba(239, 68, 68, 0.2)";
+    fb.style.color = "#f87171";
+    buttons[correct].classList.add('correct');
+  }
+  fb.style.display = "block";
+  updateStats();
+}
+
+function move(dir) {
+  const slides = document.querySelectorAll('.slide');
+  if (currentSlide + dir < 0 || currentSlide + dir >= total) return;
+  
+  slides[currentSlide].classList.remove('active');
+  currentSlide += dir;
+  slides[currentSlide].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateUI();
+}
+
+function updateUI() {
+  document.getElementById('counter').innerText = `${currentSlide + 1} / ${total}`;
+  document.getElementById('progress-bar').style.width = ((currentSlide + 1) / total * 100) + '%';
+  document.getElementById('btn-prev').disabled = currentSlide === 0;
+  document.getElementById('btn-next').disabled = currentSlide === total - 1;
+}
+
+function updateStats() {
+  document.getElementById('scoreDisplay').innerText = userScore;
+  let level = "مبتدئ";
+  if (userScore >= 200) level = "باحث سلوكي";
+  if (userScore >= 400) level = "محلل أعصاب";
+  if (userScore >= 500) level = "خبير شامل";
+  document.getElementById('levelDisplay').innerText = level;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 2500);
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>
